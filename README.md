@@ -1,5 +1,5 @@
 
-# Smart Cruiter
+# TalAstra ATS
 ### Live Link : 
 An applicant tracking management system, help organization in their hiring process with futures like:
 
@@ -9,17 +9,23 @@ An applicant tracking management system, help organization in their hiring proce
 
 3-) Job creation
 
-4-) Managing applicants (applied, recommended, hired , declined, withdrawn)
+4-) Managing applicants (Resume_Shortlisted_BY_Admin, Resume sent to Client, Resume_Shortlisted_BY_Client,  Interview Schedule,First Round_clear, Second Round clean, HR round clrear, hired , declined, withdrawn)
 
-5-) You can set up an online interview
-
-6-) Send rejection or accepting emails to hundreds of candidates in a single click
-
-7-) Manage the record of applicants with great data visualization
+5 -) Manage the record of applicants with great data visualization
 
 6-) Job details and application form for end-user
 
+Actors/Users
+1.Admin,
+2.Recruiter
 
+User Mgmt
+1. Admin - 
+     - CRUD Users, Client, POC ,JOB
+     - JOb Assigment
+     - Review Applications
+2. Recruiter - 
+     - CRUD Applicants
 
 ## Tech Stack
 
@@ -30,12 +36,6 @@ An applicant tracking management system, help organization in their hiring proce
 **Database:** MongoDB Atlas
 
 **Deployment:** Vercel
-
-
-
-## Screenshots
-
-
 
 
 ## Installation
