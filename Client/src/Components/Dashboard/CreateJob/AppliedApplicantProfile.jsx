@@ -35,7 +35,7 @@ function AppliedApplicantProfile({ id }) {
         <div className="w-1/5">
           <img
             width={100}
-            src="https://nextluxury.com/wp-content/uploads/funny-profile-pictures-7.jpg"
+            src=""
             alt=""
             className="rounded-full"
           />

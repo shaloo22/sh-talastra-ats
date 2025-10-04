@@ -84,7 +84,7 @@ function Login() {
           <img
             className="m-auto mt-4"
             width={100}
-            src="https://1000logos.net/wp-content/uploads/2022/07/Logo-ATT.png"
+            src=""
             alt=""
           />
           <div className=" w-full">
@@ -194,7 +194,7 @@ function Login() {
         <div className="w-1/2 h-screen hidden shadows sm:block">
           <img
             className="h-screen"
-            src="https://www.atheneum.ai/wp-content/uploads/2019/07/Atheneum-Product-Corporate.png"
+            src=""
             alt=""
           />
         </div>

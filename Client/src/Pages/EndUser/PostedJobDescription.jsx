@@ -41,7 +41,7 @@ function PostedJobDescription() {
         {/* <img
           style={{ opacity: 0.2 }}
           className="h-56 w-full absolute z-99"
-          src="https://usv.edu/wp-content/uploads/2017/02/GamingStudioMain.jpg"
+          src=""
           alt=""
         /> */}
 

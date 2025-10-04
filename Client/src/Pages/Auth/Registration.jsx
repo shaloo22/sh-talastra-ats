@@ -98,7 +98,7 @@ function Registration() {
         <div className="w-2/5 shadows hidden sm:block ">
           <img
             className="h-full w-full"
-            src="https://images.unsplash.com/photo-1486175060817-5663aacc6655?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJ1aWxkaW5nc3xlbnwwfHwwfHw%3D&w=1000&q=80"
+            src=""
             alt=""
           />
         </div>
@@ -121,7 +121,7 @@ function Registration() {
                 <img
                   className="inline mb-1"
                   width={30}
-                  src="https://cdn-icons-png.flaticon.com/512/6559/6559073.png"
+                  src=""
                 ></img>
                 <hr className="mt-1" />
               </ModalHeader>

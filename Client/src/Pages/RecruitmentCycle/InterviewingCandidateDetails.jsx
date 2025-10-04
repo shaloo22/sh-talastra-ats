@@ -281,7 +281,7 @@ function InterviewingCandidateDetails() {
                   <div>
                     <img
                       width={80}
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Google_Meet_icon_%282020%29.svg/1200px-Google_Meet_icon_%282020%29.svg.png"
+                      src=""
                       alt=""
                     />
                   </div>
@@ -289,7 +289,7 @@ function InterviewingCandidateDetails() {
                   <div>
                     <img
                       width={80}
-                      src="https://companieslogo.com/img/orig/ZM-b326e02f.png?t=1647979587"
+                      src=""
                       alt=""
                     />
                   </div>
