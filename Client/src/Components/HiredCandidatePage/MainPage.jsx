@@ -59,19 +59,19 @@ function MainPage() {
                 {element.department == "HR" ? (
                   <img
                     className="w-1/2 block m-auto p-2"
-                    src="https://cdn.dribbble.com/users/878959/screenshots/4460762/hr.png"
+                    src=""
                     alt=""
                   />
                 ) : element.department == "IT" ? (
                   <img
                     className="w-1/2 block m-auto p-2"
-                    src="https://img.freepik.com/premium-vector/back-end-development-abstract-concept-vector-illustration_107173-25072.jpg"
+                    src=""
                     alt=""
                   />
                 ) : (
                   <img
                     className="w-1/2 block m-auto p-2"
-                    src="https://media.istockphoto.com/id/1201845960/vector/business-hierarchy-ceo-organization-job-working-leadership.jpg?s=612x612&w=0&k=20&c=QTi2Ha-Q3kcdAldcJ3_NhMluaSczHn-ne5leHbHpV0k="
+                    src="0k="
                     alt=""
                   />
                 )}

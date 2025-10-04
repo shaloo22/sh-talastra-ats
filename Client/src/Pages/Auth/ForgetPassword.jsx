@@ -66,7 +66,7 @@ function ForgetPassword() {
           className="m-auto"
           width="120"
           src={
-            "https://img.freepik.com/premium-vector/bronze-lock-icon-white-background-flat-design-illustration-stock-vector-graphics_668389-92.jpg?w=2000"
+            ""
           }
         ></img>
         <h1 className="heading2 text-black text-center mt-4">

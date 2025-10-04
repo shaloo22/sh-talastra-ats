@@ -245,7 +245,7 @@ function Setting_EditProfile() {
             <img
               width={100}
               height={100}
-              src="https://1000logos.net/wp-content/uploads/2021/04/Facebook-logo.png"
+              src=""
               alt=""
               className="inline w-24 h-22"
             />
@@ -270,7 +270,7 @@ function Setting_EditProfile() {
             <img
               width={60}
               height={60}
-              src="https://static.vecteezy.com/system/resources/previews/018/930/587/original/linkedin-logo-linkedin-icon-transparent-free-png.png"
+              src=""
               alt=""
               className="inline w-24 h-22"
             />
@@ -295,7 +295,7 @@ function Setting_EditProfile() {
           <div className=" flex items-center justify-center">
             <img
               width={100}
-              src="https://img.freepik.com/premium-photo/youtube-logo-video-player-3d-design-video-media-player-interface_41204-12379.jpg"
+              src=""
               alt=""
               className="inline"
             />
@@ -320,7 +320,7 @@ function Setting_EditProfile() {
             <img
               width={60}
               height={60}
-              src="https://freelogopng.com/images/all_img/1658586823instagram-logo-transparent.png"
+              src=""
               alt=""
               className="inline "
             />
