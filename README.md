@@ -5,7 +5,7 @@ An applicant tracking management system, help organization in their hiring proce
 
 1-) Client creation
 
-2-) POC creation
+2-) POC creation POC Attributes[Client , First Name , Last Name, Email, Phone]
 
 3-) Job creation
 
