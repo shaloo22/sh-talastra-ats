@@ -6,6 +6,7 @@ const Home = async (req, res, next) => {
     const { organization_id } = req.body.data;
     console.log(' I am going to run');
     console.log(organization_id);
+    /*
     const organizaion = await OrganizationModal.findById(organization_id);
     console.log(organizaion);
     if (organizaion) {
@@ -13,7 +14,7 @@ const Home = async (req, res, next) => {
     }
     else {
         res.status(404).json({ message: "No organization found , enter valid organization" });
-    }
+    }*/
 }
 
 module.exports = Home;
