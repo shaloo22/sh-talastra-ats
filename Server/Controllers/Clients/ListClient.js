@@ -1,22 +1,19 @@
-const Job = require("../../Models/ClientModel");
+const Client = require("../../Models/ClientModel");
 
-const listClient = async (req, res, next) => {
+const listClient = async (req, res) => {
+  try {
+    const { status } = req.body;
 
-    const reqData = req.body;
+    if (!status)
+      return res.status(400).json({ message: "Status required" });
 
-    if (!reqData) {
-        return res.status(440).json({ message: "No status input found" });
-    }
+    const clients = await Client.find({ status });
 
-    const clients = await Job.find({ status: reqData.status });
-
-    if (clients) {
-        return res.status(200).json({ clients })
-    }
-    else {
-        return res.status(404).json({ message: "No client found" })
-    }
-
-}
+    return res.status(200).json({ clients });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 module.exports = listClient;

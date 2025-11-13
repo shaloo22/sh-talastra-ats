@@ -39,16 +39,9 @@ app.use("/job", JobRouter)
 app.use('/details', RecruitmentRouter)
 app.use("/report", RouterReport)
 app.use("/settings", SettingRouter);
-
-// Create a new ngrok tunnel.
-//      
-
-
-
+     
 //-----| App listening |------
 const port = process.env.PORT || 8080;
-
-
 
 app.listen(port, () => {
     console.log("server is running on port :" + port)

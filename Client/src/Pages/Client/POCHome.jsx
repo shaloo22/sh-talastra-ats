@@ -23,7 +23,7 @@ function ClientHome() {
 
       axios(options).then((response) => {
          console.log(response);
-        setData(response.data.clients);
+        setData(response.data.pocs);
       });
     };
 

@@ -116,6 +116,41 @@ function LeftMenuBar() {
               </Link>
             </div>
 
+            <div className="w-full bg-white hover:bg-blue-100 transition-all duration-[850ms] hover:rounded-lg ease-out py-2  ml-8 mb-2 flex items-center">
+              
+               {/* POC Home */}
+              <div className="w-1/5">
+                <svg
+                  className="m-auto"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14 1.75L2.33337 8.75V26.25H25.6667V8.75L14 1.75Z"
+                    stroke="#333232"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M9.33337 26.25V14H18.6667V26.25"
+                    stroke="#333232"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              <Link to={"/pocHome"}>
+                <div className="inline ml-2 mt-1">
+                  <button className="inline navMenuFont">POC Home</button>
+                </div>
+              </Link>
+            </div>
+
             {/* JOBS */}
 
             <div className="w-full bg-white hover:bg-blue-100 transition-all duration-[850ms] hover:rounded-lg ease-out py-2  ml-8 mb-2 flex items-center">

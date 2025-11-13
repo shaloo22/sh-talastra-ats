@@ -16,13 +16,15 @@ const clientSchema = new mongo.Schema({
         required: [true, 'Email is required'],
         unique: true
     },
+    brief: {
+        type: String,
+        default: "",
+    },
     status: {
         type: String,
         default: "ACTIVE",
     },
 })
-
-
 const clientModel = mongo.model('client', clientSchema)
 
 module.exports = clientModel;

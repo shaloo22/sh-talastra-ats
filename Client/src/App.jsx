@@ -14,6 +14,8 @@ import ProfileTeam_Members from "./Pages/Dashboard/ProfileCreation/ProfileTeam_M
 import Profile_Sucess from "./Pages/Dashboard/ProfileCreation/Profile-Sucess";
 import CreateClient from "./Pages/Client/CreateClient";
 import ClientHome from "./Pages/Client/ClientHome";
+import POCHome from "./Pages/POC/POCHome";
+import CreatePoc from "./Pages/POC/CreatePoc";
 import CreateJob from "./Pages/CreateJob/CreateJob";
 import PostJob from "./Pages/CreateJob/PostJob";
 import JobDetails from "./Pages/CreateJob/JobDetails";
@@ -49,6 +51,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/createClient" element={<CreateClient />}></Route>
           <Route path="/clientHome" element={<ClientHome />}></Route>
+          <Route path="/pocHome" element={<POCHome />} />
+          <Route path="/createPoc" element={<CreatePoc />}></Route>
           <Route path="/jobs" element={<CreateJob />}></Route>
           <Route path="/postjob" element={<PostJob />}></Route>
           <Route path="/JobDetails/:id" element={<JobDetails />}></Route>
