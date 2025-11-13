@@ -1,17 +1,19 @@
 const express = require('express');
-const CreateClientRouter = require('../Controllers/Clients/CreateClient');
-const ListClientRouter = require('../Controllers/Clients/ListClient');
-const CreatePOCRouter = require('../Controllers/Clients/CreatePOC');
-const ListPOCRouter = require('../Controllers/Clients/ListPOC');
-const { getAllClients } = require('../Controllers/Clients/ClientController'); // your getAllClients function
+const CreateClient = require('../Controllers/Clients/CreateClient');
+const ListClient = require('../Controllers/Clients/ListClient');
+const CreatePOC = require('../Controllers/Clients/CreatePOC');
+const ListPOC = require('../Controllers/Clients/ListPOC');
+const { getAllClients } = require('../Controllers/Clients/ClientController'); 
 
-const ClientRouter = express.Router(); // <-- declare the router first
+const ClientRouter = express.Router(); 
 
-// Routes
-ClientRouter.post("/", CreateClientRouter);
-ClientRouter.post("/list", ListClientRouter);
-ClientRouter.post("/poc", CreatePOCRouter);
-ClientRouter.post("/poc/list", ListPOCRouter);
-ClientRouter.get("/all", getAllClients); // <-- use after declaration
+// Clients
+ClientRouter.post("/", CreateClient);      // create client
+ClientRouter.post("/list", ListClient);    // list clients with filter
+ClientRouter.get("/all", getAllClients);   // get all clients for dropdown
+
+// POCs
+ClientRouter.post("/poc", CreatePOC);      // create POC
+ClientRouter.post("/poc/list", ListPOC);   // list POCs with filter
 
 module.exports = ClientRouter;

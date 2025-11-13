@@ -23,26 +23,24 @@ function CreatePOC() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
-  // Fetch all clients for dropdown
-  useEffect(() => {
+ useEffect(() => {
   const fetchClients = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/client/all"); // <-- here
+      const res = await axios.get("http://localhost:8080/client/all"); 
+      console.log("Clients response:", res.data); 
       const options = res.data.clients.map((c) => ({
-        value: c._id,
+        value: c.client_id,
         label: c.company_name,
       }));
-      setClients(options); // store for the dropdown
+      setClients(options); 
     } catch (err) {
       console.error("Error fetching clients", err);
     }
   };
 
-  fetchClients(); // call the function
+  fetchClients(); 
 }, []);
 
-
-  
   const pocSchema = object({
     client_id: string().required("*Client is required"),
     poc_name: string().required("*POC Name is required"),
@@ -123,7 +121,7 @@ function CreatePOC() {
           <form onSubmit={formik.handleSubmit} className="py-3 px-8">
             {/* Client Dropdown */}
             <div className="mb-3">
-              <label className="label block line1">Client ID</label>
+              <label className="label block line1">Client Name</label>
               <Select
                 options={clients}
                 onChange={(option) => formik.setFieldValue("client_id", option?.value)}

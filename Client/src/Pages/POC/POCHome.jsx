@@ -1,105 +1,57 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios"; // uncomment axios
-// import ShowPocElement from "./Component/ShowPocElement";
-// import POCHeader from "./Component/POCHeader";
-// import LeftMenuBar from "../../Components/Dashboard/LeftMenuBar";
-// import TopNavigationBar from "../../Components/Dashboard/TopNavigationBar";
-
-// function POCHome() {
-//   const [data, setData] = useState([]); 
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.post(
-//           "http://localhost:8080/client/poc/list",
-//           { status: "ACTIVE" },
-//           {
-//             headers: {
-//               Accept: "application/json",
-//               "Content-Type": "application/json;charset=UTF-8",
-//             },
-//           }
-//         );
-
-//         console.log("POC List:", response.data);
-//         setData(response.data.clients || []);
-//       } catch (error) {
-//         console.error("Error fetching POC list:", error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   return (
-//     <div className="flex bg-white min-h-screen">
-//       {/* Left Sidebar */}
-//       <div className="hidden sm:block w-2/12 bg-white h-screen">
-//         <LeftMenuBar />
-//       </div>
-
-//       {/* Main Content */}
-//       <div className="w-full bg-background">
-//         <TopNavigationBar title={"POC"} />
-//         <POCHeader setData={setData} />
-
-//         <div className="w-11/12 mx-auto mt-8">
-//           {/* Professional list view like ClientHome */}
-//           <ShowPocElement data={data} setData={setData} />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default POCHome;
-
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // uncomment axios
-import ShowPocElement from "./Component/ShowPocElement";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import ShowPOCElement from "./Component/ShowPOCElement";
 import POCHeader from "./Component/POCHeader";
 import LeftMenuBar from "../../Components/Dashboard/LeftMenuBar";
 import TopNavigationBar from "../../Components/Dashboard/TopNavigationBar";
 
 function POCHome() {
-  const [data, setData] = useState([]); 
+  const [data, setData] = useState([]);
 
-    useEffect(() => {
+  // Load default Active POCs on page load
+  useEffect(() => {
     const fetchData = async () => {
-      // axios POST request
-      const options = {
-        url: "http://localhost:8080/poc/list",
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-        data: { status : "ACTIVE" },
-      };
+      try {
+        const options = {
+          url: "http://localhost:8080/client/poc/list",
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json;charset=UTF-8",
+          },
+          data: { status: "ACTIVE" }, // default: show all active POCs
+        };
 
-      axios(options).then((response) => {
-         console.log(response);
-        setData(response.data.clients);
-      });
+        const response = await axios(options);
+        setData(response.data.pocs); // update state
+      } catch (error) {
+        console.error("Error fetching POC:", error);
+      }
     };
     fetchData();
   }, []);
 
   return (
-    <div className="flex bg-white min-h-screen">
-      {/* Left Sidebar */}
+    <div className="flex bg-white">
+      {/* Left Menu */}
       <div className="hidden sm:block w-2/12 bg-white h-screen">
         <LeftMenuBar />
       </div>
-{/* Main Content */}
-      <div className="w-full bg-background">
-        <TopNavigationBar title={"POC"} />
-        <POCHeader setData={setData} />
 
-        <div className="w-11/12 mx-auto mt-8">
-          
-          <ShowPocElement data={data} setData={setData} />
+      {/* Main Content */}
+      <div className="w-full bg-background">
+        <div className="p-0">
+          <TopNavigationBar title={"POC"} />
+
+          {/* Header with Job Status & Client Dropdown */}
+          <POCHeader setData={setData} />
+        </div>
+
+        {/* POC List */}
+        <div className="ml-8 flex flex-wrap gap-6 mt-12 w-11/12 m-auto p-2">
+          <ShowPOCElement data={data} setData={setData} />
         </div>
       </div>
     </div>

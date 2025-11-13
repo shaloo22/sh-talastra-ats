@@ -19,7 +19,7 @@ const createClient = async (req, res, next) => {
     company_name,
     location,
     website,
-    brief: brief || "", // optional
+    brief: brief || "", 
   });
 
   try {
