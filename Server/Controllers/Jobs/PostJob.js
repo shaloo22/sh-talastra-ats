@@ -1,41 +1,39 @@
-const express = require('express');
 const Job = require('../../Models/JobModel');
-const app = express();
-const PostJobRouter = async (req, res, next) => {
 
-    const { form, description, org_details } = req.body;
+const PostJobRouter = async (req, res) => {
+  try {
+    const form = req.body;
 
-    // console.log(form, description, org_details);
+    // Uploaded PDFs come here
+    const filePaths = req.files?.map(file => file.path) || [];
 
-    const Postjob = await new Job({
-        jobPosition: form.postition,
-        officeLocation: form.office_location,
-        department: form.department,
-        jobType: form.job_type,
-        numberOfSeats: form.no_of_seats,
-        salaryRangeFrom: form.salary_range_from,
-        salaryRangeUpto: form.salary_range_upto,
-        job_description: description,
-        city: org_details[0],
-        country: org_details[1],
-        org_name: org_details[2],
-        org_id: org_details[3]
-    })
-    try {
-        await Postjob.save();
+    const newJob = new Job({
+      client: form.client,
+      poc: form.poc,
+      internal_recruiter: form.internal_recruiter,
+      internal_manager: form.internal_manager,
+      total_experience: form.total_experience,
+      recent_experience: form.recent_experience,
+      job_location: form.job_location,
+      notice_period: form.notice_period,
+      budget_from: form.budget_from,
+      budget_to: form.budget_to,
+      description: form.description,
+      technology: form.technology,
+      position: form.position,
+      
+      // Save file URLs / paths into DB
+      attach_jd: filePaths,
+    });
 
+    await newJob.save();
 
-    } catch (error) {
-        console.log(error)
-        return res
-            .status(500)
-            .json({ error: "An error occurred while saving the user." });
+    return res.status(200).json({ message: "Job posted successfully!" });
 
-    }
-    return res.status(200).json({ message: "Job posted!" })
-
-
-}
-
+  } catch (error) {
+    console.error("Error posting job:", error);
+    return res.status(500).json({ error: "An error occurred while saving the job." });
+  }
+};
 
 module.exports = PostJobRouter;

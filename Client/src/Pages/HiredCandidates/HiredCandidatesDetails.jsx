@@ -3,6 +3,7 @@ import LeftMenuBar from "../../Components/Dashboard/LeftMenuBar";
 import TopNavigationBar from "../../Components/Dashboard/TopNavigationBar";
 import MainAreaOfHiredCandidateDetails from "../../Components/HiredCandidatePage/MainAreaOfHiredCandidateDetails";
 
+
 function HiredCandidateDetails() {
   return (
     <div className="flex bg-white">
@@ -18,5 +19,4 @@ function HiredCandidateDetails() {
     </div>
   );
 }
-
 export default HiredCandidateDetails;

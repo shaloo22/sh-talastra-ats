@@ -1,67 +1,141 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import DeleteIcon from "../../../assets/icons/delete.svg";
-import SocialIcon from "../../../assets/icons/share.svg";
-function CreatedJobElement({ data, setData }) {
+// import React from "react";
+// import { useNavigate } from "react-router-dom";
+
+// function CreatedJobElement({ data }) {
+//   const navigate = useNavigate();
+
+//   const handleJobClick = (id) => {
+//     navigate(`/JobDetails/${id}`); 
+//   };
+
+//   return (
+//     <div className="overflow-x-auto w-full mt-8">
+//       <table className="min-w-full border border-gray-200 bg-white">
+//         <thead>
+//           <tr className="bg-gray-100 text-left">
+//              <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Skills</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Position</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Client</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">POC</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Recruiter</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Manager</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Total Exp</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Recent Exp</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Job Location</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Notice Period</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Budget</th>
+//             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">JD</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {data?.map((job) => (
+//             <tr
+//               key={job._id}
+//               onClick={() => handleJobClick(job._id)}
+//               className="cursor-pointer hover:bg-gray-50"
+
+//             > 
+//             <td className="py-3 px-5 border-b">{Array.isArray(job.technology) ? job.technology.join(", ") : job.technology}</td>
+// <td className="py-3 px-5 border-b">{job.position}</td>
+// <td className="py-3 px-5 border-b">{job.client?.company_name || "-"}</td>
+// <td className="py-3 px-5 border-b">{job.poc?.poc_name || "-"}</td>
+// <td className="py-3 px-5 border-b">{job.internal_recruiter}</td>
+// <td className="py-3 px-5 border-b">{job.internal_manager}</td>
+// <td className="py-3 px-5 border-b">{job.total_experience} yrs</td>
+// <td className="py-3 px-5 border-b">{job.recent_experience} yrs</td>
+// <td className="py-3 px-5 border-b">{job.job_location}</td>
+// <td className="py-3 px-5 border-b">{job.notice_period} months</td>
+// <td className="py-3 px-5 border-b">₹{job.budget_from} - ₹{job.budget_to}</td>
+// <td className="py-3 px-5 border-b text-center">
+//   {job.attachments?.length > 0 ? (
+//     <a href={job.attachments[0].url} target="_blank" rel="noreferrer" className="text-blue-600 underline">
+//       JD
+//     </a>
+//   ) : "-"}
+// </td>
+
+//             </tr>
+//           ))}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// }
+
+// export default CreatedJobElement;
+
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+function CreatedJobElement({ data = [] }) {
   const navigate = useNavigate();
-  const handleJob = (id) => {
+
+  const handleJobClick = (id) => {
     navigate(`/JobDetails/${id}`);
   };
-  // console.log(data);
+  if (!data || data.length === 0) {
+    return <p className="text-gray-500 mt-8">No jobs available.</p>;
+  }
+
   return (
-    <div className="flex flex-wrap gap-6">
-      {data?.map((e, index) => {
-        return (
-          <div
-            key={index}
-            onClick={(event) => handleJob(e._id)}
-            title="Job"
-            className="bg-white hover:bg-gray-100  hover:border hover:border-solid hover:border-gray-300 flex flex-wrap  items-center w-80 pl-4 pr-4 pt-2 modalShadow cursor-pointer "
-          >
-            {/* <Link to={"/JobDetails"}> */}
-            <div className=" w-full p-2 flex justify-between items-center ">
-              <h2 className="heading3 inline font-medium">{e.jobPosition}</h2>
-              <button
-                className="inline float-right mr-4 p-2 w-20 rounded-full font-medium text-primarytext  border-2 border-solid
-               border-secondry bg-secondry text-white hover:text-white"
-              >
-                Active
-              </button>
-            </div>
+    <div className="overflow-x-auto w-full mt-8">
+      <table className="min-w-full border border-gray-200 bg-white">
+        <thead>
+          <tr className="bg-gray-100 text-left">
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Skills</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Position</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Client</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">POC</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Recruiter</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Manager</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Total Exp</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Recent Exp</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Job Location</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Notice Period</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Budget</th>
+            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">JD</th>
+          </tr>
+        </thead>
 
-            {/* PART TO HANDLE DATA */}
-            <div className="w-full flex h-28">
-              <div className="w-1/2 flex flex-col justify-center text-center">
-                <div className="heading4">Totall Candidates</div>
-                <div className="heading4 font-medium">{e.applicants_no}</div>
-              </div>
-
-              <div className="w-1/2  flex flex-col justify-center text-center">
-                <div className="heading4  ">Active Candidates</div>
-                <div className="heading4 font-medium">0</div>
-              </div>
-            </div>
-
-            {/* PART TO SHOW SHARE JOB-ID AND SHARE BUTTONS */}
-
-            <div className="flex flex-row w-full pb-4">
-              <div className=" w-4/5 ml-4">
-                <p className="text-sm heading4">JOB-ID: {index}</p>
-              </div>
-
-              <div className="flex justify-around items-center w-1/4">
-                <img src={DeleteIcon} alt="" className="inline w-4 h-4" />
-                <img src={SocialIcon} alt="" className="inline w-4 h-4" />
-              </div>
-            </div>
-            {/* </Link> */}
-          </div>
-        );
-      })}
+        <tbody>
+          {data.map((job) => (
+            <tr
+              key={job._id}
+              onClick={() => handleJobClick(job._id)}
+              className="cursor-pointer hover:bg-gray-50"
+            >
+              <td className="py-3 px-5 border-b">
+                {Array.isArray(job.technology) ? job.technology.join(", ") : job.technology}
+              </td>
+              <td className="py-3 px-5 border-b">{job.position}</td>
+              <td className="py-3 px-5 border-b">{job.client?.company_name || "-"}</td>
+              <td className="py-3 px-5 border-b">{job.poc?.poc_name || "-"}</td>
+              <td className="py-3 px-5 border-b">{job.internal_recruiter}</td>
+              <td className="py-3 px-5 border-b">{job.internal_manager}</td>
+              <td className="py-3 px-5 border-b">{job.total_experience} yrs</td>
+              <td className="py-3 px-5 border-b">{job.recent_experience} yrs</td>
+              <td className="py-3 px-5 border-b">{job.job_location}</td>
+              <td className="py-3 px-5 border-b">{job.notice_period} months</td>
+              <td className="py-3 px-5 border-b">₹{job.budget_from} - ₹{job.budget_to}</td>
+              <td className="py-3 px-5 border-b text-center">
+                {job.attachments?.length > 0 ? (
+                  <a
+                    href={job.attachments[0].url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 underline"
+                  >
+                    JD
+                  </a>
+                ) : (
+                  "-"
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
-
 export default CreatedJobElement;

@@ -1,52 +1,51 @@
-const express = require('express');
-const GetProfilePicture = require('../Controllers/Dashboard/GetProfilePic.js');
-const Home = require('../Controllers/Dashboard/Home.js');
-const forget_password = require('../Controllers/UserController/ForgetPassword.js');
-const login = require('../Controllers/UserController/Login.js');
-const register = require('../Controllers/UserController/Register.js');
-const updatePassword = require('../Controllers/UserController/UpdatePassword.js');
-const verifyForgetPwd = require('../Controllers/UserController/verifyForgetpwd.js');
-const VerifyMail = require('../Controllers/UserController/VerifyMail.js');
-const AuthMiddleware = require('../Middleware/AuthMiddleware.js');
-const VerifyToken = require('../Middleware/VerifyToken.js');
+const express = require("express");
+const userModel = require("../Models/User_Model.js");
 
 const UserRouter = express.Router();
 
+// GET all users (optional filter by designation)
+UserRouter.get("/users", async (req, res) => {
+  try {
+    const { designation } = req.query;
+    const filter = designation ? { designation } : {};
 
+    const users = await userModel
+      .find(filter)
+      .select("f_name last_name email designation isVerified manager")
+      .populate("manager", "f_name last_name email");
 
-//Login Route
-UserRouter.post("/login", login);
+    res.status(200).json({ success: true, users });
+  } catch (err) {
+    console.error("Error fetching users:", err);
+    res.status(500).json({ success: false, error: "Server error while fetching users" });
+  }
+});
 
+// GET all managers
+UserRouter.get("/users/managers", async (req, res) => {
+  try {
+    const managers = await userModel.find({ designation: "Manager" })
+      .select("f_name last_name email designation");
 
+    res.status(200).json({ success: true, managers });
+  } catch (err) {
+    console.error("Error fetching managers:", err);
+    res.status(500).json({ success: false, error: "Server error while fetching managers" });
+  }
+});
 
+// GET all verified recruiters
+UserRouter.get("/users/recruiters", async (req, res) => {
+  try {
+    const recruiters = await userModel.find({ designation: "Recruiter", isVerified: true })
+      .select("f_name last_name email designation manager")
+      .populate("manager", "f_name last_name email");
 
-// -> Register
+    res.status(200).json({ success: true, recruiters });
+  } catch (err) {
+    console.error("Error fetching recruiters:", err);
+    res.status(500).json({ success: false, error: "Server error while fetching recruiters" });
+  }
+});
 
-UserRouter.post("/register", register)
-
-// -> Verify Email
-
-UserRouter.get("/verify", VerifyMail)
-
-
-// -> Forget Password
-UserRouter.post("/forget-password", forget_password)
-
-// -> Verify Forget Password by verifying token
-UserRouter.post("/verify-forget-pwd", verifyForgetPwd)
-
-//-> Making a new password
-UserRouter.post("/new-password", updatePassword)
-
-
-
-
-
-//-> ## DASHBOARD HOME ROUTES ##
-
-//I left Auth Middleware  intentionally to increase devlopment speed
-// Will implement it while deploying it on any hosting platform
-UserRouter.post("/home", AuthMiddleware, VerifyToken)
-UserRouter.post("/dashboard", Home)
-UserRouter.post("/getProfilePic", GetProfilePicture)
 module.exports = UserRouter;

@@ -14,14 +14,16 @@ import ProfileTeam_Members from "./Pages/Dashboard/ProfileCreation/ProfileTeam_M
 import Profile_Sucess from "./Pages/Dashboard/ProfileCreation/Profile-Sucess";
 import CreateClient from "./Pages/Client/CreateClient";
 import ClientHome from "./Pages/Client/ClientHome";
-import POCHome from "./Pages/POC/POCHome";
-import CreatePoc from "./Pages/POC/CreatePoc";
 import CreateJob from "./Pages/CreateJob/CreateJob";
 import PostJob from "./Pages/CreateJob/PostJob";
 import JobDetails from "./Pages/CreateJob/JobDetails";
 import PostedJobs from "./Pages/EndUser/postedJobs";
 import PostedJobDescription from "./Pages/EndUser/PostedJobDescription";
 import PostedJobApplyForm from "./Pages/EndUser/PostedJobApplyForm";
+import CreateCandidate from "./Pages/Candidate/CreateCandidate";
+import UpdateCandidate from "./Pages/Candidate/UpdateCandidate";
+import POCHome from "./Pages/POC/POCHome";
+
 
 import AppliedCandidateDetails from "./Pages/RecruitmentCycle/AppliedCandidateDetails";
 import InterviewingCandidate from "./Pages/RecruitmentCycle/InterviewingCandidate";
@@ -41,7 +43,7 @@ import AddNewEmployee from "./Pages/Employees/AddNewEmployee";
 import MainPageOfSetting from "./Pages/Settings/MainPageOfSetting";
 import Setting_EditProfile from "./Pages/Settings/Setting_EditProfile";
 import ProtectedRoute from "./Components/Common/ProtectedRoute";
-import NotPageFound404 from "./Pages/Dashboard/NotPageFound404";
+import NotPageFound404 from "./Pages/Dashboard/NotPageFound404";     
 
 function App() {
   return (
@@ -51,16 +53,19 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/createClient" element={<CreateClient />}></Route>
           <Route path="/clientHome" element={<ClientHome />}></Route>
-          <Route path="/pocHome" element={<POCHome />} />
-          <Route path="/createPoc" element={<CreatePoc />}></Route>
+          <Route path="/pocHome" element={<POCHome />}></Route>
           <Route path="/jobs" element={<CreateJob />}></Route>
           <Route path="/postjob" element={<PostJob />}></Route>
+          <Route path="/createCandidate" element={<CreateCandidate />} />
           <Route path="/JobDetails/:id" element={<JobDetails />}></Route>
           <Route path="/profilesetup" element={<ProfileCreation />} />
+          
+          
           <Route
             path="profilesetup/organization"
             element={<Profile_Office />}
           />
+          
           <Route path="profilesetup/social" element={<ProfileSocial />} />
           <Route
             path="profilesetup/addteam"
@@ -127,6 +132,8 @@ function App() {
         <Route path="/forgetpwd" element={<ForgetPassword />} />
         <Route path="/register" element={<Registration />} />
         <Route path="portal/job" element={<PostedJobs />} />
+        <Route path="/UpdateCandidate/:id" element={<UpdateCandidate />} />
+
         <Route
           path="portal/job/description/:id"
           element={<PostedJobDescription />}

@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const Candidate = require('../../Models/Candidate.js')
+const Candidate = require('../../Models/CandidateModel.js')
 
 const showActiveCandidateDetails = async (req, res, next) => {
     const { user_id } = req.body;

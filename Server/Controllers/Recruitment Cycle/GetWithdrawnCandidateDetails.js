@@ -1,5 +1,5 @@
 const express = require('express');
-const Candidate = require('../../Models/Candidate');
+const Candidate = require('../../Models/CandidateModel');
 const app = express();
 const GetWithdrawnCandidateDetails = async (req, res, next) => {
 

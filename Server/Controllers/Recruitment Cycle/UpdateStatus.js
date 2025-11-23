@@ -1,5 +1,5 @@
 const express = require("express");
-const Candidate = require("../../Models/Candidate");
+const Candidate = require("../../Models/CandidateModel");
 const Job = require("../../Models/JobModel");
 const app = express();
 const UpdateStatus = async (req, res, next) => {

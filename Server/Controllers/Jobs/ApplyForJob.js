@@ -2,7 +2,7 @@
 // const app = express();
 // const cloudinary_config = require("../../Config/Cloudnary.js");
 // const Cloudinary = require("cloudinary");
-// const Candidate = require("../../Models/Candidate.js");
+// const Candidate = require("../../Models/CandidateModel.js");
 // const Job = require("../../Models/JobModel.js");
 
 // const ApplyForJob = async (req, res, next) => {
@@ -106,7 +106,7 @@ const express = require("express");
 const app = express();
 const cloudinary_config = require("../../Config/Cloudnary.js");
 const Cloudinary = require("cloudinary");
-const Candidate = require("../../Models/Candidate.js");
+const Candidate = require("../../Models/CandidateModel.js");
 const Job = require("../../Models/JobModel.js");
 
 const ApplyForJob = async (req, res, next) => {

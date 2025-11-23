@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -11,6 +10,7 @@ function ClientHome() {
   const [data, setData] = useState();
   useEffect(() => {
     const fetchData = async () => {
+      // axios POST request
       const options = {
         url: "http://localhost:8080/client/list",
         method: "POST",
@@ -26,6 +26,7 @@ function ClientHome() {
         setData(response.data.clients);
       });
     };
+
     fetchData();
   }, []);
 
