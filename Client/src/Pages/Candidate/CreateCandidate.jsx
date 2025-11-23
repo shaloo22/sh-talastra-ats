@@ -80,24 +80,20 @@ function CreateCandidate() {
 
   const formPayload = new FormData();
 
-  // Add form fields
   Object.keys(formData).forEach(key => {
     formPayload.append(key, formData[key]);
   });
 
-  // Add CV file
   if (cvFile) {
     formPayload.append("cv_attachment", cvFile); 
   }
 
-  // Add JD files
   if (jdFiles.length > 0) {
     jdFiles.forEach(file => {
       formPayload.append("jd_attachments", file); 
     });
   }
 
-  // Axios post with FormData
   axios.post("http://localhost:8080/candidate/create", formPayload, {
     headers: {
       "Content-Type": "multipart/form-data"
@@ -144,7 +140,7 @@ function CreateCandidate() {
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create Candidate</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Job */}
+
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Job</label>
               <select
@@ -190,7 +186,6 @@ function CreateCandidate() {
 
             </div>
 
-            {/* Experiences */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Total Experience (Years)</label>
               <input
@@ -212,8 +207,6 @@ function CreateCandidate() {
                 className="input input-bordered w-full"
               />
             </div>
-
-            {/* Organizations */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Current Organization</label>
               <input
@@ -459,7 +452,7 @@ function CreateCandidate() {
                 {statusOptions.map((s, i) => <option key={i} value={s}>{s}</option>)}
               </select>
             </div>
-            
+
           <div className="flex flex-col col-span-2">
             <label className="font-semibold mb-1">Attach JD</label>
             <label
