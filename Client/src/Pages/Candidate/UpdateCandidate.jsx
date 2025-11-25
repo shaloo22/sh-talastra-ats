@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
@@ -13,7 +12,6 @@ function UpdateCandidate() {
   const { id: candidateId } = useParams();
 
   const [apiFetched, setApiFetched] = useState(false);
-  const [jobs, setJobs] = useState([]);
   const [candidateStatuses, setCandidateStatuses] = useState([]);
   const [followupStatuses, setFollowupStatuses] = useState([]);
   const [modeOfInterviewOptions] = useState(["Telephonic", "Face-to-Face"]);
@@ -22,7 +20,6 @@ function UpdateCandidate() {
   const [jdFiles, setJdFiles] = useState([]);
 
   const [formData, setFormData] = useState({
-    job_id: "",
     candidate_name: "",
     contact_num: "",
     email: "",
@@ -49,12 +46,7 @@ function UpdateCandidate() {
     description: "",
   });
 
-  // Fetch all data & prefill candidate
   useEffect(() => {
-    axios.get("http://localhost:8080/job/get-all-jobs")
-      .then(res => setJobs(res.data.jobs || []))
-      .catch(err => console.error(err));
-
     axios.get("http://localhost:8080/status")
       .then(res => setCandidateStatuses(res.data || []))
       .catch(err => console.error(err));
@@ -67,7 +59,6 @@ function UpdateCandidate() {
 
     axios.post("http://localhost:8080/candidate/get-single", { _id: candidateId })
       .then((res) => {
-        console.log("Fetched Candidate:", res.data);
         setFormData({
           ...res.data,
           dob: res.data.dob ? res.data.dob.split("T")[0] : "",
@@ -80,7 +71,6 @@ function UpdateCandidate() {
   }, [candidateId]);
 
   const handleSubmit = () => {
-    
     let dataToSend;
     let headers = {};
 
@@ -91,7 +81,6 @@ function UpdateCandidate() {
       jdFiles.forEach(f => dataToSend.append("jdFiles", f));
       headers["Content-Type"] = "multipart/form-data";
     } else {
-      // JSON payload
       dataToSend = { ...formData };
     }
 
@@ -134,21 +123,6 @@ function UpdateCandidate() {
         <div className="w-4/5 max-w-5xl mx-auto mt-10 p-8 bg-white rounded-xl shadow-lg">
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Update Candidate</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* Job */}
-            <div>
-              <label className="font-semibold mb-1">Job</label>
-              <select
-                value={formData.job_id || ""}
-                onChange={(e) => setFormData({ ...formData, job_id: e.target.value })}
-                className="input input-bordered w-full"
-              >
-                <option value="">Select Job</option>
-                {jobs.map((job) => (
-                  <option key={job._id} value={job._id}>{job.position}</option>
-                ))}
-              </select>
-            </div>
 
             {/* Candidate Name */}
             <div>
@@ -254,7 +228,7 @@ function UpdateCandidate() {
 
             <div>
               <label className="font-semibold mb-1">Notice Period (Days)</label>
-            <input type="number" min="0"
+              <input type="number" min="0"
                 value={formData.notice_period || ""}
                 onChange={(e) => setFormData({ ...formData, notice_period: e.target.value })}
                 className="input input-bordered w-full" />
@@ -268,24 +242,25 @@ function UpdateCandidate() {
                 className="input input-bordered w-full" />
             </div>
 
+            {/* Interview Date */}
             <div>
               <label className="font-semibold mb-1">Interview Schedule Date</label>
               <input type="date"
-                value={formData.interview_date ? formData.interview_date.split("T")[0] : ""}
+                value={formData.interview_date || ""}
                 onChange={(e) => setFormData({ ...formData, interview_date: e.target.value })}
                 className="input input-bordered w-full" />
             </div>
 
-
- <div>
-//               <label className="font-semibold mb-1">Last Working Date</label>
-//               <input type="date"
-                value={formData.last_working_date ? formData.last_working_date.split("T")[0] : ""}
+            {/* Last Working Date */}
+            <div>
+              <input type="hidden"
+                value={formData.last_working_date || ""}
                 onChange={(e) => setFormData({ ...formData, last_working_date: e.target.value })}
-                className="input input-bordered w-full" />
+              />
             </div>
 
-             <div>
+            {/* Current & Relocate Cities */}
+            <div>
               <label className="font-semibold mb-1">Current City</label>
               <input type="text"
                 value={formData.current_city || ""}
@@ -328,7 +303,6 @@ function UpdateCandidate() {
                 onChange={(e) => setFormData({ ...formData, candidate_status_id: e.target.value, candidate_status: e.target.selectedOptions[0].text })}>
                 <option value="">Select Status</option>
                 {candidateStatuses.map((s) => (
-                  // support both object or string arrays
                   <option key={s._id || s.id || s} value={s._id || s.id || s}>
                     {s.name || s}
                   </option>
@@ -361,9 +335,6 @@ function UpdateCandidate() {
                 {statusOptions.map((s, i) => <option key={i} value={s}>{s}</option>)}
               </select>
             </div>
-
-
-      
 
             {/* Attach JD */}
             <div className="col-span-2">

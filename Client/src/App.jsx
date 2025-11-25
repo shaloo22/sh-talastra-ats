@@ -43,7 +43,8 @@ import AddNewEmployee from "./Pages/Employees/AddNewEmployee";
 import MainPageOfSetting from "./Pages/Settings/MainPageOfSetting";
 import Setting_EditProfile from "./Pages/Settings/Setting_EditProfile";
 import ProtectedRoute from "./Components/Common/ProtectedRoute";
-import NotPageFound404 from "./Pages/Dashboard/NotPageFound404";     
+import NotPageFound404 from "./Pages/Dashboard/NotPageFound404";   
+import CandidateDetails from "./Pages/Candidate/CandidateDetails";  
 
 function App() {
   return (
@@ -56,10 +57,10 @@ function App() {
           <Route path="/pocHome" element={<POCHome />}></Route>
           <Route path="/jobs" element={<CreateJob />}></Route>
           <Route path="/postjob" element={<PostJob />}></Route>
-          <Route path="/createCandidate" element={<CreateCandidate />} />
+          <Route path="/create-candidate/:job_id" element={<CreateCandidate />} />
           <Route path="/JobDetails/:id" element={<JobDetails />}></Route>
           <Route path="/profilesetup" element={<ProfileCreation />} />
-          
+          <Route path="/candidatedetails/:id" element={<CandidateDetails />} />
           
           <Route
             path="profilesetup/organization"
@@ -133,6 +134,8 @@ function App() {
         <Route path="/register" element={<Registration />} />
         <Route path="portal/job" element={<PostedJobs />} />
         <Route path="/UpdateCandidate/:id" element={<UpdateCandidate />} />
+        <Route path="/create-candidate/:jobId" element={<CreateCandidate />} />
+
 
         <Route
           path="portal/job/description/:id"

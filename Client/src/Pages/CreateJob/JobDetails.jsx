@@ -335,12 +335,11 @@ function JobDetails() {
       </div>
 
       {/* BUTTON */}
-      <Link to="/createCandidate">
-        <button className="bg-primary w-full py-2 rounded-lg text-white font-semibold hover:bg-black transition">
-          Add Candidate
-        </button>
-      </Link>
-
+      <Link to={`/create-candidate/${job._id}`}>
+  <button className="bg-primary w-full py-2 rounded-lg text-white font-semibold hover:bg-black transition">
+    Add Candidate
+  </button>
+</Link>
     </div>
   </div>
 );

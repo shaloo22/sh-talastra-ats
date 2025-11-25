@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 const CandidateSchema = new mongoose.Schema({
-    job_id: { 
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Job", 
-        required: true },
+    job_id: { type: mongoose.Schema.Types.ObjectId, ref: "Job" },
     candidate_name: {
         type: String,
         required: true,
@@ -85,8 +82,8 @@ const CandidateSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    poc: { type: mongoose.Schema.Types.ObjectId, ref: "POC", required: true },
-   client: { type: mongoose.Schema.Types.ObjectId, ref: "Client", required: true },
+   poc: { type: mongoose.Schema.Types.ObjectId, ref: "POC" },
+   client: { type: mongoose.Schema.Types.ObjectId, ref: "Client" },
    cv_attachment: { type: String, default: "" },
   jd_attachments: { type: [String], default: [] },
 }, { timestamps: true });

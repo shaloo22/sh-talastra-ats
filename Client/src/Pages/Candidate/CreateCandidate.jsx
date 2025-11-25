@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LeftMenuBar from "../../Components/Dashboard/LeftMenuBar";
 import TopNavigationBar from "../../Components/Dashboard/TopNavigationBar";
 import Confetti from "react-confetti";
@@ -10,6 +10,10 @@ import Confetti from "react-confetti";
 function CreateCandidate() {
   const navigate = useNavigate();
   const [apiFetched, setAPIFetched] = useState(false);
+
+  const {job_id} = useParams();
+
+
 
   const [formData, setFormData] = useState({
     job_id: "",
@@ -47,28 +51,41 @@ function CreateCandidate() {
   const [existingNames, setExistingNames] = useState([]);
   const [cvFile, setCvFile] = useState(null);
   const [jdFiles, setJdFiles] = useState([]);
+  const [prefilledJobPosition, setPrefilledJobPosition] = useState("");
+
 
 
   const modeOfInterviewOptions = ["Telephonic", "Face-to-Face"];
   const statusOptions = ["Active", "Inactive"];
 
   useEffect(() => {
-    axios.get("http://localhost:8080/job/get-all-jobs")
-      .then(res => setJobs(res.data.jobs || []))
-      .catch(err => console.error(err));
+    if (job_id) {
+      axios
+        .get(`http://localhost:8080/job/get-job/${job_id}`)
+        .then((res) => {
+          console.log("Job fetched:", res.data.job);
+          setPrefilledJobPosition(res.data.job?.position || "");
+          setFormData((prev) => ({
+            ...prev,
+            job_id: res.data.job?._id || "",
+            job_position: res.data.job?.position || "",
+          }));
+        })
+        .catch((err) => console.error(err));
+    }
 
-    axios.get("http://localhost:8080/status")
-      .then(res => setCandidateStatuses(res.data || []))
-      .catch(err => console.error(err));
+  axios.get("http://localhost:8080/status")
+    .then(res => setCandidateStatuses(res.data || []))
+    .catch(err => console.error(err));
 
-    axios.get("http://localhost:8080/followup")
-      .then(res => setFollowupStatuses(res.data || []))
-      .catch(err => console.error(err));
+  axios.get("http://localhost:8080/followup")
+    .then(res => setFollowupStatuses(res.data || []))
+    .catch(err => console.error(err));
 
-    axios.get("http://localhost:8080/candidate/names")
-      .then(res => setExistingNames(res.data || []))
-      .catch(err => console.error(err));
-  }, []);
+  axios.get("http://localhost:8080/candidate/names")
+    .then(res => setExistingNames(res.data || []))
+    .catch(err => console.error(err));
+}, [job_id]);
 
   
 
@@ -141,20 +158,15 @@ function CreateCandidate() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            <div className="flex flex-col">
-              <label className="font-semibold mb-1">Job</label>
-              <select
-                value={formData.job_id}
-                onChange={e => setFormData({ ...formData, job_id: e.target.value })}
-                className="input input-bordered w-full"
-              >
-                <option value="">Select Job</option>
-                {jobs.map(job => (
-                  <option key={job._id} value={job._id}>{job.position}</option>
-                ))}
-              </select>
-            </div>
-
+<div className="flex flex-col">
+  <label className="font-semibold mb-1">Job Position</label>
+  <input
+    type="text"
+    value={prefilledJobPosition}
+    readOnly
+    className="input input-bordered w-full bg-gray-100 cursor-not-allowed"
+  />
+</div>
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Candidate Name</label>
               <input
