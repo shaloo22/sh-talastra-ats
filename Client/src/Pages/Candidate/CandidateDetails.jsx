@@ -43,6 +43,25 @@ useEffect(() => {
             Basic Information
           </div>
           <div className="grid grid-cols-3 text-sm">
+
+            
+            <div className="p-2 border-r border-b">
+              <p className="text-gray-500 text-xs">Job Position</p>
+              <p className="font-medium text-gray-900">{candidate.job_position || candidate.job_id?.position}</p>
+            </div>
+            <div className="p-2 border-b">
+              <p className="text-gray-500 text-xs">Client</p>
+              <p className="font-medium text-gray-900">
+                {candidate.job_id?.client?.company_name || "—"}
+             </p>
+           </div>
+                <div className="p-2 border-r border-b">
+                  <p className="text-gray-500 text-xs">POC</p>
+                  <p className="font-medium text-gray-900">
+                {candidate.job_id?.poc?.poc_name || "—"}
+            </p>
+      </div>
+      
             <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Candidate Name</p>
               <p className="font-medium text-gray-900">{candidate.candidate_name}</p>
@@ -61,19 +80,7 @@ useEffect(() => {
               <p className="font-medium text-gray-900">{candidate.dob}</p>
             </div>
 
-            <div className="p-2 border-r border-b">
-              <p className="text-gray-500 text-xs">Job Position</p>
-              <p className="font-medium text-gray-900">{candidate.job_position || candidate.job_id?.position}</p>
-            </div>
-            <div className="p-2 border-b">
-              <p className="text-gray-500 text-xs">Client</p>
-              <p className="font-medium text-gray-900">{candidate.job_id?.client?.company_name}</p>
-            </div>
 
-            <div className="p-2 border-r border-b">
-              <p className="text-gray-500 text-xs">POC</p>
-              <p className="font-medium text-gray-900">{candidate.job_id?.poc?.poc_name}</p>
-            </div>
             <div className="p-2 border-b">
               <p className="text-gray-500 text-xs">Mode of Interview</p>
               <p className="font-medium text-gray-900">{candidate.mode_of_interview}</p>

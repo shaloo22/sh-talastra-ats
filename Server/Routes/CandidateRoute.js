@@ -202,37 +202,38 @@ router.get("/get-all", GetAllCandidates);
 router.get("/:id", GetCandidateById);
 router.post("/get-single", GetCandidateById);
 
-// -------------------------
-// Filter candidates with populated job → client & poc
-// -------------------------
+const mongoose = require("mongoose");
+
 router.post("/filter", async (req, res) => {
   try {
     const { job_id, client_id, poc_id, status } = req.body;
 
-    // Build query dynamically
     let query = {};
-    if (job_id) query.job_id = job_id;
-    if (client_id) query.client_id = client_id;
-    if (poc_id) query.poc_id = poc_id;
+    if (job_id) query.job_id = mongoose.Types.ObjectId(job_id);
+    if (client_id) query.client = mongoose.Types.ObjectId(client_id);
+    if (poc_id) query.poc = mongoose.Types.ObjectId(poc_id);
     if (status) query.status = status;
-
-    // Populate job → client & poc
     const candidates = await Candidate.find(query)
       .populate({
         path: "job_id",
-        select: "position client poc", // only these fields
+        select: "position client poc",
         populate: [
-          { path: "client", select: "company_name" }, // fetch client name
-          { path: "poc", select: "poc_name" },        // fetch poc name
+          { path: "client", select: "company_name" },
+          { path: "poc", select: "poc_name" },
         ],
       })
-      .lean(); // convert to plain JS object
+      .lean();
 
-    return res.status(200).json(candidates);
+    if (!candidates.length) {
+      return res.status(404).json({ message: "Candidate not found", candidates: [] });
+    }
+
+    return res.status(200).json({ candidates });
   } catch (err) {
     console.error("Candidate filter error:", err);
     return res.status(500).json({ message: err.message });
   }
 });
+
 
 module.exports = router;
