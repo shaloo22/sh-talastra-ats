@@ -30,7 +30,6 @@ useEffect(() => {
 
   return (
     <div className="max-w-3xl mx-auto mt-6 bg-white shadow-lg rounded-xl border border-gray-400">
-      {/* HEADER */}
       <h1 className="text-center text-lg font-semibold tracking-wide mt-4">
         Candidate Details
       </h1>
@@ -90,14 +89,30 @@ useEffect(() => {
               <p className="text-gray-500 text-xs">Status</p>
               <p className="font-medium text-gray-900">{candidate.status}</p>
             </div>
-            <div className="p-2">
-              <p className="text-gray-500 text-xs">Follow-up Status</p>
-              <p className="font-medium text-gray-900">{candidate.followup_status_id}</p>
-            </div>
+           <div className="p-2 border-b">
+      <p className="text-gray-500 text-xs">Follow-up Status</p>
+      <p className="font-medium text-gray-900">{candidate.followup_status_name || candidate.followup_status_id || "—"}</p>
+    </div>
+
+    {/* NEW FIELDS ADDED BELOW */}
+
+    <div className="p-2 border-r border-b">
+      <p className="text-gray-500 text-xs">Offers in Pipeline</p>
+      <p className="font-medium text-gray-900">{candidate.offers_pipeline || "—"}</p>
+    </div>
+
+    <div className="p-2 border-b">
+      <p className="text-gray-500 text-xs">Interview Schedule Date</p>
+      <p className="font-medium text-gray-900">
+        {candidate.interview_schedule_date
+          ? new Date(candidate.interview_schedule_date).toLocaleDateString()
+          : "—"}
+      </p>
+    </div>
           </div>
         </div>
 
-        {/* EXPERIENCE & CTC */}
+    
         <div className="border border-gray-400 rounded-lg">
           <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
             Experience & CTC
@@ -112,14 +127,20 @@ useEffect(() => {
               <p className="font-medium text-gray-900">{candidate.relevant_exp} Years</p>
             </div>
 
-            <div className="p-2 border-r border-b">
-              <p className="text-gray-500 text-xs">Current CTC (Fixed + Variable)</p>
-              <p className="font-medium text-gray-900">{candidate.current_ctc}</p>
-            </div>
-            <div className="p-2 border-b">
-              <p className="text-gray-500 text-xs">Accepted CTC (Fixed + Variable)</p>
-              <p className="font-medium text-gray-900">{candidate.accepted_ctc}</p>
-            </div>
+          <div className="p-2 border-r border-b">
+  <p className="text-gray-500 text-xs">Current CTC (Fixed + Variable)</p>
+  <p className="font-medium text-gray-900">
+    {`${candidate.current_ctc_fixed || 0} + ${candidate.current_ctc_variable || 0}`}
+  </p>
+</div>
+
+<div className="p-2 border-b">
+  <p className="text-gray-500 text-xs">Accepted CTC (Fixed + Variable)</p>
+  <p className="font-medium text-gray-900">
+    {`${candidate.accepted_ctc_fixed || 0} + ${candidate.accepted_ctc_variable || 0}`}
+  </p>
+</div>
+
 
             <div className="p-2 border-r">
               <p className="text-gray-500 text-xs">Current Organization</p>
@@ -132,7 +153,7 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* LOCATIONS */}
+   
         <div className="border border-gray-400 rounded-lg">
           <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
             Location Details
@@ -167,36 +188,52 @@ useEffect(() => {
           </div>
         </div>
 
-        {/* ATTACHMENTS */}
-        <div className="border border-gray-400 rounded-lg">
-          <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-            Attachments
-          </div>
-          <div className="p-3 text-sm">
-            {candidate.cv_attachment || candidate.jd_attachments?.length > 0 ? (
-              <ul className="list-disc list-inside text-blue-600">
-                {candidate.cv_attachment && (
-                  <li>
-                    <a href={candidate.cv_attachment.url} target="_blank" rel="noreferrer">
-                      CV
-                    </a>
-                  </li>
-                )}
-                {candidate.jd_attachments?.map((file, i) => (
-                  <li key={i}>
-                    <a href={file.url} target="_blank" rel="noreferrer">
-                      {file.filename || `JD ${i + 1}`}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-gray-500 text-xs">No Attachments</p>
-            )}
-          </div>
-        </div>
+<div className="border border-gray-400 rounded-lg">
+  <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
+    Attachments
+  </div>
+  <div className="p-3 text-sm">
+    {candidate.cv_attachment || candidate.jd_attachments?.length > 0 ? (
+      <ul className="list-disc list-inside text-blue-600">
+        {/* CV */}
+        {candidate.cv_attachment && (
+          <li>
+            <a
+              href={candidate.cv_attachment.url.startsWith("/uploads/")
+                ? `http://localhost:8080${candidate.cv_attachment.url}`
+                : candidate.cv_attachment.url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              CV
+            </a>
+          </li>
+        )}
 
-        {/* DESCRIPTION / REMARKS */}
+        {/* JD Attachments */}
+        {candidate.jd_attachments?.map((file, i) => {
+          const url = file.url.startsWith("/uploads/")
+            ? `http://localhost:8080${file.url}`
+            : file.url;
+
+          return (
+            <li key={i}>
+              <a href={url} target="_blank" rel="noreferrer">
+                {file.filename || `JD ${i + 1}`}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      <p className="text-gray-500 text-xs">No Attachments</p>
+    )}
+  </div>
+</div>
+
+
+
+  
         <div className="border border-gray-400 rounded-lg">
           <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
             Remarks / Description
@@ -205,7 +242,7 @@ useEffect(() => {
             dangerouslySetInnerHTML={{ __html: candidate.description }} />
         </div>
 
-        {/* EDIT BUTTON */}
+
         <Link to={`/UpdateCandidate/${candidate?._id}`}>
           <button className="bg-primary w-full py-2 rounded-lg text-white font-semibold hover:bg-black transition">
             Edit Candidate

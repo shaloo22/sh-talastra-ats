@@ -294,34 +294,41 @@ function JobDetails() {
 
         </div>
       </div>
+     {/* ATTACHMENTS */}
+<div className="border border-black-400 rounded-lg">
+  <div className="px-3 py-2 text-sm font-semibold text-black border-b border-black-400">
+    Attachments
+  </div>
 
-      {/* ATTACHMENTS */}
-      <div className="border border-black-400 rounded-lg">
-        <div className=" px-3 py-2 text-sm font-semibold text-black border-b border-black-400">
-          Attachments
-        </div>
+  <div className="p-3 text-sm">
+    {job.attachments?.length > 0 ? (
+      <ul className="list-disc list-inside text-blue-600">
+        {job.attachments.map((file, index) => {
+          // Ensure the URL uses backend base URL
+          const url = file.url.startsWith("http")
+            ? file.url
+            : `http://localhost:8080${file.url}`;
 
-        <div className="p-3 text-sm">
-          {job.attachments?.length > 0 ? (
-            <ul className="list-disc list-inside text-blue-600">
-              {job.attachments.map((file, index) => (
-                <li key={index}>
-                  <a
-                    href={file.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-blue-800"
-                  >
-                    {file.filename || `Attachment ${index + 1}`}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500 text-xs">No Attachments</p>
-          )}
-        </div>
-      </div>
+          return (
+            <li key={index}>
+              <a
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-blue-800"
+              >
+                {file.filename || `Attachment ${index + 1}`}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      <p className="text-gray-500 text-xs">No Attachments</p>
+    )}
+  </div>
+</div>
+
 
       {/* DESCRIPTION */}
       <div className="border border-black-400 rounded-lg">

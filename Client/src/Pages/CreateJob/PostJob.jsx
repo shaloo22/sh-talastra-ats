@@ -1,22 +1,18 @@
 import axios from "axios";
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import LeftMenuBar from "../../Components/Dashboard/LeftMenuBar";
 import TopNavigationBar from "../../Components/Dashboard/TopNavigationBar";
 import Confetti from "react-confetti";
 import DownImg from "../../assets/icons/down.svg";
 
-
 function PostJob() {
   const navigate = useNavigate();
   const [apiFetched, setAPIFetched] = useState(false);
   const [description, setDescription] = useState("");
   const [jdFiles, setJdFiles] = useState(null);
-  const [technology, setTechnology] = useState("");
-  const [position, setPosition] = useState("");
   const [formData, setFormData] = useState({
     client: "",
     poc: "",
@@ -29,7 +25,7 @@ function PostJob() {
     budget_from: "",
     budget_to: "",
     technology: "",
-    position: "", 
+    position: "",
     description: "",
     attach_jd: [],
   });
@@ -39,9 +35,8 @@ function PostJob() {
   const [managers, setManagers] = useState([]);
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
   const [clientSearch, setClientSearch] = useState("");
-  // const count = useSelector((state) => state.OrganizationDetailsReducer.apiData);
-  // const org_data = [count?.[8][1], count?.[9][1], count?.[2][1], count?.[0][1]];
 
+  // Fetch clients
   useEffect(() => {
     axios
       .get("http://localhost:8080/clients/all")
@@ -49,6 +44,7 @@ function PostJob() {
       .catch((err) => console.error("Clients Error:", err));
   }, []);
 
+  // Fetch recruiters & managers
   useEffect(() => {
     axios
       .get("http://localhost:8080/users?designation=recruter")
@@ -61,6 +57,7 @@ function PostJob() {
       .catch((err) => console.error("Managers Error:", err));
   }, []);
 
+  // Filter POCs when client changes
   useEffect(() => {
     if (formData.client) {
       axios
@@ -73,31 +70,45 @@ function PostJob() {
     }
   }, [formData.client]);
 
-const handleSubmit = () => {
-  const plainDescription = description.replace(/<[^>]+>/g, "");
-  const attach_jd = jdFiles ? Array.from(jdFiles).map(file => file.name) : [];
-  const dataToSend = {
-    ...formData,
-    description:plainDescription,
-    technology: formData.technology,  
-    position: formData.position,      
-    attach_jd,                       
+  // Handle form submit
+  const handleSubmit = async () => {
+    try {
+      const form = new FormData();
+
+      Object.entries({
+        ...formData,
+        description,
+      }).forEach(([key, val]) => {
+        if (key !== "attach_jd") form.append(key, val);
+      });
+
+      if (jdFiles && jdFiles.length > 0) {
+        Array.from(jdFiles).forEach((file) => form.append("attach_jd", file));
+      }
+
+      const res = await axios.post("http://localhost:8080/job/post", form, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+     if (res.status === 200) {
+  setFormData((prev) => ({ ...prev, attach_jd: res.data.attach_jd }));
+  setJdFiles(null);  // optional, clears input
+  setAPIFetched(true);
+}
+    } catch (err) {
+      console.log("POST JOB ERROR:", err.response?.data || err.message);
+    }
   };
 
-  axios.post("http://localhost:8080/job/post", dataToSend)
-    .then((res) => {
-      if (res.status === 200) setAPIFetched(true);
-    })
-    .catch((err) => {
-      console.log("POST JOB ERROR:", err.response?.data || err.message);
-    });
-};
   const filteredClients = clients.filter((c) =>
     c.company_name.toLowerCase().includes(clientSearch.toLowerCase())
   );
+
   return (
     <div className="flex bg-gray-50 min-h-screen">
-      <div className="hidden sm:block w-2/12 bg-white h-screen"><LeftMenuBar /></div>
+      <div className="hidden sm:block w-2/12 bg-white h-screen">
+        <LeftMenuBar />
+      </div>
       <div className="w-full min-h-screen">
         <TopNavigationBar title={"Jobs"} />
 
@@ -107,11 +118,17 @@ const handleSubmit = () => {
             <div className="w-full max-w-lg p-6 relative mx-auto rounded-xl shadow-lg bg-white z-10">
               <Confetti width={300} height={200} />
               <div className="text-center p-4">
-                <svg fill="rgb(1,160,20)" className="w-16 h-16 m-auto" viewBox="0 0 24 24">
-                  <path d="M12,0A12,12,0,1,0,24,12,12,12,0,0,0,12,0ZM11.52,17L6,12.79l1.83-2.37L11.14,13l4.51-5.08,2.24,2Z"/>
+                <svg
+                  fill="rgb(1,160,20)"
+                  className="w-16 h-16 m-auto"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12,0A12,12,0,1,0,24,12,12,12,0,0,0,12,0ZM11.52,17L6,12.79l1.83-2.37L11.14,13l4.51-5.08,2.24,2Z" />
                 </svg>
                 <h2 className="text-xl font-bold py-4">Congratulations</h2>
-                <p className="text-sm text-gray-500 px-8">Job has been posted successfully</p>
+                <p className="text-sm text-gray-500 px-8">
+                  Job has been posted successfully
+                </p>
                 <button
                   onClick={() => navigate("/jobs")}
                   className="mt-4 text-lg bg-gray-900 px-5 py-2 text-white rounded-full hover:bg-black"
@@ -124,9 +141,11 @@ const handleSubmit = () => {
         )}
 
         <div className="w-4/5 max-w-4xl mx-auto mt-10 p-8 bg-white rounded-xl shadow-lg">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create New Job</h2>
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+            Create New Job
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
+            {/* Client Dropdown */}
             <div className="flex flex-col relative">
               <label className="font-semibold mb-1">Client</label>
               <button
@@ -138,7 +157,9 @@ const handleSubmit = () => {
                   : "Select Client"}
                 <img
                   src={DownImg}
-                  className={`w-4 h-4 ml-2 transition-transform ${clientDropdownOpen ? "rotate-180" : "rotate-0"}`}
+                  className={`w-4 h-4 ml-2 transition-transform ${
+                    clientDropdownOpen ? "rotate-180" : "rotate-0"
+                  }`}
                 />
               </button>
               {clientDropdownOpen && (
@@ -154,7 +175,9 @@ const handleSubmit = () => {
                     filteredClients.map((client) => (
                       <div
                         key={client._id}
-                        className={`p-2 cursor-pointer hover:bg-gray-100 ${formData.client === client._id ? "bg-gray-200" : ""}`}
+                        className={`p-2 cursor-pointer hover:bg-gray-100 ${
+                          formData.client === client._id ? "bg-gray-200" : ""
+                        }`}
                         onClick={() => {
                           setFormData({ ...formData, client: client._id, poc: "" });
                           setClientDropdownOpen(false);
@@ -169,6 +192,8 @@ const handleSubmit = () => {
                 </div>
               )}
             </div>
+
+            {/* POC Select */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">POC</label>
               <select
@@ -179,50 +204,61 @@ const handleSubmit = () => {
               >
                 <option value="">Select POC</option>
                 {filteredPocs.map((p) => (
-                  <option key={p._id} value={p._id}>{p.poc_name}</option>
+                  <option key={p._id} value={p._id}>
+                    {p.poc_name}
+                  </option>
                 ))}
               </select>
             </div>
 
+            {/* Internal Recruiter */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Internal Recruiter</label>
               <select
                 value={formData.internal_recruiter}
-                onChange={(e) => setFormData({ ...formData, internal_recruiter: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, internal_recruiter: e.target.value })
+                }
                 className="input input-bordered w-full"
               >
                 <option value="">Select Recruiter</option>
-                {recruiters.map(r => (
+                {recruiters.map((r) => (
                   <option key={r._id} value={r.f_name + " " + r.last_name}>
                     {r.f_name} {r.last_name}
                   </option>
                 ))}
               </select>
             </div>
+
+            {/* Internal Manager */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Internal Manager</label>
               <select
                 value={formData.internal_manager}
-                onChange={(e) => setFormData({ ...formData, internal_manager: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, internal_manager: e.target.value })
+                }
                 className="input input-bordered w-full"
               >
-              <option value="">Select Manager</option>
-             {managers.map(r => (
-              <option key={r._id} value={r.f_name}>
-             {r.f_name}
-             </option>
-                     ))}
-
+                <option value="">Select Manager</option>
+                {managers.map((r) => (
+                  <option key={r._id} value={r.f_name}>
+                    {r.f_name}
+                  </option>
+                ))}
               </select>
             </div>
-              <div className="flex flex-col">
-           <label className="font-semibold mb-1">Technology</label>
-            <div className="flex gap-3">
-             <input
+
+            {/* Technology Input */}
+            <div className="flex flex-col">
+              <label className="font-semibold mb-1">Technology</label>
+              <input
                 list="techList"
                 type="text"
                 value={formData.technology}
-                onChange={(e) => setFormData({ ...formData, technology: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, technology: e.target.value })
+                }
                 placeholder="Select Technology"
                 className="input input-bordered w-full"
               />
@@ -233,34 +269,39 @@ const handleSubmit = () => {
                 <option value="Java" />
                 <option value="Angular" />
               </datalist>
-            </div>         
-          </div>
-       <div className="flex flex-col">
-           <label className="font-semibold mb-1">Position</label>
-            <div className="flex gap-3">
-                <input
-                      list="PositionList"
-                      type="text"
-                      value={formData.position}
-                      onChange={(e) => setFormData({ ...formData, position: e.target.value })}
-                      placeholder="Select Position"
-                      className="input input-bordered w-full"
-                    />
+            </div>
+
+            {/* Position Input */}
+            <div className="flex flex-col">
+              <label className="font-semibold mb-1">Position</label>
+              <input
+                list="PositionList"
+                type="text"
+                value={formData.position}
+                onChange={(e) =>
+                  setFormData({ ...formData, position: e.target.value })
+                }
+                placeholder="Select Position"
+                className="input input-bordered w-full"
+              />
               <datalist id="PositionList">
                 <option value="Lead" />
                 <option value="Java-developer" />
-                <option value="Architech" />
+                <option value="Architect" />
                 <option value="Manager" />
                 <option value="BDE" />
               </datalist>
-            </div>         
-          </div>
+            </div>
+
+            {/* Total & Recent Experience */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Total Experience (Years)</label>
               <input
                 type="number"
                 value={formData.total_experience}
-                onChange={(e) => setFormData({ ...formData, total_experience: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, total_experience: e.target.value })
+                }
                 className="input input-bordered w-full"
                 placeholder="e.g. 5"
               />
@@ -271,85 +312,118 @@ const handleSubmit = () => {
               <input
                 type="number"
                 value={formData.recent_experience}
-                onChange={(e) => setFormData({ ...formData, recent_experience: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, recent_experience: e.target.value })
+                }
                 className="input input-bordered w-full"
                 placeholder="e.g. 2"
               />
             </div>
 
+            {/* Job Location */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Job Location</label>
               <input
                 list="joblocations"
                 value={formData.job_location}
-                onChange={(e) => setFormData({ ...formData, job_location: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, job_location: e.target.value })
+                }
                 className="input input-bordered w-full"
                 placeholder="Select or type location"
               />
               <datalist id="joblocations">
-                {["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Pune", "Gurgaon", "Other"].map((loc) => (
-                  <option key={loc} value={loc} />
-                ))}
+                {["Delhi", "Mumbai", "Bangalore", "Hyderabad", "Pune", "Gurgaon", "Other"].map(
+                  (loc) => <option key={loc} value={loc} />)}
               </datalist>
             </div>
 
+            {/* Notice Period */}
             <div className="flex flex-col">
-              <label className="font-semibold mb-1">Notice Period (Months)</label>
+              <label className="font-semibold mb-1">Notice Period</label>
               <input
                 list="noticeperiod"
                 value={formData.notice_period}
-                onChange={(e) => setFormData({ ...formData, notice_period: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, notice_period: e.target.value })
+                }
                 className="input input-bordered w-full"
                 placeholder="e.g. 2"
               />
-              <datalist id="noticeperiod">
-                {[0, 1, 2, 3].map((n) => <option key={n} value={n} />)}
-              </datalist>
+              <datalist id="noticeperiod">{[0, 1, 2, 3].map((n) => <option key={n} value={n} />)}</datalist>
             </div>
 
+            {/* Budget */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Budget (₹)</label>
               <div className="flex gap-3">
                 <input
                   type="number"
                   value={formData.budget_from}
-                  onChange={(e) => setFormData({ ...formData, budget_from: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, budget_from: e.target.value })
+                  }
                   className="input input-bordered w-1/2"
                   placeholder="From"
                 />
                 <input
                   type="number"
                   value={formData.budget_to}
-                  onChange={(e) => setFormData({ ...formData, budget_to: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, budget_to: e.target.value })
+                  }
                   className="input input-bordered w-1/2"
                   placeholder="To"
                 />
               </div>
             </div>
 
-          <div className="flex flex-col ">
-            <label className="font-semibold mb-1">Attach JD</label>
-            <label htmlFor="jdUpload" className ="w-full p-3 border-2 border-dotted border-gray-200 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200 transition">
-              <div className="text-center text-gray-500">
-                <p className="font-medium">Click to Attach</p>
-                <p className="text-sm text-gray-400"></p>
-              </div>
-            </label>
-            <input
-              id="jdUpload"
-              type="file"
-              multiple
-              onChange={(e) => setJdFiles(e.target.files)}
-              className="hidden"
-            />
-            {jdFiles && jdFiles.length > 0 && (
-              <div className="mt-2 bg-white p-3 rounded-lg shadow-sm border">
-                {Array.from(jdFiles).map((file, index) =>(
-                  <p key={index} className="text-sm text-gray-600">{file.name}</p>))}
-              </div>
-            )}
-          </div>
+            {/* Attach JD */}
+            <div className="flex flex-col ">
+              <label className="font-semibold mb-1">Attach JD</label>
+              <label
+                htmlFor="jdUpload"
+                className="w-full p-3 border-2 border-dotted border-gray-200 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200 transition"
+              >
+                <div className="text-center text-gray-500">
+                  <p className="font-medium">Click to Attach</p>
+                </div>
+              </label>
+              <input
+                id="jdUpload"
+                type="file"
+                multiple
+                onChange={(e) => setJdFiles(e.target.files)}
+                className="hidden"
+              />
 
+              {/* Show uploaded files */}
+            {formData.attach_jd && formData.attach_jd.length > 0 && (
+  <div className="mt-2 bg-white p-3 rounded-lg shadow-sm border">
+
+   {formData.attach_jd.map((fileUrl, index) => {
+  const url = fileUrl.startsWith("/uploads/")
+    ? `http://localhost:8080${fileUrl}`
+    : `http://localhost:8080/uploads/${fileUrl}`;
+
+  return (
+    <p key={index} className="text-sm text-gray-600">
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 underline hover:text-blue-800"
+      >
+        {fileUrl.split("/").pop()}
+      </a>
+    </p>
+  );
+})}
+       </div>
+              )}
+            </div>
+
+            {/* Description */}
             <div className="flex flex-col col-span-2">
               <label className="font-semibold mb-1">Description</label>
               <ReactQuill

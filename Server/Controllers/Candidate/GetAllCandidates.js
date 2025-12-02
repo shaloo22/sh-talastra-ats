@@ -11,3 +11,4 @@ const GetAllCandidates = async (req, res) => {
 };
 
 module.exports = GetAllCandidates;
+

@@ -465,31 +465,27 @@ function CreateCandidate() {
               </select>
             </div>
 
-          <div className="flex flex-col col-span-2">
-            <label className="font-semibold mb-1">Attach JD</label>
-            <label
-              htmlFor="jdUpload"
-              className="w-full p-3 border-2 border-dotted border-gray-200 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200 transition flex flex-col items-center justify-center"
-            >
-              <div className="text-center text-gray-500">
-                <p className="font-medium">Click to Attach</p>
-                <p className="text-sm text-gray-400">
-                  {jdFiles.length > 0
-                    ? jdFiles.map(f => f.name).join(", ")
-                    : "You can attach multiple files (.pdf, .doc, .docx)"}
-                </p>
-              </div>
-              <input
-                id="jdUpload"
-                type="file"
-                multiple
-                accept=".pdf,.doc,.docx"
-                onChange={(e) => setJdFiles(Array.from(e.target.files))}
-                className="hidden"
-              />
-            </label>
-          </div>
-            {/* Description */}
+        <div className="flex flex-col col-span-2">
+  <label className="font-semibold mb-1">Attach CV</label>
+  <label
+    htmlFor="cvUpload"
+    className="w-full p-3 border-2 border-dotted border-gray-200 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200 transition flex flex-col items-center justify-center"
+  >
+    <div className="text-center text-gray-500">
+      <p className="font-medium">Click to Attach</p>
+      <p className="text-sm text-gray-400">
+        {cvFile ? cvFile.name : "You can attach a PDF (.pdf)"}
+      </p>
+    </div>
+    <input
+      id="cvUpload"
+      type="file"
+      accept=".pdf"
+      onChange={(e) => setCvFile(e.target.files[0])}
+      className="hidden"
+    />
+  </label>
+</div>
             <div className="flex flex-col col-span-2">
               <label className="font-semibold mb-1">Description / Remarks</label>
               <ReactQuill

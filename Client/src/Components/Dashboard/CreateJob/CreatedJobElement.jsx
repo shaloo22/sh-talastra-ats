@@ -93,7 +93,7 @@ function CreatedJobElement({ data = [] }) {
             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Job Location</th>
             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Notice Period</th>
             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">Budget</th>
-            <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">JD</th>
+           
           </tr>
         </thead>
 
@@ -115,22 +115,11 @@ function CreatedJobElement({ data = [] }) {
               <td className="py-3 px-5 border-b">{job.total_experience} yrs</td>
               <td className="py-3 px-5 border-b">{job.recent_experience} yrs</td>
               <td className="py-3 px-5 border-b">{job.job_location}</td>
-              <td className="py-3 px-5 border-b">{job.notice_period} months</td>
+             <td className="py-3 px-5 border-b">
+  {job.notice_period ? job.notice_period * 30 : 0} days
+</td>
+
               <td className="py-3 px-5 border-b">₹{job.budget_from} - ₹{job.budget_to}</td>
-              <td className="py-3 px-5 border-b text-center">
-                {job.attachments?.length > 0 ? (
-                  <a
-                    href={job.attachments[0].url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-blue-600 underline"
-                  >
-                    JD
-                  </a>
-                ) : (
-                  "-"
-                )}
-              </td>
             </tr>
           ))}
         </tbody>
