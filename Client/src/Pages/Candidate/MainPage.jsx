@@ -128,7 +128,7 @@ function MainPage() {
 
               <div className="p-2 border-r border-b">
                 <p className="text-gray-500 text-xs">Interview Date</p>
-                <p className="font-medium text-gray-900">{candidate.interview_date}</p>
+                <p className="font-medium text-gray-900">{candidate.interview_schedule_date}</p>
               </div>
               <div className="p-2 border-b">
                 <p className="text-gray-500 text-xs">Last Working Date</p>
@@ -164,8 +164,6 @@ function MainPage() {
 
             </div>
           </div>
-
-          {/* EXPERIENCE */}
           <div className="border border-gray-400 rounded-lg">
             <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
               Experience Details
@@ -181,10 +179,6 @@ function MainPage() {
               </div>
             </div>
           </div>
-
-          
-
-          {/* DESCRIPTION */}
           {candidate.description && (
             <div className="border border-gray-400 rounded-lg">
               <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
@@ -197,7 +191,6 @@ function MainPage() {
             </div>
           )}
 
-          {/* EDIT BUTTON */}
           <Link to="/UpdateCandidate">
             <button className="bg-primary w-full py-2 rounded-lg text-white font-semibold hover:bg-black transition">
               Edit Candidate

@@ -1,327 +1,4 @@
 // import React, { useEffect, useState } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import axios from "axios";
-
-// function MainPage() {
-//   const [candidates, setCandidates] = useState([]);
-//   const [selectedCandidate, setSelectedCandidate] = useState("");
-//   const [candidate, setCandidate] = useState(null);
-
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:8080/candidate/get-all")
-//       .then((res) => setCandidates(res.data || []))
-//       .catch((err) => console.error(err));
-//   }, []);
-
-//   useEffect(() => {
-//     if (!selectedCandidate) return;
-
-//     axios
-//       .post("http://localhost:8080/candidate/get-single", { _id: selectedCandidate })
-//       .then((res) => {
-//         console.log("Selected Candidate →", res.data);
-//         setCandidate(res.data);
-//       })
-//       .catch((err) => console.error(err));
-//   }, [selectedCandidate]);
-
-
-//   const safeRender = (field) => {
-//     if (!field) return "-";
-//     if (typeof field === "object") return field.name || field.position || "-";
-//     return field;
-//   };
-
-
-//   return (
-//     <div className="max-w-5xl mx-auto p-6">
-//       <h1 className="text-center text-2xl font-semibold mb-6">Select Candidate</h1>
-
-//       <div className="flex justify-center mb-6">
-//         <select
-//           value={selectedCandidate}
-//           onChange={(e) => setSelectedCandidate(e.target.value)}
-//           className="border border-gray-300 rounded-md p-2 w-64"
-//         >
-//           <option value="">Select Candidate</option>
-//           {candidates.map((c) => (
-//             <option key={c._id} value={c._id}>
-//               {c.candidate_name}
-//             </option>
-//           ))}
-//         </select>
-//       </div>
-
-//       {candidate && (
-//         <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl border border-gray-400 p-4 space-y-4">
-//           <h2 className="text-center text-lg font-semibold tracking-wide mt-2 mb-4">
-//             Candidate Details
-//           </h2>
-
-//           {/* BASIC INFO */}
-//           <div className="border border-gray-400 rounded-lg">
-//             <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-//               Basic Information
-//             </div>
-
-//             <div className="grid grid-cols-3 text-sm">
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Job</p>
-//                 <p className="font-medium text-gray-900">
-//                   {safeRender(candidate.job_id)}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Client</p>
-//                 <p className="font-medium text-gray-900">
-//                   {safeRender(candidate.client)}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">POC</p>
-//                 <p className="font-medium text-gray-900">
-//                   {safeRender(candidate.poc)}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Name</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.candidate_name || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Email</p>
-//                 <p className="font-medium text-gray-900">{candidate.email || "-"}</p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Contact</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.contact_num || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Date of Birth</p>
-//                 <p className="font-medium text-gray-900">{candidate.dob || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Current Org</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.current_org || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Previous Org</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.previous_org || "-"}
-//                 </p>
-//               </div>
-
-              
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Current CTC</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.current_ctc || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Accepted CTC</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.accepted_ctc || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Current Location</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.current_location || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Preferred Location</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.preferred_location || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Notice Period</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.notice_period || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Offers Pipeline</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.offers_pipeline || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Interview Date</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.interview_date || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Last Working Date</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.last_working_date || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Mode of Interview</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.mode_of_interview || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Current City</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.current_city || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Relocate City 1</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.relocate_city_p1 || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Relocate City 2</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.relocate_city_p2 || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2 border-r">
-//                 <p className="text-gray-500 text-xs">Candidate Status</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.candidate_status || "-"}
-//                 </p>
-//               </div>
-
-//               <div className="p-2">
-//                 <p className="text-gray-500 text-xs">Followup Status</p>
-//                 <p className="font-medium text-gray-900">
-//                   {candidate.followup_status || "-"}
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//            <div className="border border-gray-400 rounded-lg">
-//             <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-//               Experience Details
-//             </div>
-//             <div className="grid grid-cols-2 text-sm">
-//               <div className="p-2 border-r border-b">
-//                 <p className="text-gray-500 text-xs">Total Experience</p>
-//                 <p className="font-medium text-gray-900">{candidate.total_exp} Years</p>
-//               </div>
-//               <div className="p-2 border-b">
-//                 <p className="text-gray-500 text-xs">Relevant Experience</p>
-//                 <p className="font-medium text-gray-900">{candidate.relevant_exp} Years</p>
-//               </div>
-//             </div>
-//           </div>
-
-           
-//  <div className="border border-gray-400 rounded-lg">
-//   <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">Attachments:</div>
-
-//   <div>
-//     <div className="text-gray-700 font-medium mb-1"></div>
-//     {candidate.jdFiles && candidate.jdFiles.length > 0 ? (
-//       <div className="grid gap-2">
-//         {candidate.jdFiles.map((file, index) => (
-//           <a
-//             key={index}
-//             href={file.url}
-//             target="_blank"
-//             rel="noopener noreferrer"
-//             className="p-2 border border-gray-200 rounded-lg text-blue-600 hover:bg-gray-100 transition"
-//           >
-//             {file.name}
-//           </a>
-//         ))}
-//       </div>
-//     ) : (
-//       <div className="text-gray-500">No JD attached.</div>
-//     )}
-//   </div>
-
-//   {/* CV Files */}
-//   <div>
-//     <div className="text-gray-700 font-medium mb-1"></div>
-//     {candidate.cvFiles && candidate.cvFiles.length > 0 ? (
-//       <div className="grid gap-2">
-//         {candidate.cvFiles.map((file, index) => (
-//           <a
-//             key={index}
-//             href={file.url}
-//             target="_blank"
-//             rel="noopener noreferrer"
-//             className="p-2 border border-gray-200 rounded-lg text-blue-600 hover:bg-gray-100 transition"
-//           >
-//             {file.name}
-//           </a>
-//         ))}
-//       </div>
-//     ) : (
-//       <div className="text-gray-500">No CV attached.</div>
-//     )}
-//   </div>
-// </div>
-          
-//           {candidate.description && (
-//             <div className="border border-gray-400 rounded-lg">
-//               <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-//                 Description
-//               </div>
-//               <div
-//                 className="p-3 text-sm text-gray-800"
-//                 dangerouslySetInnerHTML={{ __html: candidate.description }}
-//               />
-//             </div>
-//           )}
-
-//           <Link to={`/UpdateCandidate/${candidate?._id}`}>
-//             <button className="bg-primary w-full py-2 rounded-lg text-white font-semibold hover:bg-black transition">
-//               Edit Candidate
-//             </button>
-//           </Link>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default MainPage;
-
-
-
-// import React, { useEffect, useState } from "react";
 // import { useNavigate } from "react-router-dom";
 // import axios from "axios";
 
@@ -340,11 +17,11 @@
 //   // Fetch all jobs for dropdown
 //   useEffect(() => {
 //     axios.get("http://localhost:8080/job/get-all-jobs")
-//       .then(res => setJobs(res.data?.jobs || res.data || []))
+//       .then(res => setJobs(res.data?.jobs || []))
 //       .catch(() => setJobs([]));
 //   }, []);
 
-//   // When a Job is selected, fetch its Client & POC for dropdowns
+//   // When Job is selected, fetch its Client & POC for dropdowns
 //   useEffect(() => {
 //     if (!selectedJob) {
 //       setClients([]);
@@ -358,29 +35,32 @@
 //     axios.get(`http://localhost:8080/job/get-job/${selectedJob}`)
 //       .then(res => {
 //         const job = res.data.job;
+
+//         // Set dropdowns
 //         setClients(job?.client ? [job.client] : []);
 //         setPocs(job?.poc ? [job.poc] : []);
-//         setSelectedClient("");
-//         setSelectedPoc("");
+
+//         // Auto-select client & poc
+//         if (job?.client) setSelectedClient(job.client._id);
+//         if (job?.poc) setSelectedPoc(job.poc._id);
+
+//         setCandidates([]); // reset candidates before fetching
 //       })
 //       .catch(err => console.error("Error fetching job details:", err));
 //   }, [selectedJob]);
 
 //   // Fetch candidates based on selected filters
 //   useEffect(() => {
-//     if (!selectedJob) {
-//       setCandidates([]);
-//       return;
-//     }
+//     if (!selectedJob || !selectedClient || !selectedPoc) return;
 
 //     const fetchCandidates = async () => {
 //       try {
 //         const res = await axios.post("http://localhost:8080/candidate/filter", {
 //           job_id: selectedJob,
-//           client_id: selectedClient || undefined,
-//           poc_id: selectedPoc || undefined,
+//           client_id: selectedClient,
+//           poc_id: selectedPoc
 //         });
-//         setCandidates(res.data || []);
+//         setCandidates(res.data?.candidates || []);
 //       } catch (err) {
 //         console.error("Error fetching candidates:", err);
 //         setCandidates([]);
@@ -443,21 +123,22 @@
 //       </div>
 
 //       {/* Candidate List Table */}
-//       {candidates.length > 0 ? (
-//         <div className="overflow-x-auto mb-6">
-//           <table className="min-w-full border border-gray-300">
-//             <thead className="bg-gray-100">
-//               <tr>
-//                 <th className="px-4 py-2 border">Name</th>
-//                 <th className="px-4 py-2 border">Job</th>
-//                 <th className="px-4 py-2 border">Client</th>
-//                 <th className="px-4 py-2 border">POC</th>
-//                 <th className="px-4 py-2 border">Email</th>
-//                 <th className="px-4 py-2 border">Contact</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {candidates.map(c => (
+//       {selectedJob && selectedClient && selectedPoc ? (
+//         candidates.length > 0 ? (
+//           <div className="overflow-x-auto mb-6">
+//             <table className="min-w-full border border-gray-300">
+//               <thead className="bg-gray-100">
+//                 <tr>
+//                   <th className="px-4 py-2 border">Name</th>
+//                   <th className="px-4 py-2 border">Job</th>
+//                   <th className="px-4 py-2 border">Client</th>
+//                   <th className="px-4 py-2 border">POC</th>
+//                   <th className="px-4 py-2 border">Email</th>
+//                   <th className="px-4 py-2 border">Contact</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                {candidates.map(c => (
 //                 <tr
 //                   key={c._id}
 //                   className="cursor-pointer hover:bg-gray-50"
@@ -471,11 +152,14 @@
 //                   <td className="px-4 py-2 border">{c.contact_num || "-"}</td>
 //                 </tr>
 //               ))}
-//             </tbody>
-//           </table>
-//         </div>
+//               </tbody>
+//             </table>
+//           </div>
+//         ) : (
+//           <p className="text-center text-gray-500">No candidates found.</p>
+//         )
 //       ) : (
-//         selectedJob && <p className="text-center text-gray-500">No candidates found.</p>
+//         <p className="text-center text-gray-500">Please select Job, Client, and POC to see candidates.</p>
 //       )}
 
 //     </div>
@@ -501,14 +185,12 @@ function MainPage() {
   const [selectedClient, setSelectedClient] = useState("");
   const [selectedPoc, setSelectedPoc] = useState("");
 
-  // Fetch all jobs for dropdown
   useEffect(() => {
     axios.get("http://localhost:8080/job/get-all-jobs")
-      .then(res => setJobs(res.data?.jobs || []))
+      .then(res => setJobs(res.data?.jobs || res.data || []))
       .catch(() => setJobs([]));
   }, []);
 
-  // When Job is selected, fetch its Client & POC for dropdowns
   useEffect(() => {
     if (!selectedJob) {
       setClients([]);
@@ -522,32 +204,28 @@ function MainPage() {
     axios.get(`http://localhost:8080/job/get-job/${selectedJob}`)
       .then(res => {
         const job = res.data.job;
-
-        // Set dropdowns
         setClients(job?.client ? [job.client] : []);
         setPocs(job?.poc ? [job.poc] : []);
-
-        // Auto-select client & poc
-        if (job?.client) setSelectedClient(job.client._id);
-        if (job?.poc) setSelectedPoc(job.poc._id);
-
-        setCandidates([]); // reset candidates before fetching
+        setSelectedClient("");
+        setSelectedPoc("");
       })
       .catch(err => console.error("Error fetching job details:", err));
   }, [selectedJob]);
 
-  // Fetch candidates based on selected filters
   useEffect(() => {
-    if (!selectedJob || !selectedClient || !selectedPoc) return;
+    if (!selectedJob) {
+      setCandidates([]);
+      return;
+    }
 
     const fetchCandidates = async () => {
       try {
         const res = await axios.post("http://localhost:8080/candidate/filter", {
           job_id: selectedJob,
-          client_id: selectedClient,
-          poc_id: selectedPoc
+          client_id: selectedClient || undefined,
+          poc_id: selectedPoc || undefined,
         });
-        setCandidates(res.data?.candidates || []);
+        setCandidates(res.data || []);
       } catch (err) {
         console.error("Error fetching candidates:", err);
         setCandidates([]);
@@ -566,11 +244,9 @@ function MainPage() {
   return (
     <div className="max-w-6xl mx-auto p-6">
 
-      {/* Header with dropdowns */}
       <div className="bg-white shadow-md rounded-lg p-4 mb-6 flex flex-col md:flex-row gap-4 items-center">
         <h1 className="text-xl font-semibold text-gray-800 flex-1">Select Candidate</h1>
 
-        {/* Job Dropdown */}
         <select
           className="border border-gray-300 rounded-md p-2 w-full md:w-48"
           value={selectedJob}
@@ -582,7 +258,6 @@ function MainPage() {
           ))}
         </select>
 
-        {/* Client Dropdown */}
         <select
           className="border border-gray-300 rounded-md p-2 w-full md:w-48"
           value={selectedClient}
@@ -595,7 +270,6 @@ function MainPage() {
           ))}
         </select>
 
-        {/* POC Dropdown */}
         <select
           className="border border-gray-300 rounded-md p-2 w-full md:w-48"
           value={selectedPoc}
@@ -609,23 +283,21 @@ function MainPage() {
         </select>
       </div>
 
-      {/* Candidate List Table */}
-      {selectedJob && selectedClient && selectedPoc ? (
-        candidates.length > 0 ? (
-          <div className="overflow-x-auto mb-6">
-            <table className="min-w-full border border-gray-300">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-4 py-2 border">Name</th>
-                  <th className="px-4 py-2 border">Job</th>
-                  <th className="px-4 py-2 border">Client</th>
-                  <th className="px-4 py-2 border">POC</th>
-                  <th className="px-4 py-2 border">Email</th>
-                  <th className="px-4 py-2 border">Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-               {candidates.map(c => (
+      {candidates.length > 0 ? (
+        <div className="overflow-x-auto mb-6">
+          <table className="min-w-full border border-gray-300">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="px-4 py-2 border">Name</th>
+                <th className="px-4 py-2 border">Job</th>
+                <th className="px-4 py-2 border">Client</th>
+                <th className="px-4 py-2 border">POC</th>
+                <th className="px-4 py-2 border">Email</th>
+                <th className="px-4 py-2 border">Contact</th>
+              </tr>
+            </thead>
+            <tbody>
+              {candidates.map(c => (
                 <tr
                   key={c._id}
                   className="cursor-pointer hover:bg-gray-50"
@@ -639,14 +311,11 @@ function MainPage() {
                   <td className="px-4 py-2 border">{c.contact_num || "-"}</td>
                 </tr>
               ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p className="text-center text-gray-500">No candidates found.</p>
-        )
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <p className="text-center text-gray-500">Please select Job, Client, and POC to see candidates.</p>
+        selectedJob && <p className="text-center text-gray-500">No candidates found.</p>
       )}
 
     </div>
@@ -654,3 +323,354 @@ function MainPage() {
 }
 
 export default MainPage;
+
+
+// import React, { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import DownImg from "../../assets/icons/down.svg";
+
+// function MainPage() {
+//   const navigate = useNavigate();
+
+//   const [clients, setClients] = useState([]);
+//   const [pocs, setPocs] = useState([]);
+//   const [jobs, setJobs] = useState([]);
+//   const [candidates, setCandidates] = useState([]);
+
+//   const [selectedClient, setSelectedClient] = useState("");
+//   const [selectedPoc, setSelectedPoc] = useState("");
+//   const [selectedJob, setSelectedJob] = useState("");
+
+//   const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
+//   const [pocDropdownOpen, setPocDropdownOpen] = useState(false);
+//   const [jobDropdownOpen, setJobDropdownOpen] = useState(false);
+
+//   const [clientSearch, setClientSearch] = useState("");
+//   const [pocSearch, setPocSearch] = useState("");
+//   const [jobSearch, setJobSearch] = useState("");
+
+//   const normalizeId = (id) => id?._id?.$oid || id?._id || id;
+
+//   const filteredClients = clients.filter((c) =>
+//     c?.company_name?.toLowerCase().includes(clientSearch.toLowerCase())
+//   );
+
+//   const filteredPocs = pocs.filter((p) =>
+//     p?.poc_name?.toLowerCase().includes(pocSearch.toLowerCase())
+//   );
+
+//   const filteredJobs = jobs.filter((j) =>
+//     j?.position?.toLowerCase().includes(jobSearch.toLowerCase())
+//   );
+//   useEffect(() => {
+//     axios
+//       .get("http://localhost:8080/client/all")
+//       .then((res) => {
+//         const normalizedClients = (res.data.clients || []).map((c) => ({
+//           ...c,
+//           _id: normalizeId(c),
+//         }));
+//         setClients(normalizedClients);
+//       })
+//       .catch(() => setClients([]));
+//   }, []);
+
+//   useEffect(() => {
+//     if (!selectedClient) {
+//       setPocs([]);
+//       setSelectedPoc("");
+//       setJobs([]);
+//       setSelectedJob("");
+//       setCandidates([]);
+//       return;
+//     }
+
+//     axios
+//       .post("http://localhost:8080/poc/list", { client_id: selectedClient })
+//       .then((res) => {
+//         const normalizedPocs = (res.data.pocs || []).map((p) => ({
+//           ...p,
+//           _id: normalizeId(p),
+//         }));
+//         setPocs(normalizedPocs);
+//       })
+//       .catch(() => setPocs([]));
+
+//     setSelectedPoc("");
+//     setJobs([]);
+//     setSelectedJob("");
+//     setCandidates([]);
+//   }, [selectedClient]);
+
+//   useEffect(() => {
+//     if (!selectedClient || !selectedPoc) {
+//       setJobs([]);
+//       setSelectedJob("");
+//       setCandidates([]);
+//       return;
+//     }
+
+//     axios
+//       .get(
+//         `http://localhost:8080/job/get-jobs/filter?clientId=${selectedClient}&pocId=${selectedPoc}`
+//       )
+//       .then((res) => {
+//         const normalizedJobs = (res.data || []).map((j) => ({
+//           ...j,
+//           _id: normalizeId(j),
+//         }));
+//         setJobs(normalizedJobs);
+//       })
+//       .catch(() => setJobs([]));
+
+//     setSelectedJob("");
+//     setCandidates([]);
+//   }, [selectedClient, selectedPoc]);
+
+//   useEffect(() => {
+//     if (!selectedClient || !selectedPoc || !selectedJob) return;
+
+//     axios
+//       .post("http://localhost:8080/candidate/filter", {
+//         client_id: selectedClient,
+//         poc_id: selectedPoc,
+//         job_id: selectedJob,
+//       })
+//       .then((res) => {
+//         const normalizedCandidates = (res.data.candidates || []).map((c) => ({
+//           ...c,
+//           _id: normalizeId(c),
+//           client: c.client?._id ? { ...c.client, _id: normalizeId(c.client) } : c.client,
+//           poc: c.poc?._id ? { ...c.poc, _id: normalizeId(c.poc) } : c.poc,
+//           job_id: c.job_id?._id ? { ...c.job_id, _id: normalizeId(c.job_id) } : c.job_id,
+//         }));
+//         setCandidates(normalizedCandidates);
+//       })
+//       .catch(() => setCandidates([]));
+//   }, [selectedClient, selectedPoc, selectedJob]);
+
+//   const handleSelectClient = (id) => {
+//     if (!id) return;
+//     setSelectedClient(id);
+//     setClientSearch("");
+//     setClientDropdownOpen(false);
+
+//     setSelectedPoc("");
+//     setSelectedJob("");
+//   };
+
+//   const handleSelectPoc = (id) => {
+//     if (!id) return;
+//     setSelectedPoc(id);
+//     setPocSearch("");
+//     setPocDropdownOpen(false);
+
+//     setSelectedJob("");
+//   };
+
+//   const handleSelectJob = (id) => {
+//     if (!id) return;
+//     setSelectedJob(id);
+//     setJobSearch("");
+//     setJobDropdownOpen(false);
+//   };
+
+//   const safeRender = (field, subField) => {
+//     if (!field) return "-";
+//     if (subField && typeof field === "object") return field[subField] || "-";
+//     return field;
+//   };
+
+//   return (
+//     <div className="max-w-6xl mx-auto p-6 flex flex-col gap-6">
+//       <div className="flex flex-col md:flex-row gap-4 items-center">
+//         <div className="relative w-64">
+//           <button
+//             onClick={() => setClientDropdownOpen(!clientDropdownOpen)}
+//             className="w-full border border-gray-300 p-2 rounded-md flex justify-between items-center bg-white"
+//           >
+//             {selectedClient
+//               ? clients.find((c) => c._id === selectedClient)?.company_name
+//               : "Select Client"}
+//             <img
+//               src={DownImg}
+//               className={`w-4 h-4 ml-2 transition-transform ${
+//                 clientDropdownOpen ? "rotate-180" : "rotate-0"
+//               }`}
+//             />
+//           </button>
+
+//           {clientDropdownOpen && (
+//             <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md max-h-60 overflow-y-auto z-50">
+//               <input
+//                 type="text"
+//                 placeholder="Search client..."
+//                 value={clientSearch}
+//                 onChange={(e) => setClientSearch(e.target.value)}
+//                 className="border-b border-gray-300 p-2 w-full"
+//               />
+//               {filteredClients.length > 0 ? (
+//                 filteredClients.map((c) => (
+//                   <div
+//                     key={c._id}
+//                     onMouseDown={(e) => e.preventDefault()}
+//                     className={`p-2 cursor-pointer hover:bg-gray-200 ${
+//                       selectedClient === c._id ? "bg-gray-300" : ""
+//                     }`}
+//                     onClick={() => handleSelectClient(c._id)}
+//                   >
+//                     {c.company_name}
+//                   </div>
+//                 ))
+//               ) : (
+//                 <div className="p-2 text-gray-500">No clients found</div>
+//               )}
+//             </div>
+//           )}
+//         </div>
+
+//         <div className="relative w-64">
+//           <button
+//             onClick={() => setPocDropdownOpen(!pocDropdownOpen)}
+//             className="w-full border border-gray-300 p-2 rounded-md flex justify-between items-center bg-white"
+//             disabled={!selectedClient}
+//           >
+//             {selectedPoc
+//               ? pocs.find((p) => p._id === selectedPoc)?.poc_name
+//               : "Select POC"}
+//             <img
+//               src={DownImg}
+//               className={`w-4 h-4 ml-2 transition-transform ${
+//                 pocDropdownOpen ? "rotate-180" : "rotate-0"
+//               }`}
+//             />
+//           </button>
+
+//           {pocDropdownOpen && (
+//             <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md max-h-60 overflow-y-auto z-50">
+//               <input
+//                 type="text"
+//                 placeholder="Search POC..."
+//                 value={pocSearch}
+//                 onChange={(e) => setPocSearch(e.target.value)}
+//                 className="border-b border-gray-300 p-2 w-full"
+//               />
+//               {filteredPocs.length > 0 ? (
+//                 filteredPocs.map((p) => (
+//                   <div
+//                     key={p._id}
+//                     onMouseDown={(e) => e.preventDefault()}
+//                     className={`p-2 cursor-pointer hover:bg-gray-200 ${
+//                       selectedPoc === p._id ? "bg-gray-300" : ""
+//                     }`}
+//                     onClick={() => handleSelectPoc(p._id)}
+//                   >
+//                     {p.poc_name}
+//                   </div>
+//                 ))
+//               ) : (
+//                 <div className="p-2 text-gray-500">No POCs found</div>
+//               )}
+//             </div>
+//           )}
+//         </div>
+
+//         <div className="relative w-64">
+//           <button
+//             onClick={() => setJobDropdownOpen(!jobDropdownOpen)}
+//             className="w-full border border-gray-300 p-2 rounded-md flex justify-between items-center bg-white"
+//             disabled={!selectedPoc}
+//           >
+//             {selectedJob
+//               ? jobs.find((j) => j._id === selectedJob)?.position
+//               : "Select Job"}
+//             <img
+//               src={DownImg}
+//               className={`w-4 h-4 ml-2 transition-transform ${
+//                 jobDropdownOpen ? "rotate-180" : "rotate-0"
+//               }`}
+//             />
+//           </button>
+
+//           {jobDropdownOpen && (
+//             <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 rounded-md max-h-60 overflow-y-auto z-50">
+//               <input
+//                 type="text"
+//                 placeholder="Search Job..."
+//                 value={jobSearch}
+//                 onChange={(e) => setJobSearch(e.target.value)}
+//                 className="border-b border-gray-300 p-2 w-full"
+//               />
+//               {filteredJobs.length > 0 ? (
+//                 filteredJobs.map((j) => (
+//                   <div
+//                     key={j._id}
+//                     onMouseDown={(e) => e.preventDefault()}
+//                     className={`p-2 cursor-pointer hover:bg-gray-200 ${
+//                       selectedJob === j._id ? "bg-gray-300" : ""
+//                     }`}
+//                     onClick={() => handleSelectJob(j._id)}
+//                   >
+//                     {j.position}
+//                   </div>
+//                 ))
+//               ) : (
+//                 <div className="p-2 text-gray-500">No jobs found</div>
+//               )}
+//             </div>
+//           )}
+//         </div>
+//       </div>
+//       {selectedClient && selectedPoc && selectedJob ? (
+//         candidates.length > 0 ? (
+//           <div className="overflow-x-auto">
+//             <table className="min-w-full border border-gray-300">
+//               <thead className="bg-gray-100">
+//                 <tr>
+//                   <th className="px-4 py-2 border">Name</th>
+//                   <th className="px-4 py-2 border">Job</th>
+//                   <th className="px-4 py-2 border">Client</th>
+//                   <th className="px-4 py-2 border">POC</th>
+//                   <th className="px-4 py-2 border">Email</th>
+//                   <th className="px-4 py-2 border">Contact</th>
+//                 </tr>
+//               </thead>
+//               <tbody>
+//                 {candidates.map((c) => (
+//                   <tr
+//                     key={c._id}
+//                     className="cursor-pointer hover:bg-gray-50"
+//                     onClick={() => navigate(`/candidatedetails/${c._id}`)}
+//                   >
+//                     <td className="px-4 py-2 border">{c.candidate_name || "-"}</td>
+//                     <td className="px-4 py-2 border">
+//                       {safeRender(c.job_id, "position")}
+//                     </td>
+//                     <td className="px-4 py-2 border">
+//                       {safeRender(c.client, "company_name")}
+//                     </td>
+//                     <td className="px-4 py-2 border">
+//                       {safeRender(c.poc, "poc_name")}
+//                     </td>
+//                     <td className="px-4 py-2 border">{c.email || "-"}</td>
+//                     <td className="px-4 py-2 border">{c.contact_num || "-"}</td>
+//                   </tr>
+//                 ))}
+//               </tbody>
+//             </table>
+//           </div>
+//         ) : (
+//           <p className="text-center text-gray-500">No candidates found.</p>
+//         )
+//       ) : (
+//         <p className="text-center text-gray-500">
+         
+//         </p>
+//       )}
+//     </div>
+//   );
+// }
+
+// export default MainPage;
+

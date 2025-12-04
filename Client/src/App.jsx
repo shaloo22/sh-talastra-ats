@@ -23,6 +23,8 @@ import PostedJobApplyForm from "./Pages/EndUser/PostedJobApplyForm";
 import CreateCandidate from "./Pages/Candidate/CreateCandidate";
 import UpdateCandidate from "./Pages/Candidate/UpdateCandidate";
 import POCHome from "./Pages/POC/POCHome";
+import UpdateJob from "./Pages/CreateJob/UpdateJob";
+import UpdatePOC from "./Pages/POC/UpdatePOC"
 
 
 import AppliedCandidateDetails from "./Pages/RecruitmentCycle/AppliedCandidateDetails";
@@ -45,6 +47,8 @@ import Setting_EditProfile from "./Pages/Settings/Setting_EditProfile";
 import ProtectedRoute from "./Components/Common/ProtectedRoute";
 import NotPageFound404 from "./Pages/Dashboard/NotPageFound404";   
 import CandidateDetails from "./Pages/Candidate/CandidateDetails";  
+import CreatePOC from "./Pages/POC/CreatePoc"
+
 
 function App() {
   return (
@@ -61,6 +65,7 @@ function App() {
           <Route path="/JobDetails/:id" element={<JobDetails />}></Route>
           <Route path="/profilesetup" element={<ProfileCreation />} />
           <Route path="/candidatedetails/:id" element={<CandidateDetails />} />
+          <Route path="/createPOC" element={<CreatePOC/>}></Route>
           
           <Route
             path="profilesetup/organization"
@@ -133,7 +138,9 @@ function App() {
         <Route path="/forgetpwd" element={<ForgetPassword />} />
         <Route path="/register" element={<Registration />} />
         <Route path="portal/job" element={<PostedJobs />} />
+        <Route path="/update-job/:id" element={<UpdateJob />} />
         <Route path="/UpdateCandidate/:id" element={<UpdateCandidate />} />
+         <Route path="/UpdatePOC/:id" element={<UpdatePOC />} />
         <Route path="/create-candidate/:jobId" element={<CreateCandidate />} />
 
 

@@ -36,7 +36,6 @@ function PostJob() {
   const [clientDropdownOpen, setClientDropdownOpen] = useState(false);
   const [clientSearch, setClientSearch] = useState("");
 
-  // Fetch clients
   useEffect(() => {
     axios
       .get("http://localhost:8080/clients/all")
@@ -44,7 +43,6 @@ function PostJob() {
       .catch((err) => console.error("Clients Error:", err));
   }, []);
 
-  // Fetch recruiters & managers
   useEffect(() => {
     axios
       .get("http://localhost:8080/users?designation=recruter")
@@ -56,8 +54,6 @@ function PostJob() {
       .then((res) => setManagers(res.data.users || []))
       .catch((err) => console.error("Managers Error:", err));
   }, []);
-
-  // Filter POCs when client changes
   useEffect(() => {
     if (formData.client) {
       axios
@@ -70,7 +66,6 @@ function PostJob() {
     }
   }, [formData.client]);
 
-  // Handle form submit
   const handleSubmit = async () => {
     try {
       const form = new FormData();
@@ -92,7 +87,7 @@ function PostJob() {
 
      if (res.status === 200) {
   setFormData((prev) => ({ ...prev, attach_jd: res.data.attach_jd }));
-  setJdFiles(null);  // optional, clears input
+  setJdFiles(null); 
   setAPIFetched(true);
 }
     } catch (err) {
@@ -145,7 +140,7 @@ function PostJob() {
             Create New Job
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Client Dropdown */}
+         
             <div className="flex flex-col relative">
               <label className="font-semibold mb-1">Client</label>
               <button
@@ -193,7 +188,7 @@ function PostJob() {
               )}
             </div>
 
-            {/* POC Select */}
+          
             <div className="flex flex-col">
               <label className="font-semibold mb-1">POC</label>
               <select
@@ -211,7 +206,6 @@ function PostJob() {
               </select>
             </div>
 
-            {/* Internal Recruiter */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Internal Recruiter</label>
               <select
@@ -229,8 +223,6 @@ function PostJob() {
                 ))}
               </select>
             </div>
-
-            {/* Internal Manager */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Internal Manager</label>
               <select
@@ -249,7 +241,6 @@ function PostJob() {
               </select>
             </div>
 
-            {/* Technology Input */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Technology</label>
               <input
@@ -271,7 +262,6 @@ function PostJob() {
               </datalist>
             </div>
 
-            {/* Position Input */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Position</label>
               <input
@@ -293,7 +283,6 @@ function PostJob() {
               </datalist>
             </div>
 
-            {/* Total & Recent Experience */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Total Experience (Years)</label>
               <input
@@ -320,7 +309,6 @@ function PostJob() {
               />
             </div>
 
-            {/* Job Location */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Job Location</label>
               <input
@@ -338,7 +326,6 @@ function PostJob() {
               </datalist>
             </div>
 
-            {/* Notice Period */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Notice Period</label>
               <input
@@ -352,8 +339,6 @@ function PostJob() {
               />
               <datalist id="noticeperiod">{[0, 1, 2, 3].map((n) => <option key={n} value={n} />)}</datalist>
             </div>
-
-            {/* Budget */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Budget (₹)</label>
               <div className="flex gap-3">
@@ -378,7 +363,6 @@ function PostJob() {
               </div>
             </div>
 
-            {/* Attach JD */}
             <div className="flex flex-col ">
               <label className="font-semibold mb-1">Attach JD</label>
               <label
@@ -397,7 +381,7 @@ function PostJob() {
                 className="hidden"
               />
 
-              {/* Show uploaded files */}
+              
             {formData.attach_jd && formData.attach_jd.length > 0 && (
   <div className="mt-2 bg-white p-3 rounded-lg shadow-sm border">
 
@@ -423,7 +407,6 @@ function PostJob() {
               )}
             </div>
 
-            {/* Description */}
             <div className="flex flex-col col-span-2">
               <label className="font-semibold mb-1">Description</label>
               <ReactQuill

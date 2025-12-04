@@ -49,7 +49,7 @@ const CandidateSchema = new mongoose.Schema({
     offers_pipeline: {
         type: String,
     },
-    interview_date: {
+    interview_schedule_date: {
         type: String,
     },
     last_working_date: {
@@ -87,6 +87,16 @@ const CandidateSchema = new mongoose.Schema({
    cv_attachment: { type: String, default: "" },
   jd_attachments: { type: [String], default: [] },
 }, { timestamps: true });
+
+CandidateSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    ret._id = ret._id.toString();
+    if (ret.job_id) ret.job_id = ret.job_id.toString();
+    if (ret.client) ret.client = ret.client.toString();
+    if (ret.poc) ret.poc = ret.poc.toString();
+    return ret;
+  },
+});
 
 const Candidate = mongoose.model("Candidate", CandidateSchema);
 

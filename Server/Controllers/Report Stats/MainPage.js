@@ -28,18 +28,16 @@ const StatMainPage = async (req, res) => {
     var appliedSum = 0;
 
     // Loop through the array
-    for (var i = 0; i < reportForJobStats.length; i++) {
-        // Access the object at index i
-        var obj = reportForJobStats[i];
+   for (var i = 0; i < reportForJobStats.length; i++) {
+    var obj = reportForJobStats[i] || {}; // SAFE
 
-        // Extract the values for 'hired' and 'applied' keys
-        var hiredValue = obj.hired;
-        var appliedValue = obj.applied;
+    var hiredValue = obj.hired || 0;
+    var appliedValue = obj.applied || 0;
 
-        // Add the values to the sum variables
-        hiredSum += hiredValue;
-        appliedSum += appliedValue;
-    }
+    hiredSum += hiredValue;
+    appliedSum += appliedValue;
+}
+
 
 
     // Output the sum values

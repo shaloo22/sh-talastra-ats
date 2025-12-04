@@ -24,10 +24,8 @@ function CreateCandidate() {
     relevant_exp: "",
     current_org: "",
     previous_org: "",
-    current_ctc_fixed: "",
-    current_ctc_variable: "",
-    accepted_ctc_fixed: "",
-    accepted_ctc_variable: "",
+    current_ctc: "",      
+    accepted_ctc: "",     
     current_location: "",
     preferred_location: "",
     dob: "",
@@ -280,34 +278,28 @@ function CreateCandidate() {
               </div>
             </div> */}
 
-            {/* Current CTC */}
-<div className="flex flex-col w-full mb-4">
-  <label className="font-semibold mb-1">Current CTC (Fixed + Variable) (LPA)</label>
-  <input
-    type="text"
-    placeholder="e.g. 20 + 5"
-    value={formData.current_ctc}
-    onChange={e => setFormData({ ...formData, current_ctc: e.target.value })}
-    className="input input-bordered w-full"
-  />
-  <p className="text-sm text-gray-500 mt-1">Format: Fixed + Variable (LPA)</p>
-</div>
+        <div className="flex flex-col w-full mb-4">
+          <label className="font-semibold mb-1">Current CTC (Fixed + Variable) (LPA)</label>
+          <input
+            type="text"
+            placeholder="e.g. 20 + 5"
+            value={formData.current_ctc}
+            onChange={(e) => setFormData({ ...formData, current_ctc: e.target.value })}
+            className="input input-bordered w-full"
+          />
+        </div>
 
-{/* Accepted CTC */}
-<div className="flex flex-col w-full">
-  <label className="font-semibold mb-1">Accepted CTC (Fixed + Variable) (LPA)</label>
-  <input
-    type="text"
-    placeholder="e.g. 25 + 5"
-    value={formData.accepted_ctc}
-    onChange={e => setFormData({ ...formData, accepted_ctc: e.target.value })}
-    className="input input-bordered w-full"
-  />
-  <p className="text-sm text-gray-500 mt-1">Format: Fixed + Variable (LPA)</p>
-</div>
-
-
-            {/* Locations */}
+        <div className="flex flex-col w-full mb-4">
+          <label className="font-semibold mb-1">Accepted CTC (Fixed + Variable) (LPA)</label>
+          <input
+            type="text"
+            placeholder="e.g. 25 + 5"
+            value={formData.accepted_ctc}
+            onChange={(e) => setFormData({ ...formData, accepted_ctc: e.target.value })}
+            className="input input-bordered w-full"
+          />
+        
+        </div>
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Current Location</label>
               <input
@@ -327,8 +319,6 @@ function CreateCandidate() {
                 className="input input-bordered w-full"
               />
             </div>
-
-            {/* Dates */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">DOB</label>
               <input
@@ -380,7 +370,6 @@ function CreateCandidate() {
               />
             </div>
 
-            {/* Current & Relocate Cities */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Current City</label>
               <input
@@ -411,7 +400,6 @@ function CreateCandidate() {
               />
             </div>
 
-            {/* Mode of Interview */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Mode of Interview</label>
               <select
@@ -452,7 +440,6 @@ function CreateCandidate() {
                                     ))}
                                 </select>
                                 </div>             
-            {/* Status */}
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Status</label>
               <select
@@ -495,9 +482,7 @@ function CreateCandidate() {
                 placeholder="Enter description..."
               />
             </div>
-
           </div>
-
           <div className="mt-12 text-center">
             <button
               onClick={handleSubmit}
@@ -513,5 +498,3 @@ function CreateCandidate() {
   );
 }
 export default CreateCandidate; 
-
-

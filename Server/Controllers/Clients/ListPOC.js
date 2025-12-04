@@ -24,15 +24,15 @@ const POC = require("../../Models/POCModel");
 
 const listPOC = async (req, res) => {
   try {
-    const { status, client_id } = req.body; // add client_id
+    const { status, client_id } = req.body; 
 
     let query = {};
     if (status) query.status = status;
-    if (client_id) query.client_id = client_id; // filter by selected client
+    if (client_id) query.client_id = client_id; 
 
     const pocs = await POC.find(query)
-      .populate("client_id", "company_name") // populate client name
-      .lean();
+      .populate("client_id", "company_name")  // give actual client document
+      .lean(); //plain JavaScript objects convert
 
     return res.status(200).json({ pocs });
   } catch (error) {

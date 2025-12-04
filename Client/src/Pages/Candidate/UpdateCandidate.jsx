@@ -34,7 +34,7 @@ function UpdateCandidate() {
     dob: "",
     notice_period: "",
     offers_pipeline: "",
-    interview_date: "",
+    interview_schedule_date: "",
     last_working_date: "",
     current_city: "",
     relocate_city_p1: "",
@@ -62,7 +62,7 @@ function UpdateCandidate() {
         setFormData({
           ...res.data,
           dob: res.data.dob ? res.data.dob.split("T")[0] : "",
-          interview_date: res.data.interview_date ? res.data.interview_date.split("T")[0] : "",
+          interview_schedule_date: res.data.interview_schedule_date ? res.data.interview_schedule_date.split("T")[0] : "",
           last_working_date: res.data.last_working_date ? res.data.last_working_date.split("T")[0] : "",
         });
       })
@@ -118,13 +118,10 @@ function UpdateCandidate() {
             </div>
           </div>
         )}
-
-        {/* FORM */}
         <div className="w-4/5 max-w-5xl mx-auto mt-10 p-8 bg-white rounded-xl shadow-lg">
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Update Candidate</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            {/* Candidate Name */}
             <div>
               <label className="font-semibold mb-1">Candidate Name</label>
               <input
@@ -135,7 +132,6 @@ function UpdateCandidate() {
               />
             </div>
 
-            {/* Contact Number */}
             <div>
               <label className="font-semibold mb-1">Contact Number</label>
               <input
@@ -146,7 +142,6 @@ function UpdateCandidate() {
               />
             </div>
 
-            {/* Email */}
             <div>
               <label className="font-semibold mb-1">Email ID</label>
               <input
@@ -156,8 +151,6 @@ function UpdateCandidate() {
                 className="input input-bordered w-full"
               />
             </div>
-
-            {/* Total Experience */}
             <div>
               <label className="font-semibold mb-1">Total Experience (Years)</label>
               <input type="number" min="0"
@@ -165,8 +158,6 @@ function UpdateCandidate() {
                 onChange={(e) => setFormData({ ...formData, total_exp: e.target.value })}
                 className="input input-bordered w-full" />
             </div>
-
-            {/* Relevant Experience */}
             <div>
               <label className="font-semibold mb-1">Relevant Experience (Years)</label>
               <input type="number" min="0"
@@ -175,31 +166,45 @@ function UpdateCandidate() {
                 className="input input-bordered w-full" />
             </div>
 
-            {/* Current CTC */}
-            <div>
-              <label className="font-semibold mb-1">Current CTC (Fixed + Variable)</label>
-              <input
-                type="text"
-                placeholder="e.g. 20 + 5"
-                value={formData.current_ctc || ""}
-                onChange={e => setFormData({ ...formData, current_ctc: e.target.value })}
-                className="input input-bordered w-full"
-              />
+            <div className="flex flex-col">
+              <label className="font-semibold mb-1">Current CTC (LPA)</label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  placeholder="Fixed"
+                  value={formData.current_ctc_fixed}
+                  onChange={e => setFormData({ ...formData, current_ctc_fixed: e.target.value })}
+                  className="input input-bordered w-1/2"
+                />
+                <input
+                  type="number"
+                  placeholder="Variable"
+                  value={formData.current_ctc_variable}
+                  onChange={e => setFormData({ ...formData, current_ctc_variable: e.target.value })}
+                  className="input input-bordered w-1/2"
+                />
+              </div>
+            </div>
+              <div className="flex flex-col">
+              <label className="font-semibold mb-1">Accepted CTC (LPA)</label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  placeholder="Fixed"
+                  value={formData.accepted_ctc_fixed}
+                  onChange={e => setFormData({ ...formData, accepted_ctc_fixed: e.target.value })}
+                  className="input input-bordered w-1/2"
+                />
+                <input
+                  type="number"
+                  placeholder="Variable"
+                  value={formData.accepted_ctc_variable}
+                  onChange={e => setFormData({ ...formData, accepted_ctc_variable: e.target.value })}
+                  className="input input-bordered w-1/2"
+                />
+              </div>
             </div>
 
-            {/* Accepted CTC */}
-            <div>
-              <label className="font-semibold mb-1">Accepted CTC (Fixed + Variable)</label>
-              <input
-                type="text"
-                placeholder="e.g. 25 + 5"
-                value={formData.accepted_ctc || ""}
-                onChange={e => setFormData({ ...formData, accepted_ctc: e.target.value })}
-                className="input input-bordered w-full"
-              />
-            </div>
-
-            {/* Current Location */}
             <div>
               <label className="font-semibold mb-1">Current Location</label>
               <input type="text"
@@ -208,7 +213,6 @@ function UpdateCandidate() {
                 className="input input-bordered w-full" />
             </div>
 
-            {/* Preferred Location */}
             <div>
               <label className="font-semibold mb-1">Preferred Location</label>
               <input type="text"
@@ -216,8 +220,6 @@ function UpdateCandidate() {
                 onChange={(e) => setFormData({ ...formData, preferred_location: e.target.value })}
                 className="input input-bordered w-full" />
             </div>
-
-            {/* DOB */}
             <div>
               <label className="font-semibold mb-1">DOB</label>
               <input type="date"
@@ -242,24 +244,21 @@ function UpdateCandidate() {
                 className="input input-bordered w-full" />
             </div>
 
-            {/* Interview Date */}
             <div>
               <label className="font-semibold mb-1">Interview Schedule Date</label>
               <input type="date"
-                value={formData.interview_date || ""}
-                onChange={(e) => setFormData({ ...formData, interview_date: e.target.value })}
+                value={formData.interview_schedule_date || ""}
+                onChange={(e) => setFormData({ ...formData, interview_schedule_date: e.target.value })}
                 className="input input-bordered w-full" />
             </div>
-
-            {/* Last Working Date */}
             <div>
-              <input type="hidden"
+               <label className="font-semibold mb-1">Last Working Date</label>
+              <input type="date"
                 value={formData.last_working_date || ""}
                 onChange={(e) => setFormData({ ...formData, last_working_date: e.target.value })}
+                className="input input-bordered w-full"
               />
             </div>
-
-            {/* Current & Relocate Cities */}
             <div>
               <label className="font-semibold mb-1">Current City</label>
               <input type="text"
@@ -283,8 +282,6 @@ function UpdateCandidate() {
                 onChange={(e) => setFormData({ ...formData, relocate_city_p2: e.target.value })}
                 className="input input-bordered w-full" />
             </div>
-
-            {/* Mode of Interview */}
             <div>
               <label className="font-semibold mb-1">Mode of Interview</label>
               <select className="input input-bordered w-full"
@@ -295,7 +292,6 @@ function UpdateCandidate() {
               </select>
             </div>
 
-            {/* Candidate Status */}
             <div>
               <label className="font-semibold mb-1">Candidate Status</label>
               <select className="input input-bordered w-full"
@@ -309,8 +305,6 @@ function UpdateCandidate() {
                 ))}
               </select>
             </div>
-
-            {/* Follow-up Status */}
             <div>
               <label className="font-semibold mb-1">Follow-up Status</label>
               <select className="input input-bordered w-full"
@@ -324,8 +318,6 @@ function UpdateCandidate() {
                 ))}
               </select>
             </div>
-
-            {/* Status */}
             <div>
               <label className="font-semibold mb-1">Status</label>
               <select className="input input-bordered w-full"
@@ -335,8 +327,6 @@ function UpdateCandidate() {
                 {statusOptions.map((s, i) => <option key={i} value={s}>{s}</option>)}
               </select>
             </div>
-
-            {/* Attach JD */}
             <div className="col-span-2">
               <label className="font-semibold mb-1">Attach JD</label>
               <label
@@ -359,7 +349,6 @@ function UpdateCandidate() {
               </label>
             </div>
 
-            {/* Description */}
             <div className="col-span-2">
               <label className="font-semibold mb-1">Description / Remarks</label>
               <ReactQuill

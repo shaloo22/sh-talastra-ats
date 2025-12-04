@@ -86,17 +86,18 @@ const FilterShowClosedJobs = require('../Controllers/Jobs/FilterShowClosedJobs')
 
 const JobRouter = express.Router();
 
-// Multer setup
+// Multer use
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // ensure this folder exists
+        cb(null, 'uploads/'); 
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname); // unique filename
+        cb(null, Date.now() + '-' + file.originalname); 
     }
 });
 const upload = multer({ storage: storage });
 
+// ---- Create Job ----
 JobRouter.post("/post", upload.array("attach_jd"), async (req, res) => {
     try {
         const files = req.files.map(f => `/uploads/${f.filename}`);
@@ -117,48 +118,89 @@ JobRouter.post("/post", upload.array("attach_jd"), async (req, res) => {
     }
 });
 
-// Other routes
+JobRouter.put("/update-job/:id", upload.array("attach_jd"), async (req, res) => {
+    try {
+        const jobId = req.params.id;
+        const updateData = { ...req.body };
+        let uploadedFiles = [];
+        if (req.files && req.files.length > 0) {
+            uploadedFiles = req.files.map(f => `/uploads/${f.filename}`);
+        }
+        let existingFilesFromFrontend = [];
+        if (req.body.existing_attach_jd) {
+            existingFilesFromFrontend = JSON.parse(req.body.existing_attach_jd);
+        }
+        updateData.attach_jd = [...existingFilesFromFrontend, ...uploadedFiles];
+        const updatedJob = await Job.findByIdAndUpdate(jobId, updateData, { new: true });
+
+        if (!updatedJob) return res.status(404).json({ message: "Job not found" });
+
+        res.status(200).json({
+            message: "Job updated successfully",
+            job: updatedJob
+        });
+    } catch (err) {
+        console.error("Update Job Error:", err);
+        res.status(500).json({ message: err.message });
+    }
+});
+
 JobRouter.post("/get-jobs", GetJob);
 JobRouter.post("/get-jobs/active", FilterShowActiveJobs);
 JobRouter.post("/get-jobs/closed", FilterShowClosedJobs);
 JobRouter.post("/get-jobs/details", GetSelectedJobDescription);
 JobRouter.get("/get-all-jobs", GetAllPostedJobs);
 
-// Job filter
 JobRouter.get("/get-jobs/filter", async (req, res) => {
-    const { pocId, clientId, status } = req.query;
-    const filter = {};
+  const { pocId, clientId, status } = req.query;
+  const filter = {};
 
-    if (status) filter.job_status = status;
-    if (clientId) filter.client = clientId;
-    if (pocId) filter.poc = pocId;
+  if (status) filter.job_status = status;
+  if (clientId) filter.client = clientId;
+  if (pocId) filter.poc = pocId;
 
-    try {
-        const jobs = await Job.find(filter)
-            .populate("client", "company_name")
-            .populate("poc", "poc_name");
+  try {
+    const jobs = await Job.find(filter)
+      .populate("client", "company_name")
+      .populate("poc", "poc_name");
 
-        res.status(200).json(jobs);
-    } catch (err) {
-        console.error("Job filter error:", err);
-        res.status(500).json({ message: err.message });
-    }
+    const formattedJobs = jobs.map(job => {
+      return {
+        ...job.toObject(),
+        _id: job._id.toString(),
+        client: job.client ? { ...job.client.toObject(), _id: job.client._id.toString() } : null,
+        poc: job.poc ? { ...job.poc.toObject(), _id: job.poc._id.toString() } : null
+      };
+    });
+
+    res.status(200).json(formattedJobs);
+  } catch (err) {
+    console.error("Job filter error:", err);
+    res.status(500).json({ message: err.message });
+  }
 });
 
-// Get job by ID
+
 JobRouter.get("/get-job/:id", async (req, res) => {
-    try {
-        const job = await Job.findById(req.params.id)
-            .populate("client", "company_name")
-            .populate("poc", "poc_name");
+  try {
+    const job = await Job.findById(req.params.id)
+      .populate("client", "company_name")
+      .populate("poc", "poc_name");
 
-        if (!job) return res.status(404).json({ message: "Job not found" });
+    if (!job) return res.status(404).json({ message: "Job not found" });
 
-        res.status(200).json({ job });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: "Server Error", error: err.message });
-    }
+    const formattedJob = {
+      ...job.toObject(),
+      _id: job._id.toString(),
+      client: job.client ? { ...job.client.toObject(), _id: job.client._id.toString() } : null,
+      poc: job.poc ? { ...job.poc.toObject(), _id: job.poc._id.toString() } : null
+    };
+
+    res.status(200).json({ job: formattedJob });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
 });
 
 module.exports = JobRouter;

@@ -206,16 +206,21 @@ function CreateJobHeader({ setData }) {
   useEffect(() => {
     axios
       .get("http://localhost:8080/clients/all")
-      .then((res) => setClients(res.data.clients || []))
+      .then((res) => {
+        console.log("Clients fetched:", res.data.clients); // Debug
+        setClients(res.data.clients || []);
+      })
       .catch((err) => console.error("Clients fetch error:", err));
   }, []);
 
-  // Client search
+  // Client search & filter safely
   useEffect(() => {
     setFilteredClients(
-      clients.filter((c) =>
-        c.company_name.toLowerCase().includes(clientSearch.toLowerCase())
-      )
+      clients
+        .filter((c) => c && c.company_name) // remove null/undefined
+        .filter((c) =>
+          c.company_name.toLowerCase().includes(clientSearch.toLowerCase())
+        )
     );
   }, [clientSearch, clients]);
 
@@ -236,6 +241,7 @@ function CreateJobHeader({ setData }) {
     }
   }, [selectedClient]);
 
+  // Fetch Jobs when POC or Client changes
   useEffect(() => {
     if (selectedPOC) {
       axios
@@ -264,13 +270,14 @@ function CreateJobHeader({ setData }) {
 
       <div className="flex flex-wrap gap-4 items-center w-full sm:w-3/4 justify-end">
 
+        {/* Client Dropdown */}
         <div className="relative w-64">
           <button
             onClick={() => setClientDropdownOpen(!clientDropdownOpen)}
             className="w-full border border-gray-300 p-2 rounded-lg flex justify-between items-center bg-white"
           >
             {selectedClient
-              ? clients.find((c) => c._id === selectedClient)?.company_name
+              ? clients.find((c) => c._id === selectedClient)?.company_name || "Select Client"
               : "Select Client"}
             <img
               src={DownImg}
@@ -310,6 +317,7 @@ function CreateJobHeader({ setData }) {
           )}
         </div>
 
+        {/* POC Dropdown */}
         <select
           value={selectedPOC}
           onChange={(e) => setSelectedPOC(e.target.value)}
@@ -324,6 +332,7 @@ function CreateJobHeader({ setData }) {
           ))}
         </select>
 
+        {/* Job Status Dropdown */}
         <div className="relative">
           <button
             onClick={() => setJobStatus(!jobStatus)}
