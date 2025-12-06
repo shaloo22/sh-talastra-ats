@@ -25,6 +25,7 @@ import UpdateCandidate from "./Pages/Candidate/UpdateCandidate";
 import POCHome from "./Pages/POC/POCHome";
 import UpdateJob from "./Pages/CreateJob/UpdateJob";
 import UpdatePOC from "./Pages/POC/UpdatePOC"
+import UpdateClient from "./Pages/Client/UpdateClient"
 
 
 import AppliedCandidateDetails from "./Pages/RecruitmentCycle/AppliedCandidateDetails";
@@ -47,7 +48,7 @@ import Setting_EditProfile from "./Pages/Settings/Setting_EditProfile";
 import ProtectedRoute from "./Components/Common/ProtectedRoute";
 import NotPageFound404 from "./Pages/Dashboard/NotPageFound404";   
 import CandidateDetails from "./Pages/Candidate/CandidateDetails";  
-import CreatePOC from "./Pages/POC/CreatePoc"
+import CreatePOC from "./Pages/POC/CreatePoc";
 
 
 function App() {
@@ -142,6 +143,7 @@ function App() {
         <Route path="/UpdateCandidate/:id" element={<UpdateCandidate />} />
          <Route path="/UpdatePOC/:id" element={<UpdatePOC />} />
         <Route path="/create-candidate/:jobId" element={<CreateCandidate />} />
+        <Route path="/UpdateClient/:id" element={<UpdateClient/>}/>
 
 
         <Route

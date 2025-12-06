@@ -4,10 +4,6 @@ import { useNavigate } from "react-router-dom";
 function ShowPocElement({ data }) {
   const navigate = useNavigate();
 
-  const handlePOCClick = (id) => {
-    navigate(`/POCHome/${id}`);
-  };
-
   const handleEditClick = (e, poc) => {
     e.stopPropagation(); 
     navigate(`/updatePOC/${poc._id}`); 
@@ -28,7 +24,7 @@ function ShowPocElement({ data }) {
             <th className="py-3 px-5 text-left font-semibold text-gray-700">Contact</th>
             <th className="py-3 px-5 text-left font-semibold text-gray-700">Designation</th>
             <th className="py-3 px-5 text-left font-semibold text-gray-700">Status</th>
-            <th className="py-3 px-5 text-left font-semibold text-gray-700">Actions</th>
+            <th className="py-3 px-5 text-left font-semibold text-gray-700">Update</th>
           </tr>
         </thead>
         <tbody>
@@ -59,7 +55,7 @@ function ShowPocElement({ data }) {
                   onClick={(e) => handleEditClick(e, poc)}
                   className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-black"
                 >
-                  EdidPOC
+                  Edit-POC
                 </button>
               </td>
             </tr>

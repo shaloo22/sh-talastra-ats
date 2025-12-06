@@ -53,8 +53,6 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const pocModel = require("../Models/POCModel");
-
-// Get POCs by client
 router.post("/list", async (req, res) => {
   try {
     const { client_id } = req.body;

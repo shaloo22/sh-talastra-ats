@@ -1,10 +1,18 @@
 
 import React from "react";
 import { MapPinIcon, GlobeAltIcon } from "@heroicons/react/24/solid";
+import { useNavigate } from "react-router-dom";
 
 function ShowClientElement({ data = [], onClientClick }) {
+const nevigate = useNavigate()
+
   if (!data || data.length === 0) {
     return <p className="text-gray-500">No clients available.</p>;
+  }
+
+  const handleEditClick = (e, client) => {
+    e.stopPropagation();
+    nevigate(`/UpdateClient/${client._id}`)
   }
   return (
     <div className="overflow-x-auto w-full mt-8">
@@ -25,6 +33,9 @@ function ShowClientElement({ data = [], onClientClick }) {
             </th>
             <th className="py-3 px-5 border-b text-sm font-semibold text-gray-700">
               Status
+            </th>
+            <th className="py-3 px-5 border-b  text-sm font-semibold text-gray-700">
+              Update
             </th>
           </tr>
         </thead>
@@ -65,6 +76,14 @@ function ShowClientElement({ data = [], onClientClick }) {
                 <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full ">
                   Active
                 </span>
+              </td>
+               <td className="px-4 py-2 border-b  text-center">
+                <button
+                  onClick={(e) => handleEditClick(e, client)}
+                  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-black"
+                >
+                  Edit-Client
+                </button>
               </td>
             </tr>
           ))}
