@@ -42,24 +42,25 @@ function CandidateDetails() {
           <div className="grid grid-cols-3 text-sm">
           
             <div className="p-2 border-r border-b">
-              <p className="text-gray-500 text-xs">Job Position</p>
-              <p className="font-medium text-gray-900">
-                {candidate.job_position || candidate.job_id?.position}
-              </p>
-            </div>
-            <div className="p-2 border-b">
-              <p className="text-gray-500 text-xs">Client</p>
-              <p className="font-medium text-gray-900">
-                {candidate.job_id?.client?.company_name || "—"}
-              </p>
-            </div>
+  <p className="text-gray-500 text-xs">Job Position</p>
+ <p className="font-medium text-gray-900">
+  {candidate.job_id?.position || "—"}
+</p>
+</div>
 
-            <div className="p-2 border-r border-b">
-              <p className="text-gray-500 text-xs">POC</p>
-              <p className="font-medium text-gray-900">
-                {candidate.job_id?.poc?.poc_name || "—"}
-              </p>
-            </div>
+<div className="p-2 border-b">
+  <p className="text-gray-500 text-xs">Client</p>
+  <p className="font-medium text-gray-900">
+    {candidate.job_id?.client?.company_name || "—"}
+  </p>
+</div>
+
+<div className="p-2 border-r border-b">
+  <p className="text-gray-500 text-xs">POC</p>
+  <p className="font-medium text-gray-900">
+    {candidate.job_id?.poc?.poc_name || "—"}
+  </p>
+</div>
 
             <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Candidate Name</p>
@@ -285,21 +286,19 @@ function CandidateDetails() {
           })}
         </ul>
       ) : (
-        <a
-          href={`http://localhost:8080${candidate.cv_attachment}`}
-          target="_blank"
-          rel="noreferrer"
-          className="text-blue-600 hover:text-blue-800"
-        >
-          {candidate.cv_attachment.split("/").pop()}
-        </a>
+       <a
+  href={`http://localhost:8080/uploads/cv/${candidate.cv_attachment.split("/").pop()}`}
+  target="_blank"
+  rel="noreferrer"
+>
+  {candidate.cv_attachment.split("/").pop()}
+</a>
       )
     ) : (
       <p className="text-gray-500 text-xs">No Attachments</p>
     )}
   </div>
 </div>
-
 </div>
         <div className="border border-gray-400 rounded-lg">
           <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">

@@ -101,26 +101,68 @@ function UpdateCandidate() {
       <div className="w-full min-h-screen">
         <TopNavigationBar title={"Update Candidate"} />
 
-        {apiFetched && (
-          <div className="fixed inset-0 flex justify-center items-center z-50">
-            <div className="absolute bg-black opacity-50 inset-0" />
-            <div className="w-full max-w-lg p-6 mx-auto rounded-xl shadow-lg bg-white z-10">
-              <Confetti width={300} height={200} />
-              <div className="text-center p-4">
-                <h2 className="text-xl font-bold py-4">Candidate Updated Successfully</h2>
-                <button
-                  onClick={() => navigate("/candidates")}
-                  className="mt-4 bg-gray-900 px-5 py-2 text-white rounded-full hover:bg-black"
-                >
-                  Continue...
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+           {apiFetched && (
+               <div className="fixed inset-0 flex justify-center items-center z-50">
+                 <div className="absolute bg-black opacity-50 inset-0" />
+                 <div className="w-full max-w-lg p-6 relative rounded-xl shadow-lg bg-white">
+                   <Confetti width={300} height={200} />
+                   <div className="text-center p-4">
+                     <svg
+                       fill="rgb(1,160,20)"
+                       className="w-16 h-16 m-auto"
+                       viewBox="0 0 24 24"
+                     >
+                       <path d="M12,0A12,12,0,1,0,24,12,12,12,0,0,0,12,0ZM11.52,17L6,12.79l1.83-2.37L11.14,13l4.51-5.08,2.24,2Z" />
+                     </svg>
+                     <h2 className="text-xl font-bold py-4">Updated Successfully</h2>
+                     <p className="text-sm text-gray-500 px-8">
+                       POC has been updated successfully.
+                     </p>
+                     <button
+                       onClick={() => navigate("/pocHome")}
+                       className="mt-4 text-lg bg-gray-900 px-5 py-2 text-white rounded-full hover:bg-black"
+                     >
+                       Continue...
+                     </button>
+                   </div>
+                 </div>
+               </div>
+             )}
+             
         <div className="w-4/5 max-w-5xl mx-auto mt-10 p-8 bg-white rounded-xl shadow-lg">
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Update Candidate</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+<div>
+  <label>Job</label>
+  <input
+    type="text"
+    value={formData.job_id?.position || formData.job_position || ""}
+    className="input input-bordered w-full bg-gray-200"
+    readOnly
+  />
+</div>
+
+<div>
+  <label>Client</label>
+  <input
+    type="text"
+    value={formData.job_id?.client?.company_name || formData.client || ""}
+    className="input input-bordered w-full bg-gray-200"
+    readOnly
+  />
+</div>
+
+<div>
+  <label>POC</label>
+  <input
+    type="text"
+    value={formData.job_id?.poc?.poc_name || formData.poc || ""}
+    className="input input-bordered w-full bg-gray-200"
+    readOnly
+  />
+</div>
+
 
             <div>
               <label className="font-semibold mb-1">Candidate Name</label>

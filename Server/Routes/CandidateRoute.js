@@ -77,18 +77,17 @@ router.post("/get-single", async (req, res) => {
 
     if (!_id) return res.status(400).json({ message: "Candidate ID required" });
 
-    const candidate = await Candidate.findById(_id)
-  .populate("client", "company_name")
-  .populate("poc", "poc_name")
-  .populate({
-    path: "job_id",
-    select: "position client poc",
-    populate: [
-      { path: "client", select: "company_name" },
-      { path: "poc", select: "poc_name" },
-    ],
-  })
-  .lean();
+  //  const candidate = await Candidate.findById(_id)
+  // .populate({
+  //   path: "job_id",
+  //   select: "position client poc",
+  //   populate: [
+  //     { path: "client", select: "company_name" },
+  //     { path: "poc", select: "poc_name" },
+  //   ],
+  // })
+  // .lean();
+
 
     if (!candidate) return res.status(404).json({ message: "Candidate not found" });
 
