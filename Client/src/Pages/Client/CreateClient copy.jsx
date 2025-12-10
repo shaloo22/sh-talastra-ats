@@ -22,7 +22,7 @@ function CreateClient() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
-  // ✅ Validation Schema
+  //  Validation Schema
   const clientSchema = object({
     company_name: string()
       .max(20, "*Keep it short")
@@ -34,7 +34,6 @@ function CreateClient() {
     brief: string().max(150, "*Brief should be short"),
   });
 
-  // ✅ Initial Values
   const values = {
     company_name: "",
     location: "",
@@ -42,9 +41,8 @@ function CreateClient() {
     brief: "",
   };
 
-  // ✅ Function to handle form submission
   const handleClient = async (inputData) => {
-    console.log("Data being sent:", inputData); // 🧠 for debugging
+    console.log("Data being sent:", inputData); 
 
     const options = {
       url: "http://localhost:8080/client",
@@ -76,7 +74,6 @@ function CreateClient() {
       });
   };
 
-  // ✅ Formik Setup
   const formik = useFormik({
     initialValues: values,
     validationSchema: clientSchema,
@@ -97,7 +94,6 @@ function CreateClient() {
             Become A Part Of TalAstra
           </h2>
 
-          {/* ✅ Success Modal */}
           <Modal
             closeOnOverlayClick={false}
             isOpen={isOpen}
@@ -123,10 +119,9 @@ function CreateClient() {
             </ModalContent>
           </Modal>
 
-          {/* ✅ Form Starts */}
           <form onSubmit={formik.handleSubmit}>
             <div className="py-3 px-8">
-              {/* Company Name */}
+         
               <div className="flex mb-2">
                 <div className="w-1/2 mr-1">
                   <label className="label line1 block" htmlFor="company_name">
@@ -148,7 +143,6 @@ function CreateClient() {
                 </div>
               </div>
 
-              {/* Location */}
               <div className="flex mb-2">
                 <div className="w-1/2 mr-1">
                   <label className="label block line1" htmlFor="location">
@@ -172,7 +166,7 @@ function CreateClient() {
                 </div>
               </div>
 
-              {/* Website */}
+        
               <div className="mb-2">
                 <label className="label line1">Website</label>
                 <input
@@ -192,7 +186,6 @@ function CreateClient() {
                 ) : null}
               </div>
 
-              {/* ✅ Brief Field Fixed */}
               <div className="mb-4">
                 <label className="label line1" htmlFor="brief">
                   Brief
@@ -212,7 +205,7 @@ function CreateClient() {
               </div>
             </div>
 
-            {/* Error Message */}
+   
             {error && (
               <div className="border-2 border-blue-700 bg-blue-700 text-white rounded-lg p-2 w-4/5 mt-1 ml-12 m-auto block">
                 <img src={ErrorLogo} width={20} alt="" className="inline mr-2" />

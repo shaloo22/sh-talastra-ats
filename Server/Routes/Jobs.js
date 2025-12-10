@@ -77,6 +77,7 @@ const multer = require('multer');
 const Job = require('../Models/JobModel');
 const Client = require('../Models/ClientModel');
 const POC = require('../Models/POCModel');
+const mongoose = require("mongoose");
 
 const GetAllPostedJobs = require('../Controllers/Jobs/GetAllPostedJobs');
 const GetJob = require('../Controllers/Jobs/GetJobs');
@@ -86,7 +87,7 @@ const FilterShowClosedJobs = require('../Controllers/Jobs/FilterShowClosedJobs')
 
 const JobRouter = express.Router();
 
-// Multer use
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/'); 
@@ -97,7 +98,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// ---- Create Job ----
 JobRouter.post("/post", upload.array("attach_jd"), async (req, res) => {
     try {
         const files = req.files.map(f => `/uploads/${f.filename}`);
@@ -152,28 +152,19 @@ JobRouter.post("/get-jobs/details", GetSelectedJobDescription);
 JobRouter.get("/get-all-jobs", GetAllPostedJobs);
 
 JobRouter.get("/get-jobs/filter", async (req, res) => {
-  const { pocId, clientId, status } = req.query;
+  const { poc_Id, client_Id } = req.query;
   const filter = {};
 
-  if (status) filter.job_status = status;
-  if (clientId) filter.client = clientId;
-  if (pocId) filter.poc = pocId;
+
+  if (client_Id) filter.client = mongoose.Types.ObjectId(client_Id);
+  if (poc_Id) filter.poc = mongoose.Types.ObjectId(poc_Id);
 
   try {
     const jobs = await Job.find(filter)
       .populate("client", "company_name")
       .populate("poc", "poc_name");
 
-    const formattedJobs = jobs.map(job => {
-      return {
-        ...job.toObject(),
-        _id: job._id.toString(),
-        client: job.client ? { ...job.client.toObject(), _id: job.client._id.toString() } : null,
-        poc: job.poc ? { ...job.poc.toObject(), _id: job.poc._id.toString() } : null
-      };
-    });
-
-    res.status(200).json(formattedJobs);
+    res.status(200).json(jobs);
   } catch (err) {
     console.error("Job filter error:", err);
     res.status(500).json({ message: err.message });
@@ -181,9 +172,12 @@ JobRouter.get("/get-jobs/filter", async (req, res) => {
 });
 
 
+
 JobRouter.get("/get-job/:id", async (req, res) => {
   try {
-    const job = await Job.findById(req.params.id)
+    const jobId = req.params.id;
+
+    const job = await Job.findById(jobId)
       .populate("client", "company_name")
       .populate("poc", "poc_name");
 
@@ -198,9 +192,10 @@ JobRouter.get("/get-job/:id", async (req, res) => {
 
     res.status(200).json({ job: formattedJob });
   } catch (err) {
-    console.error(err);
+    console.error("Get Job Error:", err);
     res.status(500).json({ message: "Server Error", error: err.message });
   }
 });
+
 
 module.exports = JobRouter;

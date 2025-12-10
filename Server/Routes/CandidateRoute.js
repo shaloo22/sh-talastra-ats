@@ -11,7 +11,7 @@ const UpdateCandidate = require("../Controllers/Candidate/UpdateCandidate");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, "uploads/cv");
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);
@@ -22,8 +22,8 @@ const upload = multer({ storage });
 router.post(
   '/create',
   upload.fields([
-    { name: 'cv_attachment', maxCount: 1 },  
-    { name: 'jd_attachments', maxCount: 5 } 
+    { name: 'cv_attachment', maxCount: 1 },
+    { name: 'jd_attachments', maxCount: 5 }
   ]),
   CreateCandidate
 );
@@ -34,14 +34,50 @@ router.post("/get-single", GetCandidateById);
 
 router.post("/filter", async (req, res) => {
   try {
-    const { job_id, client_id, poc_id } = req.body;
+    let { client_id, poc_id, job_id } = req.body;
 
-    if (!job_id) return res.status(400).json({ message: "Job ID is required" });
 
-    const query = { job_id };
-    if (client_id) query.client_id = client_id;
-    if (poc_id) query.poc_id = poc_id;
-const candidates = await Candidate.find(query)
+    if (!client_id || !poc_id || !job_id) {
+      return res
+        .status(400)
+        .json({ message: "Client, POC, and Job are required" });
+    }
+
+    const filter = {};
+    if (mongoose.Types.ObjectId.isValid(client_id)) filter.client = client_id;
+    if (mongoose.Types.ObjectId.isValid(poc_id)) filter.poc = poc_id;
+    if (mongoose.Types.ObjectId.isValid(job_id)) filter.job_id = job_id;
+
+    const candidates = await Candidate.find(filter)
+      .populate("client", "company_name")
+      .populate("poc", "poc_name")
+      .populate("job_id", "position")
+      .lean();
+
+    const formatted = candidates.map((c) => ({
+      _id: c._id,
+      candidate_name: c.candidate_name,
+      client_name: c.client?.company_name || "-",
+      poc_name: c.poc?.poc_name || "-",
+      job_position: c.job_id?.position || "-",
+      email: c.email || "-",
+      contact_num: c.contact_num || "-",
+    }));
+
+    res.status(200).json(formatted);
+  } catch (err) {
+    console.error("Error fetching candidates:", err);
+    res.status(500).json({ message: "Failed to fetch candidates" });
+  }
+});
+
+router.post("/get-single", async (req, res) => {
+  try {
+    const { _id } = req.body;
+
+    if (!_id) return res.status(400).json({ message: "Candidate ID required" });
+
+    const candidate = await Candidate.findById(_id)
   .populate("client", "company_name")
   .populate("poc", "poc_name")
   .populate({
@@ -49,17 +85,30 @@ const candidates = await Candidate.find(query)
     select: "position client poc",
     populate: [
       { path: "client", select: "company_name" },
-      { path: "poc", select: "poc_name" }
-    ]
+      { path: "poc", select: "poc_name" },
+    ],
   })
   .lean();
 
+    if (!candidate) return res.status(404).json({ message: "Candidate not found" });
 
-    res.status(200).json(candidates);
+   const formatted = {
+  ...candidate,
+  _id: candidate._id.toString(),
+  job_position: candidate.job_id?.position || "-",
+  client_name: candidate.client?.company_name || candidate.job_id?.client?.company_name || "-",
+  poc_name: candidate.poc?.poc_name || candidate.job_id?.poc?.poc_name || "-",
+};
+
+    res.status(200).json(formatted);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to fetch candidates" });
+    console.error("Error fetching single candidate:", err);
+    res.status(500).json({ message: "Failed to fetch candidate" });
   }
 });
+
+
+
+
 
 module.exports = router;

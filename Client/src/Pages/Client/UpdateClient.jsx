@@ -62,6 +62,9 @@ function UpdateClient() {
   return (
     <div className="flex min-h-screen bg-background">
       <div className="m-auto flex flex-col sm:flex-row w-full max-w-6xl bg-white shadow-lg rounded-lg overflow-hidden">
+         <div className="w-2/5 shadows hidden sm:block">
+          <img className="h-full w-full" src="" alt="" />
+        </div>
      
         {apiFetched && (
           <div className="fixed inset-0 flex justify-center items-center z-50">
@@ -96,8 +99,8 @@ function UpdateClient() {
           <h2 className="text-center heading2b mt-5 sm:mt-5 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-black">
             Update Client
           </h2>
-          <form onSubmit={formik.handleSubmit} className="py-3 px-8">
-            <div className="mb-3">
+          <form onSubmit={formik.handleSubmit}>
+            <div className="py-3">
               <label className="label block line1">Client Name</label>
               <input
                 type="text"

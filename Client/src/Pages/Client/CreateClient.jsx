@@ -40,9 +40,8 @@ function CreateClient() {
     brief: "",
   };
 
-  //  Function to handle form submission
   const handleClient = async (inputData) => {
-    console.log("Data being sent:", inputData); // 🧠 for debugging
+    console.log("Data being sent:", inputData);
 
     const options = {
       url: "http://localhost:8080/client",
@@ -121,7 +120,6 @@ function CreateClient() {
             </ModalContent>
           </Modal>
 
-          {/*  Form Starts */}
           <form onSubmit={formik.handleSubmit}>
             <div className="py-3 px-8">
               {/* Company Name */}

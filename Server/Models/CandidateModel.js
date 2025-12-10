@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const CandidateSchema = new mongoose.Schema({
-    job_id: { type: mongoose.Schema.Types.ObjectId, ref: "Job" },
+     job_id: { type: mongoose.Schema.Types.ObjectId, ref: "Job", required: true },
+  client: { type: mongoose.Schema.Types.ObjectId, ref: "Client", required: true },
+  poc: { type: mongoose.Schema.Types.ObjectId, ref: "POC", required: true },
     candidate_name: {
         type: String,
         required: true,
@@ -29,11 +31,13 @@ const CandidateSchema = new mongoose.Schema({
         type: String,
     },
     current_ctc: {
-        type: String,
-    },
+    type: String,  
+    default: ""
+},
     accepted_ctc: {
-        type: String,
-    },
+    type: String,   
+    default: ""
+},
     current_location: {
         type: String,
     },
@@ -49,7 +53,7 @@ const CandidateSchema = new mongoose.Schema({
     offers_pipeline: {
         type: String,
     },
-    interview_schedule_date: {
+    interview_date: {
         type: String,
     },
     last_working_date: {
@@ -82,10 +86,8 @@ const CandidateSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-   poc: { type: mongoose.Schema.Types.ObjectId, ref: "POC" },
-   client: { type: mongoose.Schema.Types.ObjectId, ref: "Client" },
+  
    cv_attachment: { type: String, default: "" },
-  jd_attachments: { type: [String], default: [] },
 }, { timestamps: true });
 
 CandidateSchema.set("toJSON", {

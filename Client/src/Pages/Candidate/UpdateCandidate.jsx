@@ -166,44 +166,28 @@ function UpdateCandidate() {
                 className="input input-bordered w-full" />
             </div>
 
-            <div className="flex flex-col">
-              <label className="font-semibold mb-1">Current CTC (LPA)</label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  placeholder="Fixed"
-                  value={formData.current_ctc_fixed}
-                  onChange={e => setFormData({ ...formData, current_ctc_fixed: e.target.value })}
-                  className="input input-bordered w-1/2"
-                />
-                <input
-                  type="number"
-                  placeholder="Variable"
-                  value={formData.current_ctc_variable}
-                  onChange={e => setFormData({ ...formData, current_ctc_variable: e.target.value })}
-                  className="input input-bordered w-1/2"
-                />
-              </div>
-            </div>
-              <div className="flex flex-col">
-              <label className="font-semibold mb-1">Accepted CTC (LPA)</label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  placeholder="Fixed"
-                  value={formData.accepted_ctc_fixed}
-                  onChange={e => setFormData({ ...formData, accepted_ctc_fixed: e.target.value })}
-                  className="input input-bordered w-1/2"
-                />
-                <input
-                  type="number"
-                  placeholder="Variable"
-                  value={formData.accepted_ctc_variable}
-                  onChange={e => setFormData({ ...formData, accepted_ctc_variable: e.target.value })}
-                  className="input input-bordered w-1/2"
-                />
-              </div>
-            </div>
+             <div className="flex flex-col w-full mb-4">
+          <label className="font-semibold mb-1">Current CTC (Fixed + Variable) (LPA)</label>
+          <input
+            type="text"
+            placeholder="e.g. 20 + 5"
+            value={formData.current_ctc}
+            onChange={(e) => setFormData({ ...formData, current_ctc: e.target.value })}
+            className="input input-bordered w-full"
+          />
+        </div>
+
+        <div className="flex flex-col w-full mb-4">
+          <label className="font-semibold mb-1">Accepted CTC (Fixed + Variable) (LPA)</label>
+          <input
+            type="text"
+            placeholder="e.g. 25 + 5"
+            value={formData.accepted_ctc}
+            onChange={(e) => setFormData({ ...formData, accepted_ctc: e.target.value })}
+            className="input input-bordered w-full"
+          />
+        
+        </div>
 
             <div>
               <label className="font-semibold mb-1">Current Location</label>
@@ -327,26 +311,26 @@ function UpdateCandidate() {
                 {statusOptions.map((s, i) => <option key={i} value={s}>{s}</option>)}
               </select>
             </div>
-            <div className="col-span-2">
-              <label className="font-semibold mb-1">Attach JD</label>
-              <label
-                htmlFor="jdUpload"
-                className="w-full p-3 border-2 border-dotted border-gray-200 rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200 transition flex flex-col items-center"
-              >
-                <p>
-                  {jdFiles.length > 0
-                    ? jdFiles.map((f) => f.name).join(", ")
-                    : "Click to attach JD"}
-                </p>
-                <input
-                  id="jdUpload"
-                  type="file"
-                  multiple
-                  accept=".pdf,.doc,.docx"
-                  onChange={(e) => setJdFiles(Array.from(e.target.files))}
-                  className="hidden"
-                />
-              </label>
+          <div className="col-span-2">
+              <label className="font-semibold mb-1">Attach CV</label>
+              {formData.cv_attachment && !cvFile && (
+                <div className="mb-2">
+                  <a
+                    href={`http://localhost:8080${formData.cv_attachment}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 hover:text-blue-800 underline"
+                  >
+                    {formData.cv_attachment.split("/").pop()}
+                  </a>
+                </div>
+              )}
+              <input
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => setCvFile(e.target.files[0])}
+                className="input input-bordered w-full"
+              />
             </div>
 
             <div className="col-span-2">

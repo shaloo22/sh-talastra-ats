@@ -118,15 +118,14 @@ function CandidateDetails() {
                 {candidate.offers_pipeline || "—"}
               </p>
             </div>
-           <div className="p-2 border-b">
+            <div className="p-2 border-b">
   <p className="text-gray-500 text-xs">Interview Schedule Date</p>
   <p className="font-medium text-gray-900">
-    {candidate.interview_schedule_date
-      ? new Date(candidate.interview_schedule_date).toLocaleDateString()
+    {candidate.interview_date
+      ? new Date(candidate.interview_date).toLocaleDateString()
       : "—"}
   </p>
 </div>
-        
             <div className="p-2 border-t border-gray-200">
               <p className="text-gray-500 text-xs">Last Working Date</p>
              <p className="font-medium text-gray-900">
@@ -171,20 +170,16 @@ function CandidateDetails() {
                 Current CTC (Fixed + Variable)
               </p>
               <p className="font-medium text-gray-900">
-                {`${candidate.current_ctc_fixed || 0} + ${
-                  candidate.current_ctc_variable || 0
-                }`}
-              </p>
+              {candidate.current_ctc || "—"}
+            </p>
             </div>
             <div className="p-2 border-b">
               <p className="text-gray-500 text-xs">
                 Accepted CTC (Fixed + Variable)
               </p>
-              <p className="font-medium text-gray-900">
-                {`${candidate.accepted_ctc_fixed || 0} + ${
-                  candidate.accepted_ctc_variable || 0
-                }`}
-              </p>
+                <p className="font-medium text-gray-900">
+              {candidate.accepted_ctc || "—"}
+            </p>
             </div>
             <div className="p-2 border-r">
               <p className="text-gray-500 text-xs">
@@ -255,37 +250,57 @@ function CandidateDetails() {
     Attachments
   </div>
 
-  <div className="p-3 text-sm">
-    {candidate.cv_attachment && candidate.cv_attachment.length > 0 ? (
-      <ul className="list-disc list-inside text-blue-600">
-        {candidate.cv_attachment.map((file, index) => {
-          const url = file.url
-            ? file.url.startsWith("http")
-              ? file.url
-              : `http://localhost:8080${file.url}`
-            : `http://localhost:8080/uploads/cv/${file.filename || "file"}`;
+<div className="border border-gray-400 rounded-lg">
+  <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
+    Attachments
+  </div>
 
-          return (
-            <li key={index}>
-              <a
-                href={url}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-blue-800"
-              >
-                {file.filename || `Attachment ${index + 1}`}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+  <div className="p-3 text-sm">
+    {candidate.cv_attachment ? (
+      Array.isArray(candidate.cv_attachment) ? (
+        <ul className="list-disc list-inside text-blue-600">
+          {candidate.cv_attachment.map((file, index) => {
+            const url = file.url
+              ? file.url.startsWith("http")
+                ? file.url
+                : `http://localhost:8080${file.url}`
+              : `http://localhost:8080${file}`;
+            const filename = file.filename
+              ? file.filename
+              : typeof file === "string"
+              ? file.split("/").pop()
+              : `Attachment ${index + 1}`;
+            return (
+              <li key={index}>
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-blue-800"
+                >
+                  {filename}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <a
+          href={`http://localhost:8080${candidate.cv_attachment}`}
+          target="_blank"
+          rel="noreferrer"
+          className="text-blue-600 hover:text-blue-800"
+        >
+          {candidate.cv_attachment.split("/").pop()}
+        </a>
+      )
     ) : (
       <p className="text-gray-500 text-xs">No Attachments</p>
     )}
   </div>
 </div>
 
-
+</div>
         <div className="border border-gray-400 rounded-lg">
           <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
             Remarks / Description

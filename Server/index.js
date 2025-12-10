@@ -19,6 +19,7 @@ const GetClient = require("./Routes/GetClient");
 const GetPOCByClient = require('./Routes/GetPOCByClient.js');
 
 
+
 const CandidateRouter = require("./Routes/CandidateRoute");
 const StatusRouter = require("./Routes/StatusRoute");
 const FollowupRouter = require("./Routes/FollowupRoute");
@@ -36,6 +37,8 @@ mongoose.set('strictQuery', false);
 connection();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads/cv", express.static(path.join(__dirname, "uploads/cv")));
+
 
 app.use('/clients', GetClient);
 app.use('/poc', GetPOCByClient);
