@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 const CandidateSchema = new mongoose.Schema({
-     job_id: { type: mongoose.Schema.Types.ObjectId, ref: "Job", required: true },
-  client: { type: mongoose.Schema.Types.ObjectId, ref: "Client", required: true },
+    job_id: { type: mongoose.Schema.Types.ObjectId,
+         ref: "Job", required: 
+         true },
+  client: 
+  { type: mongoose.Schema.Types.ObjectId, 
+    ref: "Client", required: true },
   poc: { type: mongoose.Schema.Types.ObjectId, ref: "POC", required: true },
     candidate_name: {
         type: String,

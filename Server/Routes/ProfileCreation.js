@@ -7,7 +7,6 @@ const AuthMiddleware = require('../Middleware/AuthMiddleware');
 const VerifyToken = require('../Middleware/VerifyToken');
 const ProfileSetup = express.Router();
 
-//* ** MULTER CONFIGURATION  ** */
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -32,8 +31,6 @@ const multerFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage: storage, multerFilter });
-
-// *******************************************************************
 
 
 // -> MAIN CODE

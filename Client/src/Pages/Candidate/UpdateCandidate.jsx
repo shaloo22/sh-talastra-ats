@@ -34,7 +34,7 @@ function UpdateCandidate() {
     dob: "",
     notice_period: "",
     offers_pipeline: "",
-    interview_schedule_date: "",
+    interview_date: "",
     last_working_date: "",
     current_city: "",
     relocate_city_p1: "",
@@ -62,7 +62,7 @@ function UpdateCandidate() {
         setFormData({
           ...res.data,
           dob: res.data.dob ? res.data.dob.split("T")[0] : "",
-          interview_schedule_date: res.data.interview_schedule_date ? res.data.interview_schedule_date.split("T")[0] : "",
+          interview_date: res.data.interview_date ? res.data.interview_date.split("T")[0] : "",
           last_working_date: res.data.last_working_date ? res.data.last_working_date.split("T")[0] : "",
         });
       })
@@ -275,8 +275,8 @@ if (cvFile) {
             <div>
               <label className="font-semibold mb-1">Interview Schedule Date</label>
               <input type="date"
-                value={formData.interview_schedule_date || ""}
-                onChange={(e) => setFormData({ ...formData, interview_schedule_date: e.target.value })}
+                value={formData.interview_date || ""}
+                onChange={(e) => setFormData({ ...formData, interview_date: e.target.value })}
                 className="input input-bordered w-full" />
             </div>
             <div>

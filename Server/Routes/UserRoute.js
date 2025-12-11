@@ -3,7 +3,6 @@ const userModel = require("../Models/User_Model.js");
 
 const UserRouter = express.Router();
 
-// GET all users (optional filter by designation)
 UserRouter.get("/users", async (req, res) => {
   try {
     const { designation } = req.query;
@@ -21,7 +20,6 @@ UserRouter.get("/users", async (req, res) => {
   }
 });
 
-// GET all managers
 UserRouter.get("/users/managers", async (req, res) => {
   try {
     const managers = await userModel.find({ designation: "Manager" })
@@ -34,7 +32,6 @@ UserRouter.get("/users/managers", async (req, res) => {
   }
 });
 
-// GET all verified recruiters
 UserRouter.get("/users/recruiters", async (req, res) => {
   try {
     const recruiters = await userModel.find({ designation: "Recruiter", isVerified: true })

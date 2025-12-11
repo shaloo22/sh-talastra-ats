@@ -85,4 +85,6 @@ const UpdateCandidate = async (req, res) => {
   }
 };
 
+
+
 module.exports = UpdateCandidate;

@@ -120,13 +120,13 @@ function CandidateDetails() {
               </p>
             </div>
             <div className="p-2 border-b">
-  <p className="text-gray-500 text-xs">Interview Schedule Date</p>
-  <p className="font-medium text-gray-900">
-    {candidate.interview_date
-      ? new Date(candidate.interview_date).toLocaleDateString()
-      : "—"}
-  </p>
-</div>
+              <p className="text-gray-500 text-xs">Interview Schedule Date</p>
+              <p className="font-medium text-gray-900">
+               {candidate.interview_date
+                ? new Date(candidate.interview_date).toLocaleDateString()
+                 : "—"}
+             </p>
+          </div>
             <div className="p-2 border-t border-gray-200">
               <p className="text-gray-500 text-xs">Last Working Date</p>
              <p className="font-medium text-gray-900">
@@ -241,20 +241,16 @@ function CandidateDetails() {
                 {candidate.relocate_city_p2}
               </p>
             </div>
-
-          
+     
           </div>
         </div>
-
 <div className="border border-gray-400 rounded-lg">
   <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-    attach_jd
+    CV Attachment
   </div>
 
 <div className="border border-gray-400 rounded-lg">
-  <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-    attach_jd
-  </div>
+  
 
   <div className="p-3 text-sm">
     {candidate.cv_attachment ? (
@@ -295,14 +291,14 @@ function CandidateDetails() {
 </a>
       )
     ) : (
-      <p className="text-gray-500 text-xs">No attach_jd</p>
+      <p className="text-gray-500 text-xs">No Attachment</p>
     )}
   </div>
 </div>
 </div>
         <div className="border border-gray-400 rounded-lg">
           <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-            Remarks / Description
+             Description
           </div>
 
           <div

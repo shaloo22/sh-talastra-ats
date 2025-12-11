@@ -74,7 +74,7 @@ router.post("/filter", async (req, res) => {
 router.post("/get-single", async (req, res) => {
   try {
     const { _id } = req.body;
-
+    
     if (!_id) return res.status(400).json({ message: "Candidate ID required" });
 
 
@@ -94,5 +94,6 @@ router.post("/get-single", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch candidate" });
   }
 });
+
 
 module.exports = router;

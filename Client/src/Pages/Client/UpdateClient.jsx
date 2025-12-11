@@ -34,7 +34,7 @@ function UpdateClient() {
     onSubmit: async (values) => {
       try {
         const res = await axios.put(`http://localhost:8080/client/update/${id}`, values);
-        if (res.status === 200) setAPIFetched(true); // trigger popup
+        if (res.status === 200) setAPIFetched(true); 
       } catch (err) {
         setError(err.response?.data?.message || "Error updating client");
       }

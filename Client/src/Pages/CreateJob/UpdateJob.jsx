@@ -136,9 +136,7 @@ const handleUpdate = async () => {
   const filteredClients = clients.filter((c) =>
     c.company_name.toLowerCase().includes(clientSearch.toLowerCase())
   );
-
   
-
   return (
     <div className="flex bg-gray-50 min-h-screen">
       <div className="hidden sm:block w-2/12 bg-white h-screen">

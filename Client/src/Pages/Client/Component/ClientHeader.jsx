@@ -116,7 +116,6 @@ function ClientHeader({ setData }) {
 
   return (
     <div className="flex  w-10/12  m-auto justify-center text-center items-center  topNavigationBoxShadow bg-transparent mt-2 p-10   ml-12 h-14  ">
-      {/* --> Main Create Job Button */}
 
       <div className="w-full sm:w-1/2 text-center">
         <Link to={"/createClient"}>
@@ -129,10 +128,8 @@ function ClientHeader({ setData }) {
         </Link>
       </div>
 
-      {/* 2nd flex div */}
-
       <div className="w-full flex justify-end items-center -mr-10 sm:mr-12  ">
-        {/* ==> Job Status Button */}
+     
         <button
           onClick={() => SetClientStatus(!clientStatus)}
           className="btn bg-transparent text-secondry normal-case gap-2 ml-8  rounded-lg border-0 border-solid border-secondry hover:bg-primary  hover:border-solid hover:border-primary hover:text-white "

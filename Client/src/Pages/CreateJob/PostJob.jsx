@@ -381,56 +381,42 @@ function PostJob() {
                 onChange={(e) => setJdFiles(e.target.files)}
                 className="hidden"
               />
-
-              
-            {formData.attach_jd && formData.attach_jd.length > 0 && (
-  <div className="mt-2 bg-white p-3 rounded-lg shadow-sm border">
-
-   {formData.attach_jd.map((fileUrl, index) => {
-  const url = fileUrl.startsWith("/uploads/")
-    ? `http://localhost:8080${fileUrl}`
-    : `http://localhost:8080/uploads/${fileUrl}`;
-
-  return (
-    <p key={index} className="text-sm text-gray-600">
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 underline hover:text-blue-800"
-      >
-        {fileUrl.split("/").pop()}
-      </a>
-    </p>
-  );
-})}
-       </div>
-              )}
-            </div>
-
-            <div className="flex flex-col col-span-2">
-              <label className="font-semibold mb-1">Description</label>
-              <ReactQuill
-                value={description}
-                onChange={setDescription}
-                className="h-35"
-                placeholder="Enter job description..."
-              />
-            </div>
-          </div>
-
-          <div className="mt-12 text-center">
-            <button
-              onClick={handleSubmit}
-              className="btn btn-wide bg-primary text-white hover:bg-black"
-            >
-              Create job
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+               {formData.attach_jd && formData.attach_jd.length > 0 && (
+                <div className="mt-2 bg-white p-3 rounded-lg shadow-sm border">
+                   {formData.attach_jd.map((fileUrl, index) => {
+                    const url = fileUrl.startsWith("/uploads/")
+                    ? `http://localhost:8080${fileUrl}`
+                    : `http://localhost:8080/uploads/${fileUrl}`;
+                    return (
+                    <p key={index} className="text-sm text-gray-600">
+                      <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline hover:text-blue-800">
+                        {fileUrl.split("/").pop()}</a></p>
+                        );
+                        })}
+                        </div>)}
+                        </div>
+                        <div className="flex flex-col col-span-2">
+                          <label className="font-semibold mb-1">Description</label>
+                            <ReactQuill
+                              value={description}
+                              onChange={setDescription}
+                              className="h-35"
+                              placeholder="Enter job description..."
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-12 text-center">
+                          <button
+                            onClick={handleSubmit}
+                            className="btn btn-wide bg-primary text-white hover:bg-black"
+                          >
+                            Create job
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
 
 export default PostJob;
