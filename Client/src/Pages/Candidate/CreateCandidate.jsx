@@ -94,10 +94,15 @@ function CreateCandidate() {
   }
 
   const formPayload = new FormData();
+Object.keys(formData).forEach(key => {
+  let value = formData[key];
 
-  Object.keys(formData).forEach(key => {
-    formPayload.append(key, formData[key]);
-  });
+  if (key === "job_id" && typeof value === "object" && value?._id) {
+    value = value._id.toString(); 
+  }
+
+  formPayload.append(key, value);
+});
 
   if (cvFile) {
     formPayload.append("cv_attachment", cvFile); 
@@ -105,7 +110,7 @@ function CreateCandidate() {
 
   if (jdFiles.length > 0) {
     jdFiles.forEach(file => {
-      formPayload.append("jd_attachments", file); 
+      formPayload.append("jd_attach_jd", file); 
     });
   }
 

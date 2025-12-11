@@ -58,10 +58,10 @@
 //     const currentCTC = parseCTC(current_ctc);
 //     const acceptedCTC = parseCTC(accepted_ctc);
 
-//     //  Process attachments
-//     let attachments = [];
+//     //  Process attach_jd
+//     let attach_jd = [];
 //     if (req.files && req.files.length > 0) {
-//       attachments = req.files.map((file) => ({
+//       attach_jd = req.files.map((file) => ({
 //         filename: file.originalname,
 //         url: `/uploads/cv/${file.filename}`,
 //       }));
@@ -97,7 +97,7 @@
 //       description: description || "",
 //       poc,
 //       client,
-//       cv_attachment: attachments
+//       cv_attachment: attach_jd
 //     });
 
 //     await candidate.save();
@@ -117,7 +117,7 @@
 
 const Candidate = require("../../Models/CandidateModel");
 const Job = require("../../Models/JobModel");
-// router.post("/candidate/create", upload.array("cv_attachment"), CreateCandidate);
+const mongoose = require("mongoose");
 
 const CreateCandidate = async (req, res) => {
   try {
@@ -153,15 +153,24 @@ const CreateCandidate = async (req, res) => {
       return res.status(400).json({ message: "Candidate name and email are required." });
     }
 
-    let poc = "NA";
-    let client = "NA";
-    if (job_id) {
-      const job = await Job.findById(job_id);
-      if (job) {
-        poc = job.poc || "NA";
-        client = job.client || "NA";
-      }
-    }
+  let finalJobId = job_id;
+
+if (typeof finalJobId === "object" && finalJobId?._id) {
+  finalJobId = finalJobId._id.toString();
+}
+
+if (finalJobId && !mongoose.Types.ObjectId.isValid(finalJobId)) {
+  return res.status(400).json({ message: "Invalid Job ID" });
+}
+
+const job = finalJobId ? await Job.findById(finalJobId) : null;
+
+let poc = "NA";
+let client = "NA";
+if (job) {
+  poc = job.poc || "NA";
+  client = job.client || "NA";
+}
 
     let cv_url = '';
     if (req.files?.cv_attachment && req.files.cv_attachment.length > 0) {
@@ -169,7 +178,7 @@ const CreateCandidate = async (req, res) => {
     }
 
     const candidate = new Candidate({
-      job_id: job_id || "",
+      job_id: finalJobId || "",
       candidate_name,
       contact_num: contact_num || "",
       email,

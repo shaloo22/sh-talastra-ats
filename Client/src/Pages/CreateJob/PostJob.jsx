@@ -14,21 +14,22 @@ function PostJob() {
   const [description, setDescription] = useState("");
   const [jdFiles, setJdFiles] = useState(null);
   const [formData, setFormData] = useState({
-    client: "",
-    poc: "",
-    internal_recruiter: "",
-    internal_manager: "",
-    total_experience: "",
-    recent_experience: "",
-    job_location: "",
-    notice_period: "",
-    budget_from: "",
-    budget_to: "",
-    technology: "",
-    position: "",
-    description: "",
-    attach_jd: [],
-  });
+  client: "",
+  poc: "",
+  internal_recruiter: "",
+  internal_manager: "",
+  total_experience: "",
+  recent_experience: "",
+  job_location: "",
+  notice_period: "",
+  budget_from: "",
+  budget_to: "",
+  technology: "",
+  position: "",
+  description: "",
+  attach_jd: [],  
+});
+
   const [clients, setClients] = useState([]);
   const [filteredPocs, setFilteredPocs] = useState([]);
   const [recruiters, setRecruiters] = useState([]);

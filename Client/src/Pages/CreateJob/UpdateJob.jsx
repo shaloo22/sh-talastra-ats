@@ -37,38 +37,39 @@ function UpdateJob() {
   const [managers, setManagers] = useState([]);
   const [clientSearch, setClientSearch] = useState("");
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8080/job/get-job/${id}`)
-      .then((res) => {
-        const job = res.data.job;
-        setFormData({
-          client: job.client?._id || "",
-          poc: job.poc?._id || "",
-          internal_recruiter: job.internal_recruiter || "",
-          internal_manager: job.internal_manager || "",
-          total_experience: job.total_experience || "",
-          recent_experience: job.recent_experience || "",
-          job_location: job.job_location || "",
-          notice_period: job.notice_period || "",
-          budget_from: job.budget_from || "",
-          budget_to: job.budget_to || "",
-          technology: job.technology || "",
-          position: job.position || "",
-          attach_jd: job.attach_jd || [],
-        });
-        setDescription(job.description || "");
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
+ useEffect(() => {
+  axios
+    .get(`http://localhost:8080/job/get-job/${id}`)
+    .then((res) => {
+      const job = res.data.job;
+      setFormData({
+        client: job.client?._id || "",
+        poc: job.poc?._id || "",
+        internal_recruiter: job.internal_recruiter || "",
+        internal_manager: job.internal_manager || "",
+        total_experience: job.total_experience || "",
+        recent_experience: job.recent_experience || "",
+        job_location: job.job_location || "",
+        notice_period: job.notice_period || "",
+        budget_from: job.budget_from || "",
+        budget_to: job.budget_to || "",
+        technology: job.technology || "",
+        position: job.position || "",
+       
+        attach_jd: job.attachments || [],
+      });
+      setDescription(job.description || "");
+    })
+    .catch((err) => console.log(err));
+}, [id]);
 
-  const removeExistingJD = (index) => {
-    setFormData((prev) => {
-      const updated = [...prev.attach_jd];
-      updated.splice(index, 1);
-      return { ...prev, attach_jd: updated };
-    });
-  };
+const removeExistingJD = (index) => {
+  setFormData((prev) => {
+    const updated = [...prev.attach_jd];
+    updated.splice(index, 1);
+    return { ...prev, attach_jd: updated };
+  });
+};
 
   useEffect(() => {
     axios.get("http://localhost:8080/clients/all").then((res) => {
@@ -101,39 +102,42 @@ function UpdateJob() {
     setFormData({ ...formData, [field]: e.target.value });
   };
 
-  const handleUpdate = async () => {
-    try {
-      const dataToSend = new FormData();
+  
+const handleUpdate = async () => {
+  try {
+    const dataToSend = new FormData();
 
-      Object.entries({ ...formData, description }).forEach(([key, val]) => {
-        if (key !== "attach_jd") dataToSend.append(key, val);
-      });
-
-      if (jdFiles?.length > 0) {
-        Array.from(jdFiles).forEach((file) => dataToSend.append("attach_jd", file));
-      }
-
-      dataToSend.append("existing_attach_jd", JSON.stringify(formData.attach_jd));
-
-      const res = await axios.put(
-        `http://localhost:8080/job/update-job/${id}`,
-        dataToSend,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      if (res.status === 200) {
-        setFormData((prev) => ({ ...prev, attach_jd: res.data.job.attach_jd || [] }));
-        setJdFiles(null);
-        setAPIFetched(true);
-      }
-    } catch (err) {
-      console.error(err.response?.data || err.message);
+    Object.entries({ ...formData, description }).forEach(([key, val]) => {
+      if (key !== "attach_jd") dataToSend.append(key, val);
+    });
+    if (jdFiles?.length > 0) {
+      Array.from(jdFiles).forEach((file) => dataToSend.append("attach_jd", file));
     }
-  };
+
+    dataToSend.append("existing_attach_jd", JSON.stringify(formData.attach_jd));
+
+    const res = await axios.put(
+      `http://localhost:8080/job/update-job/${id}`,
+      dataToSend,
+      { headers: { "Content-Type": "multipart/form-data" } }
+    );
+
+    if (res.status === 200) {
+      setFormData((prev) => ({ ...prev, attach_jd: res.data.job.attachments || [] }));
+      setJdFiles(null);
+      setAPIFetched(true);
+    }
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+  }
+};
+
 
   const filteredClients = clients.filter((c) =>
     c.company_name.toLowerCase().includes(clientSearch.toLowerCase())
   );
+
+  
 
   return (
     <div className="flex bg-gray-50 min-h-screen">
@@ -363,61 +367,50 @@ function UpdateJob() {
               </div>
             </div>
 
-            <div className="flex flex-col col-span-2">
-              <label>Attach JD</label>
-              <label
-                htmlFor="jdUpload"
-                className="w-full p-3 border-2 border-dotted rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200"
-              >
-                <div className="text-center text-gray-500">Click to Attach</div>
-              </label>
-              <input
-                id="jdUpload"
-                type="file"
-                multiple
-                className="hidden"
-                onChange={(e) => setJdFiles(e.target.files)}
-              />
+          <div className="flex flex-col col-span-2">
+  <label>Attach JD</label>
+  <label
+    htmlFor="jdUpload"
+    className="w-full p-3 border-2 border-dotted rounded-xl cursor-pointer bg-gray-50 hover:bg-gray-200"
+  >
+    <div className="text-center text-gray-500">Click to Attach</div>
+  </label>
+  <input
+    id="jdUpload"
+    type="file"
+    multiple
+    className="hidden"
+    onChange={(e) => setJdFiles(e.target.files)}
+  />
 
-              {formData.attach_jd?.length > 0 && (
-                <div className="mt-3 p-3 border rounded-lg">
-                  {formData.attach_jd.map((fileUrl, index) => {
-                    const url = fileUrl.startsWith("/uploads/")
-                      ? `http://localhost:8080${fileUrl}`
-                      : `http://localhost:8080/uploads/${fileUrl}`;
-                    return (
-                      <div key={index} className="flex justify-between items-center mb-1">
-                        <a
-                          href={url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 underline"
-                        >
-                          {fileUrl.split("/").pop()}
-                        </a>
-                        <button
-                          onClick={() => removeExistingJD(index)}
-                          className="text-red-500 hover:text-red-700 text-sm"
-                          type="button"
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+  {formData.attach_jd?.length > 0 && (
+  <div className="mt-3 p-3 border rounded-lg">
+    {formData.attach_jd.map((file, index) => {
+      const url = file.url ? `http://localhost:8080${file.url}` : `http://localhost:8080/uploads/${file}`;
+      return (
+        <div key={index} className="flex justify-between items-center mb-1">
+          <a href={url} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+            {file.filename || file.split("/").pop()}
+          </a>
+          <button onClick={() => removeExistingJD(index)} className="text-red-500 hover:text-red-700 text-sm" type="button">
+            Remove
+          </button>
+        </div>
+      );
+    })}
+  </div>
+)}
 
-              {jdFiles && jdFiles.length > 0 && (
-                <div className="mt-3 p-3 border rounded-lg bg-gray-50">
-                  {Array.from(jdFiles).map((file, idx) => (
-                    <p key={idx} className="text-sm text-gray-600">
-                      {file.name}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
+  {jdFiles && jdFiles.length > 0 && (
+    <div className="mt-3 p-3 border rounded-lg bg-gray-50">
+      {Array.from(jdFiles).map((file, idx) => (
+        <p key={idx} className="text-sm text-gray-600">
+          {file.name}
+        </p>
+      ))}
+    </div>
+  )}
+</div>
             <div className="flex flex-col col-span-2">
               <label>Description</label>
               <ReactQuill

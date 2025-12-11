@@ -47,8 +47,8 @@
 // <td className="py-3 px-5 border-b">{job.notice_period} months</td>
 // <td className="py-3 px-5 border-b">₹{job.budget_from} - ₹{job.budget_to}</td>
 // <td className="py-3 px-5 border-b text-center">
-//   {job.attachments?.length > 0 ? (
-//     <a href={job.attachments[0].url} target="_blank" rel="noreferrer" className="text-blue-600 underline">
+//   {job.attach_jd?.length > 0 ? (
+//     <a href={job.attach_jd[0].url} target="_blank" rel="noreferrer" className="text-blue-600 underline">
 //       JD
 //     </a>
 //   ) : "-"}

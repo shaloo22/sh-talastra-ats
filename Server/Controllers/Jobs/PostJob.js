@@ -1,5 +1,5 @@
 const Job = require('../../Models/JobModel');
-const fs = require('fs');
+const mongoose = require('mongoose');
 
 const PostJobRouter = async (req, res) => {
   try {
@@ -19,6 +19,12 @@ const PostJobRouter = async (req, res) => {
       description
     } = req.body;
 
+    if (!mongoose.Types.ObjectId.isValid(client)) {
+      return res.status(400).json({ message: "Invalid client ID" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(poc)) {
+      return res.status(400).json({ message: "Invalid POC ID" });
+    }
     total_experience = Number(total_experience);
     recent_experience = Number(recent_experience);
     notice_period = Number(notice_period);
@@ -26,8 +32,6 @@ const PostJobRouter = async (req, res) => {
     budget_to = Number(budget_to);
 
     if (
-      !client ||
-      !poc ||
       !internal_recruiter ||
       !internal_manager ||
       isNaN(total_experience) ||
@@ -42,16 +46,18 @@ const PostJobRouter = async (req, res) => {
     ) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    let attachments = [];
+
+    let attach_jd = [];
     if (req.files && req.files.length > 0) {
-      attachments = req.files.map((file) => ({
+      attach_jd = req.files.map(file => ({
         filename: file.originalname,
-        url: `/uploads/${file.filename}`, 
+        url: `/uploads/${file.filename}` 
       }));
     }
+
     const newJob = new Job({
-      client,
-      poc,
+      client: mongoose.Types.ObjectId(client),
+      poc: mongoose.Types.ObjectId(poc),
       internal_recruiter,
       internal_manager,
       total_experience,
@@ -63,7 +69,7 @@ const PostJobRouter = async (req, res) => {
       technology,
       position,
       description,
-      attachments,
+      attach_jd,
     });
 
     await newJob.save();

@@ -23,7 +23,7 @@ router.post(
   '/create',
   upload.fields([
     { name: 'cv_attachment', maxCount: 1 },
-    { name: 'jd_attachments', maxCount: 5 }
+    { name: 'jd_attach_jd', maxCount: 5 }
   ]),
   CreateCandidate
 );
@@ -77,17 +77,6 @@ router.post("/get-single", async (req, res) => {
 
     if (!_id) return res.status(400).json({ message: "Candidate ID required" });
 
-  //  const candidate = await Candidate.findById(_id)
-  // .populate({
-  //   path: "job_id",
-  //   select: "position client poc",
-  //   populate: [
-  //     { path: "client", select: "company_name" },
-  //     { path: "poc", select: "poc_name" },
-  //   ],
-  // })
-  // .lean();
-
 
     if (!candidate) return res.status(404).json({ message: "Candidate not found" });
 
@@ -105,9 +94,5 @@ router.post("/get-single", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch candidate" });
   }
 });
-
-
-
-
 
 module.exports = router;

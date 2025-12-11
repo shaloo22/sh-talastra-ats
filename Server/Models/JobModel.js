@@ -39,7 +39,7 @@
 //   job_status: 
 //   { type: String, enum: ["Active", "Closed"], default: "Active" },
 //   created_at: { type: Date, default: Date.now },
-//   attachments: [{ filename: String, url: String }]
+//   attach_jd: [{ filename: String, url: String }]
 // });
 
 
@@ -88,9 +88,13 @@ const jobSchema = new mongoose.Schema({
   job_status: 
   { type: String, enum: ["Active", "Closed"], default: "Active" },
   created_at: { type: Date, default: Date.now },
-  attachments: [{ filename: String, url: String }]
+  attach_jd: [
+  {
+    filename: { type: String },
+    url: { type: String }
+  }
+]
 });
-
 
 const Job = mongoose.model("Job", jobSchema);
 module.exports = Job;

@@ -248,12 +248,12 @@ function CandidateDetails() {
 
 <div className="border border-gray-400 rounded-lg">
   <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-    Attachments
+    attach_jd
   </div>
 
 <div className="border border-gray-400 rounded-lg">
   <div className="px-3 py-2 text-sm font-semibold text-black border-b border-gray-400">
-    Attachments
+    attach_jd
   </div>
 
   <div className="p-3 text-sm">
@@ -295,7 +295,7 @@ function CandidateDetails() {
 </a>
       )
     ) : (
-      <p className="text-gray-500 text-xs">No Attachments</p>
+      <p className="text-gray-500 text-xs">No attach_jd</p>
     )}
   </div>
 </div>

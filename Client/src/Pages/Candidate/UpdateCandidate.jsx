@@ -70,19 +70,23 @@ function UpdateCandidate() {
 
   }, [candidateId]);
 
-  const handleSubmit = () => {
-    let dataToSend;
-    let headers = {};
+const handleSubmit = () => {
+  let headers = {};
+  let dataToSend;
 
-    if (cvFile || jdFiles.length > 0) {
-      dataToSend = new FormData();
-      for (const key in formData) dataToSend.append(key, formData[key]);
-      if (cvFile) dataToSend.append("cv_attachment", cvFile);
-      jdFiles.forEach(f => dataToSend.append("jdFiles", f));
-      headers["Content-Type"] = "multipart/form-data";
+if (cvFile) {
+  dataToSend = new FormData();
+  for (const key in formData) {
+    if (key === "job_id" && formData.job_id?._id) {
+      dataToSend.append("job_id", formData.job_id._id);
     } else {
-      dataToSend = { ...formData };
+      dataToSend.append(key, formData[key]);
     }
+  }
+  dataToSend.append("cv_attachment", cvFile);
+} else {
+  dataToSend = { ...formData, job_id: formData.job_id?._id || formData.job_id };
+}
 
     axios.put(`http://localhost:8080/candidate/update/${candidateId}`, dataToSend, { headers })
       .then(res => {
@@ -162,8 +166,6 @@ function UpdateCandidate() {
     readOnly
   />
 </div>
-
-
             <div>
               <label className="font-semibold mb-1">Candidate Name</label>
               <input

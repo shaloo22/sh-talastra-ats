@@ -11,15 +11,13 @@ function PocHeader({ setData }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const dropdownRef = useRef(null);
-
-  // Fetch clients
   useEffect(() => {
     const fetchClients = async () => {
       try {
         const res = await axios.post("http://localhost:8080/client/list", {
           status: "ACTIVE",
         });
-        // Only keep clients with company_name defined
+
         const validClients = (res.data.clients || []).filter(
           (c) => c && c.company_name
         );
@@ -31,10 +29,9 @@ function PocHeader({ setData }) {
     fetchClients();
   }, []);
 
-  // Fetch POCs for selected client
   const handleSelectClient = async (clientId) => {
     setSelectedClient(clientId);
-    setDropdownOpen(false); // close dropdown after selection
+    setDropdownOpen(false); 
     try {
       const options = {
         url: "http://localhost:8080/client/poc/list",
@@ -53,14 +50,11 @@ function PocHeader({ setData }) {
     }
   };
 
-  // Safe client filtering
   const filteredClients = clients.filter((c) =>
     (c?.company_name || "")
       .toLowerCase()
       .includes(search.toLowerCase())
   );
-
-  // Close dropdown on click outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -73,7 +67,6 @@ function PocHeader({ setData }) {
     };
   }, []);
 
-  // Job Status buttons
   const filterShowClosedClients = async () => {
     try {
       const dataToSend = selectedClient
@@ -108,7 +101,7 @@ function PocHeader({ setData }) {
 
   return (
     <div className="flex w-10/12 m-auto justify-between items-center topNavigationBoxShadow bg-transparent mt-2 p-4 h-14">
-      {/* Add New POC Button */}
+   
       <div>
         <Link to={"/CreatePOC"}>
           <button
@@ -120,7 +113,6 @@ function PocHeader({ setData }) {
         </Link>
       </div>
 
-      {/* Client Dropdown / SearchBox */}
       <div className="relative w-64" ref={dropdownRef}>
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -166,7 +158,6 @@ function PocHeader({ setData }) {
         )}
       </div>
 
-      {/* Job Status Button */}
       <div className="relative">
         <button
           onClick={() => setClientStatus(!clientStatus)}
