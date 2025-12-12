@@ -42,25 +42,25 @@ function CandidateDetails() {
           <div className="grid grid-cols-3 text-sm">
           
             <div className="p-2 border-r border-b">
-  <p className="text-gray-500 text-xs">Job Position</p>
- <p className="font-medium text-gray-900">
-  {candidate.job_id?.position || "—"}
-</p>
-</div>
+              <p className="text-gray-500 text-xs">Job Position</p>
+            <p className="font-medium text-gray-900">
+              {candidate.job_id?.position || "—"}
+            </p>
+            </div>
 
-<div className="p-2 border-b">
-  <p className="text-gray-500 text-xs">Client</p>
-  <p className="font-medium text-gray-900">
-    {candidate.job_id?.client?.company_name || "—"}
-  </p>
-</div>
+            <div className="p-2 border-r border-b">
+              <p className="text-gray-500 text-xs">Client</p>
+              <p className="font-medium text-gray-900">
+                {candidate.job_id?.client?.company_name || "—"}
+              </p>
+            </div>
 
-<div className="p-2 border-r border-b">
-  <p className="text-gray-500 text-xs">POC</p>
-  <p className="font-medium text-gray-900">
-    {candidate.job_id?.poc?.poc_name || "—"}
-  </p>
-</div>
+            <div className="p-2 border-r border-b">
+              <p className="text-gray-500 text-xs">POC</p>
+              <p className="font-medium text-gray-900">
+                {candidate.job_id?.poc?.poc_name || "—"}
+              </p>
+            </div>
 
             <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Candidate Name</p>
@@ -69,7 +69,7 @@ function CandidateDetails() {
               </p>
             </div>
 
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Email</p>
               <p className="font-medium text-gray-900">
                 {candidate.email}
@@ -82,12 +82,12 @@ function CandidateDetails() {
                 {candidate.contact_num}
               </p>
             </div>
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">DOB</p>
               <p className="font-medium text-gray-900">{candidate.dob}</p>
             </div>
 
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Mode of Interview</p>
               <p className="font-medium text-gray-900">
                 {candidate.mode_of_interview}
@@ -101,13 +101,13 @@ function CandidateDetails() {
               </p>
             </div>
 
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Follow-up Status</p>
               <p className="font-medium text-gray-900">
                 {candidate.followup_status || "—"}
               </p>
           </div>
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Candidate Status</p>                         
               <p className="font-medium text-gray-900">
                 {candidate.candidate_status || "—"}
@@ -119,7 +119,7 @@ function CandidateDetails() {
                 {candidate.offers_pipeline || "—"}
               </p>
             </div>
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Interview Schedule Date</p>
               <p className="font-medium text-gray-900">
                {candidate.interview_date
@@ -127,7 +127,7 @@ function CandidateDetails() {
                  : "—"}
              </p>
           </div>
-            <div className="p-2 border-t border-gray-200">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Last Working Date</p>
              <p className="font-medium text-gray-900">
               {candidate.last_working_date
@@ -136,7 +136,7 @@ function CandidateDetails() {
             </p>
             </div>
 
-              <div className="p-2">
+              <div className="p-2 ">
               <p className="text-gray-500 text-xs">Notice Period</p>
               <p className="font-medium text-gray-900">
                 {candidate.notice_period} Days
@@ -158,7 +158,7 @@ function CandidateDetails() {
                 {candidate.total_exp} Years
               </p>
             </div>
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">
                 Relevant Experience
               </p>
@@ -174,7 +174,7 @@ function CandidateDetails() {
               {candidate.current_ctc || "—"}
             </p>
             </div>
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">
                 Accepted CTC (Fixed + Variable)
               </p>
@@ -214,7 +214,7 @@ function CandidateDetails() {
               </p>
             </div>
 
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">
                 Preferred Location
               </p>
@@ -229,7 +229,7 @@ function CandidateDetails() {
                 {candidate.current_city}
               </p>
             </div>
-            <div className="p-2 border-b">
+            <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Relocate City P1</p>
               <p className="font-medium text-gray-900">
                 {candidate.relocate_city_p1}

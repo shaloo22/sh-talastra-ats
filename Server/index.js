@@ -49,6 +49,7 @@ app.use('/job', JobRouter);
 app.use('/details', RecruitmentRouter);
 app.use('/report', ReportRouter);
 app.use('/settings', SettingRouter);
+// app.use("/api", UserRouter);
 
 
 app.use("/candidate", CandidateRouter);   

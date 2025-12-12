@@ -35,13 +35,13 @@ function JobDetails() {
               <p className="text-gray-500 text-xs">POC Name</p>
               <p className="font-medium text-gray-900">{job.poc?.poc_name}</p>
             </div>
-            <div className="p-2 border-r border-b">
-              <p className="text-gray-500 text-xs">Manager</p>
-              <p className="font-medium text-gray-900">{job.internal_manager || "-"}</p>
-            </div>
-            <div className="p-2 border-b">
+            <div className="p-2  border-r border-b">
               <p className="text-gray-500 text-xs">Recruiter</p>
               <p className="font-medium text-gray-900">{job.internal_recruiter}</p>
+            </div>
+             <div className="p-2 border-r border-b">
+              <p className="text-gray-500 text-xs">Manager</p>
+              <p className="font-medium text-gray-900">{job.internal_manager || "-"}</p>
             </div>
             <div className="p-2 border-r border-b">
               <p className="text-gray-500 text-xs">Position</p>

@@ -136,36 +136,34 @@ if (cvFile) {
         <div className="w-4/5 max-w-5xl mx-auto mt-10 p-8 bg-white rounded-xl shadow-lg">
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Update Candidate</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label>Job</label>
+                  <input
+                    type="text"
+                    value={formData.job_id?.position || formData.job_position || ""}
+                    className="input input-bordered w-full"
+                    readOnly
+                  />
+                </div>
+                <div>
+                  <label>Client</label>
+                  <input
+                    type="text"
+                    value={formData.job_id?.client?.company_name || formData.client || ""}
+                    className="input input-bordered w-full"
+                    readOnly
+                  />
+                </div>
 
-<div>
-  <label>Job</label>
-  <input
-    type="text"
-    value={formData.job_id?.position || formData.job_position || ""}
-    className="input input-bordered w-full bg-gray-200"
-    readOnly
-  />
-</div>
-
-<div>
-  <label>Client</label>
-  <input
-    type="text"
-    value={formData.job_id?.client?.company_name || formData.client || ""}
-    className="input input-bordered w-full bg-gray-200"
-    readOnly
-  />
-</div>
-
-<div>
-  <label>POC</label>
-  <input
-    type="text"
-    value={formData.job_id?.poc?.poc_name || formData.poc || ""}
-    className="input input-bordered w-full bg-gray-200"
-    readOnly
-  />
-</div>
+                <div>
+                  <label>POC</label>
+                  <input
+                    type="text"
+                    value={formData.job_id?.poc?.poc_name || formData.poc || ""}
+                    className="input input-bordered w-full"
+                    readOnly
+                  />
+                </div>
             <div>
               <label className="font-semibold mb-1">Candidate Name</label>
               <input

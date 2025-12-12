@@ -1,3 +1,120 @@
+// const userModel = require("../../Models/User_Model");
+// const bcrypt = require("bcrypt");
+// const mailer = require("nodemailer");
+
+// // -> Email sending code
+// const sendVerifyEmail = async (name, email, id) => {
+//   const htmlCode = `<p>Dear <b>${name}</b>, please click <a href="http://localhost:8080/verify?id=${id}">here</a> to verify your account.</p>`;
+
+//   try {
+//     const transporter = mailer.createTransport({
+//       service: 'gmail',
+//       auth: {
+//         user: process.env.MAILUSER,
+//         pass: process.env.MAILPASS,
+//       },
+//     });
+
+//     const mailOptions = {
+//       from: process.env.MAILUSER,
+//       to: email,
+//       subject: 'Account Activation [Smart Cruiter]',
+//       html: htmlCode,
+//     };
+
+//     transporter.sendMail(mailOptions, (error, info) => {
+//       if (error) {
+//         console.log(error);
+//       } else {
+//         console.log(`Email sent: ${info.response}`);
+//       }
+//     });
+
+//   } catch (error) {
+//     console.log("Error -> " + error);
+//   }
+// }
+
+// const register = async (req, res) => {
+//   try {
+//     const { f_name, last_name, email, company_name, password, designation, manager } = req.body;
+
+//     // -> Check required fields
+//     if (!f_name || !last_name || !email || !company_name || !password || !designation) {
+//       return res.status(400).json({ error: "All fields are required." });
+//     }
+
+//     // -> Email format validation
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     if (!emailRegex.test(email)) {
+//       return res.status(400).json({ error: "Enter email in proper format." });
+//     }
+
+//     // -> Password length check
+//     if (password.length < 8 || password.length > 40) {
+//       return res.status(400).json({ error: "Password length must be 8-40 characters." });
+//     }
+
+//     // -> Check existing user
+//     const existingUser = await userModel.findOne({ $or: [{ last_name }, { email }] });
+//     if (existingUser) {
+//       return res.status(409).json({ error: "Username or email already taken." });
+//     }
+
+//     // -> Hash password
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     // -> Prepare user data
+//     const userData = {
+//       f_name,
+//       last_name,
+//       email,
+//       company_name,
+//       password: hashedPassword,
+//       designation,
+//       manager: designation === "Manager" ? "" : manager,
+//       isAdmin: designation === "Manager",
+//       isVerified: false,
+//       org_registered: true,
+//       org_id: "0",
+//     };
+
+//     // -> Save user
+// let user;
+// try {
+//   user = await new userModel({
+//     f_name,
+//     last_name,
+//     email,
+//     company_name,
+//     password: hashedPassword,
+//     designation,
+//     manager: designation === "Manager" ? "" : manager,
+//     isAdmin: designation === "Manager" ? true : false,
+//     isVerified: false,
+//     org_registered: true,
+//     org_id: "0",
+//   }).save();
+// } catch (error) {
+//   console.log("Error saving user:", error);
+//   return res.status(500).json({ error: "Error saving user in DB" });
+// }
+
+// // Send verification email (async, fail silently)
+// sendVerifyEmail(f_name, email, user._id)
+//   .then(() => console.log("Verification email sent"))
+//   .catch((err) => console.log("Email sending failed:", err));
+
+// return res.status(200).json({ message: "Registered Successfully!" });
+
+//   } catch (error) {
+//     console.error("Register Error -> ", error);
+//     return res.status(500).json({ error: "An error occurred while saving the user." });
+//   }
+// };
+
+// module.exports = register;
+
 const userModel = require("../../Models/User_Model");
 const bcrypt = require("bcrypt");
 const express = require("express");
@@ -287,44 +404,49 @@ For account verification this link has been sent kindly click on verify  button 
 
 const register = async (req, res, next) => {
   // -> Extracting input values
-  const { f_name, username, email, company_name, password } = req.body;
+  const { f_name, last_name, email, company_name, password, designation, manager } = req.body;
 
   // -> Checking if values are empty
-  if (!f_name || !username || !email || !company_name || !password) {
+  if (!f_name || !last_name || !email || !company_name || !password) {
     return res.status(400).json({ error: "All fields are required." });
   }
 
   // -> Checking is Email @ is valid or not
-  var emailRegex =
-    /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
-  function isEmailValid(email) {
-    if (email.length > 254) return false;
+var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    var valid = emailRegex.test(email);
-    if (!valid) return false;
+function isEmailValid(email) {
+  if (!email) return false;              // ⭐ email undefined ya empty ho to false
 
-    // Further checking of some things regex can't handle
-    var parts = email.split("@");
-    if (parts[0].length > 64) return false;
+  if (email.length > 254) return false;
 
-    var domainParts = parts[1].split(".");
-    if (
-      domainParts.some(function (part) {
-        return part.length > 63;
-      })
-    )
-      return false;
+  var valid = emailRegex.test(email);
+  if (!valid) return false;
 
-    return true;
-  }
-  const EmailValid = isEmailValid(email);
-  if (EmailValid == false) {
-    return res
-      .status(400)
-      .json({ error: "Enter email @ in proper format abc@domain.com" });
-  }
+  // Further checking of some things regex can't handle
+  var parts = email.split("@");
+  if (parts.length !== 2) return false;  // ⭐ "@" ek hi hona chahiye
 
-  // -> Checking is password length is in range or not
+  if (parts[0].length > 64) return false;
+
+  var domainParts = parts[1].split(".");
+  if (
+    domainParts.some(function (part) {
+      return part.length > 63;
+    })
+  )
+    return false;
+
+  return true;
+}
+
+const EmailValid = isEmailValid(email);
+
+if (!EmailValid) {
+  return res.status(400).json({
+    error: "Enter email in proper format (abc@domain.com)",
+  });
+}
+// -> Checking is password length is in range or not
   function passwordLengthChecker(password) {
     if (password.length < 8 || password.length > 40) {
       return false;
@@ -337,16 +459,15 @@ const register = async (req, res, next) => {
       .status(400)
       .json({ error: "Password mimumum length should be 8 and max 40" });
   }
-  // -> Checking if email OR username is not already token
+  // -> Checking if email OR last_name is not already token
   const existingUser = await userModel.findOne({
-    $or: [{ username }, { email }],
+    $or: [{ last_name }, { email }],
   });
   if (existingUser) {
     // console.log('user alreay exists in system');
     return res.status(409).json({ error: "Username or email already taken." });
 
   }
-
 
   // Hashing the password
   const saltRounds = 10;
@@ -355,10 +476,14 @@ const register = async (req, res, next) => {
   // -> Saving user data in database
   const user = await new userModel({
     f_name: f_name,
-    username: username,
+    last_name: last_name,
     email: email,
     company_name: company_name,
     password: hashedPassword,
+    designation,
+     manager: designation === "Recruiter" ? manager : null,
+    isAdmin: designation === "Manager" ? true : false
+    
   });
   try {
 

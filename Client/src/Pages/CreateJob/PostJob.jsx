@@ -46,7 +46,7 @@ function PostJob() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/users?designation=recruter")
+      .get("http://localhost:8080/users?designation=Recruiter")
       .then((res) => setRecruiters(res.data.users || []))
       .catch((err) => console.error("Recruiters Error:", err));
 
@@ -99,6 +99,8 @@ function PostJob() {
   const filteredClients = clients.filter((c) =>
     c.company_name.toLowerCase().includes(clientSearch.toLowerCase())
   );
+
+
 
   return (
     <div className="flex bg-gray-50 min-h-screen">
@@ -188,7 +190,6 @@ function PostJob() {
                 </div>
               )}
             </div>
-
           
             <div className="flex flex-col">
               <label className="font-semibold mb-1">POC</label>
@@ -206,42 +207,52 @@ function PostJob() {
                 ))}
               </select>
             </div>
-
-            <div className="flex flex-col">
-              <label className="font-semibold mb-1">Internal Recruiter</label>
-              <select
-                value={formData.internal_recruiter}
-                onChange={(e) =>
-                  setFormData({ ...formData, internal_recruiter: e.target.value })
-                }
-                className="input input-bordered w-full"
-              >
-                <option value="">Select Recruiter</option>
-                {recruiters.map((r) => (
-                  <option key={r._id} value={r.f_name + " " + r.last_name}>
-                    {r.f_name} {r.last_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col">
-              <label className="font-semibold mb-1">Internal Manager</label>
-              <select
-                value={formData.internal_manager}
-                onChange={(e) =>
-                  setFormData({ ...formData, internal_manager: e.target.value })
-                }
-                className="input input-bordered w-full"
-              >
-                <option value="">Select Manager</option>
-                {managers.map((r) => (
-                  <option key={r._id} value={r.f_name}>
-                    {r.f_name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
+              <div className="flex flex-col">
+                <label className="font-semibold mb-1">Internal Recruiter</label>
+                <select
+                  value={formData.internal_recruiter}
+                  onChange={(e) => {
+                    const selectedRecruiter = recruiters.find(
+                      (r) => r.f_name === e.target.value
+                    );
+                    setFormData({
+                      ...formData,
+                      internal_recruiter: e.target.value,
+                      internal_manager: "", 
+                    });
+                    setManagers(
+                      selectedRecruiter && selectedRecruiter.manager
+                        ? [{ f_name: selectedRecruiter.manager }]
+                        : []
+                    );
+                  }}
+                  className="input input-bordered w-full"
+                >
+                  <option value="">Select Recruiter</option>
+                  {recruiters.map((r, index) => (
+                    <option key={index} value={r.f_name}>
+                      {r.f_name} {r.last_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label className="font-semibold mb-1">Internal Manager</label>
+                <select
+                  value={formData.internal_manager || ""} 
+                  onChange={(e) =>
+                    setFormData({ ...formData, internal_manager: e.target.value })
+                  }
+                  className="input input-bordered w-full"
+                >
+                  <option value="">Select Manager</option>
+                  {managers.map((m, index) => (
+                    <option key={index} value={m.f_name}>
+                      {m.f_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             <div className="flex flex-col">
               <label className="font-semibold mb-1">Technology</label>
               <input

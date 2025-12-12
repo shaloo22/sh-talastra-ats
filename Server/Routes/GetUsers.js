@@ -1,3 +1,42 @@
+// const express = require("express");
+// const userModel = require("../Models/User_Model.js");
+
+// const UserRouter = express.Router();
+
+// // -------------------- GET USERS --------------------
+// UserRouter.get("/users", async (req, res) => {
+//   try {
+//     const { designation } = req.query;
+//     let filter = {};
+//     if (designation) filter.designation = designation;
+
+//     const users = await userModel.find(filter)
+//       .select("f_name username email designation isVerified manager isAdmin")
+//       .populate("manager", "f_name username email");
+
+//     res.status(200).json({ users });
+//   } catch (err) {
+//     console.error("Error fetching users:", err);
+//     res.status(500).json({ error: "Server error" });
+//   }
+// });
+
+// // -------------------- GET MANAGERS --------------------
+// UserRouter.get("/users/managers", async (req, res) => {
+//   try {
+//     const managers = await userModel.find({ designation: "Manager" })
+//       .select("_id f_name username email");
+
+//     res.status(200).json({ success: true, managers });
+//   } catch (err) {
+//     console.error("Error fetching managers:", err);
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+
+// module.exports = UserRouter;
+
+
 const express = require("express");
 const userModel = require("../Models/User_Model.js");
 
@@ -29,3 +68,4 @@ UserRouter.get("/users/managers", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+module.exports = UserRouter;
